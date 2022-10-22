@@ -7,7 +7,7 @@ const [localNetworkIpV4] = Object.values(networkInterfaces()).flat().filter(({ n
 const port = process.env.PORT || 3000
 const host = process.env.HOST || localNetworkIpV4
 
-const state = { position: [0, 0] }
+const state = { t: 0, position: [0, 0] }
 
 const clientSends = []
 setInterval(() => {
@@ -19,6 +19,7 @@ setInterval(() => {
     const y = 100 + radius * Math.sin(angle)
     state.position[0] = x
     state.position[1] = y
+    state.t = date
     clientSends.forEach(send => send(JSON.stringify(state)))
 }, 1000 / 10)
 
@@ -43,8 +44,8 @@ const go = async () => {
     fastify.get('/hello-ws', { websocket: true }, (connection, req) => {
         //connection.socket.send("hello from server")
         connection.socket.on('message', message => {
-          //  console.log(message.toString())
-//            connection.socket.send('Hello Fastify WebSockets');
+            //  console.log(message.toString())
+            //            connection.socket.send('Hello Fastify WebSockets');
         });
         clientSends.push(connection.socket.send.bind(connection.socket))
     });
