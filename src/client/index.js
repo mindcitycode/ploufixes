@@ -1,3 +1,9 @@
+import * as PIXI from 'pixi.js'
+const app = new PIXI.Application({ width: 640, height: 360 });
+document.body.appendChild(app.view);
+const sprite = PIXI.Sprite.from('assets/hands.png');
+app.stage.addChild(sprite);
+
 const makeRestUrl = (pathname) => {
     const url = new URL(window.location)
     //url.protocol = 'ws'
@@ -35,7 +41,12 @@ function websocket() {
         console.log('Byebye le serveur !');
     });
     socket.addEventListener('message', function (event) {
-        console.log('Voici un message du serveur', event.data);
+    //    console.log('Voici un message du serveur', event.data);
+     //   const state = JSON.parse(event.data)
+
+        sprite.x = state.position[0]
+        sprite.y = state.position[1]
+        console.log('state',state)
     });
 
     socket.addEventListener('error', function (event) {
@@ -44,3 +55,4 @@ function websocket() {
 
 }
 websocket()
+
