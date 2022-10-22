@@ -13,10 +13,8 @@ const go = async () => {
         logger: true
     })
 
-    await fastify.register(cors, {
-        // put your options here
-    })
-  await  fastify.register(fastifyWebsocket);
+    await fastify.register(cors, {})
+    await fastify.register(fastifyWebsocket);
 
     fastify.get('/hello-ws', { websocket: true }, (connection, req) => {
         connection.socket.send("hello from server")
@@ -26,7 +24,8 @@ const go = async () => {
         });
     });
 
-    fastify.get('/zozo', async (request, reply) => {
+    fastify.get('/zozo/:aparam', async (request, reply) => {
+        console.log('------------',request?.params?.aparam)
         reply.type('application/json').code(200)
         return { hello: 'world' }
     })

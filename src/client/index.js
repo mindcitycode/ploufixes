@@ -7,7 +7,7 @@ const makeRestUrl = (pathname) => {
 }
 
 async function rest() {
-    const url = makeRestUrl('zozo')
+    const url = makeRestUrl('/zozo/apppp')
     const a = await fetch(url)
     console.log('fetched', await a.json())
 }
