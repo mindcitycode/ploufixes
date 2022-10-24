@@ -1,5 +1,13 @@
 import { MSG_TYPE_GAME_CREATED_OK, MSG_TYPE_GAME_CREATED_KO } from '../common/messages.js'
 
+export const makeWsUrl = (point) => {
+    const url = new URL(window.location)
+    url.protocol = 'ws'
+    url.port = '3000'
+    url.pathname = point
+    return url.toString()
+}
+
 const makeRestUrl = (pathname) => {
     const url = new URL(window.location)
     url.port = '3000'

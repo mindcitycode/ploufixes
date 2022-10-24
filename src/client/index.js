@@ -6,20 +6,12 @@ app.stage.addChild(sprite);
 sprite.tint = 0xff0000
 const sprite2 = PIXI.Sprite.from('assets/hands.png');
 app.stage.addChild(sprite2);
-const makeWsUrl = () => {
-    const url = new URL(window.location)
-    url.protocol = 'ws'
-    url.port = '3000'
-    url.pathname = '/hello-ws'
-    return url.toString()
-}
 
 import { processGameUpdate, getCurrentState } from './state.js'
-import './network.js'
+import { makeWsUrl } from './network.js'
 
 const animationFrame = () => {
     const state = getCurrentState()
-    //console.log(state)
     if (state?.position) {
         sprite2.x = state.position[0]
         sprite2.y = state.position[1]
@@ -30,9 +22,9 @@ animationFrame()
 
 
 function websocket() {
-    console.log(makeWsUrl())
 
-    const socket = new WebSocket(makeWsUrl())
+
+    const socket = new WebSocket(makeWsUrl('/hello-ws'))
     console.log(socket)
 
     socket.addEventListener('open', function (event) {
