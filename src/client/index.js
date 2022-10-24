@@ -6,50 +6,6 @@ app.stage.addChild(sprite);
 sprite.tint = 0xff0000
 const sprite2 = PIXI.Sprite.from('assets/hands.png');
 app.stage.addChild(sprite2);
-
-const makeRestUrl = (pathname) => {
-    const url = new URL(window.location)
-    url.port = '3000'
-    url.pathname = pathname
-    return url.toString()
-}
-import { MSG_TYPE_GAME_CREATED_OK, MSG_TYPE_GAME_CREATED_KO } from '../common/messages.js'
-
-const postJson = async (point, data) => {
-    const url = makeRestUrl(point)
-    console.log('POST to url', url)
-    const a = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data || {})
-    })
-    const r = await a.json()
-    console.log('POST to url',url,'received response',r)
-    return r
-
-}
-
-const restPostCreateGame = async (gameParameters) => {
-    const r = await postJson('/game',gameParameters)
-    if (r.type === MSG_TYPE_GAME_CREATED_OK) {
-        console.log('game created ',r)
-    } else if (r.type === MSG_TYPE_GAME_CREATED_KO) {
-        console.log('game NOT created ')
-    } else {
-        throw new Error('not convincing')
-    }
-}
-async function restGet() {
-    const url = makeRestUrl('/zozo/apppp')
-    console.log('make request at', url)
-    const a = await fetch(url)
-    console.log('REST GET fetched', await a.json())
-}
-restGet()
-restPostCreateGame({maxClients:1})
-
 const makeWsUrl = () => {
     const url = new URL(window.location)
     url.protocol = 'ws'
@@ -57,7 +13,9 @@ const makeWsUrl = () => {
     url.pathname = '/hello-ws'
     return url.toString()
 }
+
 import { processGameUpdate, getCurrentState } from './state.js'
+import './network.js'
 
 const animationFrame = () => {
     const state = getCurrentState()
