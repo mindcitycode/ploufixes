@@ -2,14 +2,12 @@ import { networkInterfaces } from 'os'
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
 import fastifyWebsocket from '@fastify/websocket'
-
-const [localNetworkIpV4] = Object.values(networkInterfaces()).flat().filter(({ netmask }) => netmask === '255.255.255.0').map(({ address }) => address)
-const port = process.env.PORT || 3000
-const host = 'localhost' || process.env.HOST || localNetworkIpV4
-
-const state = { t: 0, position: [0, 0] }
+import { GameParameters, Games } from './gamesManager.js'
+import { GameCreatedKoMessage, GameCreatedOkMessage } from '../common/messages.js'
 
 const clientSends = []
+
+const state = { t: 0, position: [0, 0] }
 setInterval(() => {
     const date = Date.now()
     const radius = 100
@@ -22,6 +20,12 @@ setInterval(() => {
     state.t = date
     clientSends.forEach(send => send(JSON.stringify(state)))
 }, 1000 / 10)
+
+const [localNetworkIpV4] = Object.values(networkInterfaces()).flat().filter(({ netmask }) => netmask === '255.255.255.0').map(({ address }) => address)
+const port = process.env.PORT || 3000
+const host = 'localhost' || process.env.HOST || localNetworkIpV4
+
+const games = new Games()
 
 const go = async () => {
 
@@ -54,6 +58,21 @@ const go = async () => {
         console.log('------------', request?.params?.aparam)
         reply.type('application/json').code(200)
         return { hello: 'world' }
+    })
+
+    fastify.post('/game', async (request, reply) => {
+   
+        const gameParameters = new GameParameters()
+        gameParameters.copy( request.body )
+        
+        const game = games.createGame(gameParameters)
+   
+        if (game) {
+            return reply.send(GameCreatedOkMessage(game.getId()))
+        } else {
+            return reply.send(GameCreatedKoMessage())
+        }
+
     })
 
     fastify.listen({ port, host }, (err, address) => {

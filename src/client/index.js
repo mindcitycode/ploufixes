@@ -23,7 +23,7 @@ const postJson = async (point, data) => {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data || {x:','})
+        body: JSON.stringify(data || {})
     })
     const r = await a.json()
     console.log('POST to url',url,'received response',r)
@@ -48,7 +48,7 @@ async function restGet() {
     console.log('REST GET fetched', await a.json())
 }
 restGet()
-restPostCreateGame()
+restPostCreateGame({maxClients:1})
 
 const makeWsUrl = () => {
     const url = new URL(window.location)

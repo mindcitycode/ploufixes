@@ -8,3 +8,10 @@ export const HereIsYourIdMessage = id => ({ type: MSG_TYPE_HERE_IS_YOUR_ID, clie
 export const CannotConnectServerFullMessage = () => ({ type: MSG_TYPE_CANNOT_CONNECT_SERVER_FULL })
 export const GameClientLeftMessage = id => ({ type: MSG_TYPE_GAME_CLIENT_LEFT, clientId: id })
 export const GameClientJoinedMessage = id => ({ type: MSG_TYPE_GAME_CLIENT_JOINED, clientId: id })
+
+
+export const MSG_TYPE_GAME_CREATED_OK = 6
+export const MSG_TYPE_GAME_CREATED_KO = 7
+
+export const GameCreatedOkMessage = id => ({ type : MSG_TYPE_GAME_CREATED_OK, gameId : id })
+export const GameCreatedKoMessage = () => ({ type : MSG_TYPE_GAME_CREATED_KO })

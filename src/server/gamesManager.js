@@ -26,13 +26,20 @@ class GameClient {
         }
     }
 }
-class GameParameters {
+
+export class GameParameters {
+    static limits = {
+        maxClients: 3
+    }
     maxClients = 3
     constructor(maxClients) {
         if (maxClients !== undefined) this.maxClients = maxClients
     }
     copy(source) {
-        this.maxClients = source.maxClients
+        if (source.maxClients !== undefined) {
+            const n = parseInt(source.maxClients)
+            this.maxClients = Math.min(n, GameParameters.limits.maxClients)
+        }
     }
     getJSON() {
         return {
@@ -93,7 +100,7 @@ class Game {
         }
     }
 }
-class Games {
+export class Games {
     static defaultMaxGames = 2
     list = new Map()
     maxGames = Games.defaultMaxGames
@@ -131,45 +138,49 @@ class Games {
     }
 }
 
-const games = new Games()
-const gameParameters = new GameParameters()
 
-{
-    const game1 = games.createGame(gameParameters)
-    console.log(game1)
-}
-{
 
-    const game1 = games.createGame(gameParameters)
-    console.log(game1)
-    games.removeGameById(game1.getId())
-}
-{
-    gameParameters.maxClients = 2
-    const game1 = games.createGame(gameParameters)
-    console.log(game1)
-    const c1 = game1.createClient(a => console.log('>to client 1', a))
-    const c2 = game1.createClient(a => console.log('>to client 2', a))
-    const c3 = game1.createClient(a => console.log('>to client 3', a))
-    const c4 = game1.createClient(a => console.log('>to client 4', a))
-    console.log(c1)
-    console.log('reemove', c1.id)
-    game1.removeClientById(c1.id)
-    console.log('add client')
-    const c5 = game1.createClient(a => console.log('>to client 4', a))
-    //    games.removeGameById( game1.id )
+if (false) {
+    const games = new Games()
+    const gameParameters = new GameParameters()
 
-}
-{
-    console.log('-------')
-    console.log(games.getAll())
+    {
+        const game1 = games.createGame(gameParameters)
+        console.log(game1)
+    }
+    {
 
-    console.log('-------')
-    /*    const all = games.getAll()
-        for (let game of all) {
-            console.log(game.getJSON())
-        }
-        */
-    console.log(serialize(games.getJSON()))
-    //console.log(all.map( x => x))
+        const game1 = games.createGame(gameParameters)
+        console.log(game1)
+        games.removeGameById(game1.getId())
+    }
+    {
+        gameParameters.maxClients = 2
+        const game1 = games.createGame(gameParameters)
+        console.log(game1)
+        const c1 = game1.createClient(a => console.log('>to client 1', a))
+        const c2 = game1.createClient(a => console.log('>to client 2', a))
+        const c3 = game1.createClient(a => console.log('>to client 3', a))
+        const c4 = game1.createClient(a => console.log('>to client 4', a))
+        console.log(c1)
+        console.log('reemove', c1.id)
+        game1.removeClientById(c1.id)
+        console.log('add client')
+        const c5 = game1.createClient(a => console.log('>to client 4', a))
+        //    games.removeGameById( game1.id )
+
+    }
+    {
+        console.log('-------')
+        console.log(games.getAll())
+
+        console.log('-------')
+        /*    const all = games.getAll()
+            for (let game of all) {
+                console.log(game.getJSON())
+            }
+            */
+        console.log(serialize(games.getJSON()))
+        //console.log(all.map( x => x))
+    }
 }
