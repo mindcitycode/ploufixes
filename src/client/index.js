@@ -9,19 +9,46 @@ app.stage.addChild(sprite2);
 
 const makeRestUrl = (pathname) => {
     const url = new URL(window.location)
-    //url.protocol = 'ws'
     url.port = '3000'
     url.pathname = pathname
     return url.toString()
 }
+import { MSG_TYPE_GAME_CREATED_OK, MSG_TYPE_GAME_CREATED_KO } from '../common/messages.js'
 
-async function rest() {
-    const url = makeRestUrl('/zozo/apppp')
-    console.log('make request at',url)
-    const a = await fetch(url)
-    console.log('REST fetched', await a.json())
+const postJson = async (point, data) => {
+    const url = makeRestUrl(point)
+    console.log('POST to url', url)
+    const a = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data || {x:','})
+    })
+    const r = await a.json()
+    console.log('POST to url',url,'received response',r)
+    return r
+
 }
-rest()
+
+const restPostCreateGame = async (gameParameters) => {
+    const r = await postJson('/game',gameParameters)
+    if (r.type === MSG_TYPE_GAME_CREATED_OK) {
+        console.log('game created ',r)
+    } else if (r.type === MSG_TYPE_GAME_CREATED_KO) {
+        console.log('game NOT created ')
+    } else {
+        throw new Error('not convincing')
+    }
+}
+async function restGet() {
+    const url = makeRestUrl('/zozo/apppp')
+    console.log('make request at', url)
+    const a = await fetch(url)
+    console.log('REST GET fetched', await a.json())
+}
+restGet()
+restPostCreateGame()
 
 const makeWsUrl = () => {
     const url = new URL(window.location)
