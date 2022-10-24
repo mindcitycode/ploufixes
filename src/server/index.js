@@ -5,7 +5,7 @@ import fastifyWebsocket from '@fastify/websocket'
 
 const [localNetworkIpV4] = Object.values(networkInterfaces()).flat().filter(({ netmask }) => netmask === '255.255.255.0').map(({ address }) => address)
 const port = process.env.PORT || 3000
-const host = process.env.HOST || localNetworkIpV4
+const host = 'localhost' || process.env.HOST || localNetworkIpV4
 
 const state = { t: 0, position: [0, 0] }
 
@@ -58,7 +58,7 @@ const go = async () => {
 
     fastify.listen({ port, host }, (err, address) => {
         if (err) throw err
-        // Server is now listening on ${address}
+        console.log(`Server is now listening on ${address}`)
     })
 }
 go()

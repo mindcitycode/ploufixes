@@ -17,8 +17,9 @@ const makeRestUrl = (pathname) => {
 
 async function rest() {
     const url = makeRestUrl('/zozo/apppp')
+    console.log('make request at',url)
     const a = await fetch(url)
-    console.log('fetched', await a.json())
+    console.log('REST fetched', await a.json())
 }
 rest()
 
