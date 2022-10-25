@@ -81,19 +81,6 @@ fastifyPassport.registerUserSerializer(async (user, request) => user.id)
 fastifyPassport.registerUserDeserializer(async (id, request) => await Users.findById(id))
 
 server.get(
-    '/',
-    //  { preValidation: fastifyPassport.authenticate('test', { authInfo: false }) },
-    (req, reply) => {
-        if (req.isUnauthenticated()) {
-            console.log('😢')
-        } else {
-            console.log('😬')
-        }
-        reply.type('application/json').code(200)
-        return { its: 'ok', req }
-    }
-)
-server.get(
     '/html',
     (req, reply) => {
         reply.type('text/html').code(200)
@@ -136,6 +123,53 @@ server.post(
         res.redirect('/login');
     }
 )
+
+server.get(
+    '/',
+    //  { preValidation: fastifyPassport.authenticate('test', { authInfo: false }) },
+    (req, reply) => {
+        let uni = req.isUnauthenticated() ? '😭' : '🙋'
+        /*   if (req.isUnauthenticated()) {
+               console.log('😢')
+           } else {
+               //    console.log('sendfile',reply.sendFile)
+               //  reply.sendFile('../../dist/index.html')
+               console.log('😬')
+           }*/
+        reply.type('application/json').code(200)
+        return { uni, its: !req.isUnauthenticated(), req }
+    }
+)
+
+import fastifyStatic from '@fastify/static'
+server.register(fastifyStatic, {
+    // only assets because html must be redirected
+    // if no connection
+    root: path.join(__dirname, 'dist', 'assets'),
+    prefix: '/assets/',
+    cacheControl: false,
+    allowedPath: (pathname, root, req, res) => {
+        console.log('FASTIFY STATIC ASK IF OK', { pathname, root, username: req?.user?.username })
+        return req.isAuthenticated() ? true : false
+        //res.redirect('/login');
+    }
+})
+import * as fsp from "node:fs/promises"
+server.get(
+    '/*',
+    async (req, reply) => {
+        if (req.isUnauthenticated()) {
+            return reply.redirect('/login')
+        } else {
+            const filename = path.join(__dirname, 'dist', req.params['*'])
+            console.log('read needed filenme', filename)
+            const text = await fsp.readFile(filename)
+            reply.type('text/html').code(200) // even images can be served with wrong type
+            return text
+        }
+    }
+)
+
 
 const host = 'localhost'//'192.168.1.11'
 const port = '80'
