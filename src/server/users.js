@@ -7,7 +7,7 @@ export const addOne = async (username, password) => {
     const existing = await findByUsername(username)
     if (existing === undefined) {
         const id = uuidv4()
-        const user = { id, username, password }
+        const user = { id, username, password, creationDate : Date.now() }
         Users.set(id, user)
         return user
     }
