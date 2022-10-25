@@ -42,8 +42,8 @@ const server = fastify({
     http2: true,
     https: {
         allowHTTP1: true, // fallback support for HTTP1
-        key: fs.readFileSync(path.join(__dirname, 'fastify.key')),
-        cert: fs.readFileSync(path.join(__dirname, 'fastify.cert'))
+        key: fs.readFileSync(path.join(__dirname, 'https', 'fastify.key')),
+        cert: fs.readFileSync(path.join(__dirname, 'https', 'fastify.cert'))
     }
 })
 
