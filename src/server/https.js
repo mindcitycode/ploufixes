@@ -8,7 +8,17 @@ const HTML = (title = "oui", body = '<h1>OUI</h1>') => `<!DOCTYPE html>
   <body>${body}</body>
 </html>`
 
-const LOGIN_FORM = () => HTML('login', `
+const LOGOUT_FORM = (username) => {
+    return HTML('logout', `
+    <p>currently ${username ? ("connected as " + username) : "disconnected"}</p>
+    <form action="/logout" method="post">
+    <button type="submit">Logout</button>
+    </form>
+    
+    `)
+}
+const LOGIN_FORM = (username) => HTML('login', `
+<p>currently ${username ? ("connected as " + username) : "disconnected"}</p>
 <form action="/login" method="post">
 <section>
     <label for="username">Username</label>
@@ -27,7 +37,6 @@ const LOGIN_FORM = () => HTML('login', `
 import fastifyMultipart from '@fastify/multipart'
 import fastifyFormBody from '@fastify/formbody'
 
-import * as Users from './users.js'
 
 /////////////////////////////////////////////////
 import fs from 'fs'
@@ -66,21 +75,18 @@ await server.register(fastifySession, {
     },
 })
 
-// initialize @fastify/passport and connect it to the secure-session storage. Note: both of these plugins are mandatory.
+// initialize @fastify/passport and connect it to the secure-session storage.
 await server.register(fastifyPassport.initialize())
 await server.register(fastifyPassport.secureSession())
+
+import * as Users from './users.js'
 fastifyPassport.registerUserSerializer(async (user, request) => user.id)
 fastifyPassport.registerUserDeserializer(async (id, request) => await Users.findById(id))
-
-
-await server.register(fastifyFormBody)
-await server.register(fastifyMultipart)
 
 server.get(
     '/',
     //  { preValidation: fastifyPassport.authenticate('test', { authInfo: false }) },
     (req, reply) => {
-        console.log('°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°° ///')
         if (req.isUnauthenticated()) {
             console.log('😢')
         } else {
@@ -100,14 +106,35 @@ server.get(
 server.get(
     '/login',
     (req, reply) => {
-        reply.type('text/html').code(200)
-        return LOGIN_FORM()
+/*        if (req.isAuthenticated()) {
+            return res.redirect('/logout')
+        }
+ */       reply.type('text/html').code(200)
+        return LOGIN_FORM(req.user?.username)
     }
 )
+server.get(
+    '/logout',
+    (req, reply) => {
+        reply.type('text/html').code(200)
+        return LOGOUT_FORM(req.user?.username)
+    }
+)
+
+await server.register(fastifyFormBody)
+await server.register(fastifyMultipart)
 server.post(
     '/login',
     { preValidation: fastifyPassport.authenticate('test', { successRedirect: '/', authInfo: false }) },
     () => { }
+)
+server.post(
+    '/logout',
+    async function (req, res) {
+        console.log('LOG OUT', req.user?.username)
+        await req.logout()
+        res.redirect('/login');
+    }
 )
 
 const host = 'localhost'//'192.168.1.11'
