@@ -1,3 +1,4 @@
+console.log('HERE I AM')
 import * as PIXI from 'pixi.js'
 const app = new PIXI.Application({ width: 640, height: 360 });
 document.body.appendChild(app.view);
@@ -21,7 +22,7 @@ const animationFrame = () => {
 animationFrame()
 
 
-function websocket() {
+function websocket() {  
 
 
     const socket = new WebSocket(makeWsUrl('/hello-ws'))
