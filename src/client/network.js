@@ -50,3 +50,30 @@ async function restGet() {
 restGet()
 restPostCreateGame({ maxClients: 1 })
 
+
+const postLoginForm = async () => {
+    var details = {
+        'username': 'UnUser',
+        'password': 'UnUserp',
+        'submit': 'login'
+    };
+
+    var formBody = [];
+    for (var property in details) {
+        var encodedKey = encodeURIComponent(property);
+        var encodedValue = encodeURIComponent(details[property]);
+        formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+    const url = makeRestUrl("/login")
+    console.log('POST LOGIN TO',url)
+    const data = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: formBody
+    })
+    console.log('POST FORM RETRUNS DATA', data)
+}
+postLoginForm()
