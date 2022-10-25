@@ -13,11 +13,11 @@ import LocalStrategy from 'passport-local'
 import fs from 'fs'
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url';
+const __dirname = dirname(path.join(fileURLToPath(import.meta.url), '..', '..'));
 
 import fastifyMultipart from '@fastify/multipart'
 import fastifyFormBody from '@fastify/formbody'
 import fastifyCookie from '@fastify/cookie'
-const __dirname = dirname(path.join(fileURLToPath(import.meta.url), '..', '..'));
 const clientSends = []
 
 const state = { t: 0, position: [0, 0] }
