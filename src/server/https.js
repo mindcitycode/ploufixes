@@ -1,4 +1,3 @@
-// mkcert -install -cert-file ./fastify.cert -key-file ./fastify.key localhost
 const HTML = (title = "oui", body = '<h1>OUI</h1>') => `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -34,8 +33,6 @@ const LOGIN_FORM = (username) => HTML('login', `
 
 `)
 //////////////////////////////////////////////////////////////////////////////////////////////////
-import fastifyMultipart from '@fastify/multipart'
-import fastifyFormBody from '@fastify/formbody'
 
 
 /////////////////////////////////////////////////
@@ -50,6 +47,7 @@ const server = fastify({
     logger: true,
     http2: true,
     https: {
+        // mkcert -install -cert-file ./fastify.cert -key-file ./fastify.key localhost
         allowHTTP1: true, // fallback support for HTTP1
         key: fs.readFileSync(path.join(__dirname, 'https', 'fastify.key')),
         cert: fs.readFileSync(path.join(__dirname, 'https', 'fastify.cert'))
@@ -74,7 +72,6 @@ await server.register(fastifySession, {
         // secure : false 
     },
 })
-
 // initialize @fastify/passport and connect it to the secure-session storage.
 await server.register(fastifyPassport.initialize())
 await server.register(fastifyPassport.secureSession())
@@ -120,6 +117,9 @@ server.get(
         return LOGOUT_FORM(req.user?.username)
     }
 )
+
+import fastifyMultipart from '@fastify/multipart'
+import fastifyFormBody from '@fastify/formbody'
 
 await server.register(fastifyFormBody)
 await server.register(fastifyMultipart)
