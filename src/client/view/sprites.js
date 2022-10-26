@@ -15,7 +15,7 @@ export const loadSpritesheet = async (atlasName) => {
     return { atlasData, spritesheet }
 }
 
-export const loadSprites = async (app) => {
+export const testSpritesheet = async (app) => {
 
     const { atlasData, spritesheet } = await loadSpritesheet('combined.json')
     let x = 0

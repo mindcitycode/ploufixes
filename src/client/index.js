@@ -1,7 +1,9 @@
 import './view/style.css'
+import * as PIXI from 'pixi.js'
+
 console.log('HERE I AM')
 console.log('IIIIIIIIIIIC')
-import * as PIXI from 'pixi.js'
+
 const app = new PIXI.Application({ width: 640, height: 1200 });
 document.body.appendChild(app.view);
 const sprite = PIXI.Sprite.from('assets/hands.png');
@@ -10,8 +12,8 @@ sprite.tint = 0xff0000
 const sprite2 = PIXI.Sprite.from('assets/hands.png');
 //app.stage.addChild(sprite2);
 
-import { loadSprites } from './view/sprites.js'
-loadSprites(app)
+import { testSpritesheet } from './view/sprites.js'
+testSpritesheet(app)
 
 import { processGameUpdate, getCurrentState } from './state.js'
 import { makeWsUrl } from './network.js'
