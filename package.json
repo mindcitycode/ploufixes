@@ -21,6 +21,7 @@
     "@fastify/session": "^10.0.2",
     "@fastify/static": "^6.5.0",
     "@fastify/websocket": "^7.1.0",
+    "bitecs": "^0.3.38",
     "fastify": "^4.9.2",
     "passport-local": "^1.0.0",
     "pixi.js": "^6.5.7",
