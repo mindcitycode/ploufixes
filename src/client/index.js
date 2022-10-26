@@ -1,10 +1,7 @@
 import './view/style.css'
 import * as PIXI from 'pixi.js'
 
-console.log('HERE I AM')
-console.log('IIIIIIIIIIIC')
-
-const app = new PIXI.Application({ width: 640, height: 1200 });
+const app = new PIXI.Application({ width: 640, height: 640 });
 document.body.appendChild(app.view);
 const sprite = PIXI.Sprite.from('assets/hands.png');
 //app.stage.addChild(sprite);
