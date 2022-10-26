@@ -53,6 +53,24 @@ export const loadTilemap = async (tilemapName, app) => {
 
     console.log('tilemap spritesheets', spritesheets)
 
+    const tilemapContainer = new PIXI.Container()
+    tilemapContainer.zIndex = 0
+    app.stage.addChild(tilemapContainer)
+    app.ticker.add(() => {
+        const t = Date.now()
+        const a = t / 1000
+        const target = {
+            x: tilemapContainer.x = - Math.abs(Math.cos(a) * 100),
+            y: tilemapContainer.x = - Math.abs(Math.cos(a) * 100)
+        }
+        const diff = {
+            x: target.x - tilemapContainer.x,
+            y: target.y - tilemapContainer.y
+        }
+        tilemapContainer.x += Math.sign(diff.x)
+        tilemapContainer.y += Math.sign(diff.y)
+    })
+
     for (let layerIndex = 0; layerIndex < tilemapData.layers.length; layerIndex++) {
         const layer = tilemapData.layers[layerIndex]
         for (let i = 0; i < layer.width; i++) {
@@ -62,13 +80,14 @@ export const loadTilemap = async (tilemapName, app) => {
                 const gid = v & ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG | ROTATED_HEXAGONAL_120_FLAG);
                 const x = i * tilemapData.tilewidth
                 const y = j * tilemapData.tileheight
-                        //    const asprite = new PIXI.AnimatedSprite(spritesheets[0].animations[gid])
+                //    const asprite = new PIXI.AnimatedSprite(spritesheets[0].animations[gid])
                 //const asprite = new PIXI.TilingSprite(spritesheets[0].textures[gid])
                 const asprite = new PIXI.Sprite(spritesheets[0].textures[gid])
-                asprite.zOrder = -1
+                //asprite.zIndex = 0
                 asprite.x = x
                 asprite.y = y
-                app.stage.addChild(asprite)
+                tilemapContainer.addChild(asprite)
+
             }
         }
     }

@@ -34,7 +34,7 @@ export const testSpritesheet = async (app) => {
             x = 0
             y += 32
         }
-
+        asprite.zIndex = 100
         app.stage.addChild(asprite)
         asprite.gotoAndPlay(0)
 
