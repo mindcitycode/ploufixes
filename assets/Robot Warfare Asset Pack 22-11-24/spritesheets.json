@@ -1,0 +1,4018 @@
+{
+  "Effects": {
+    "big-explosion": {
+      "_mkframes": {
+        "hcount": 11
+      },
+      "frames": {
+        "big-explosion-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-explosion-2": {
+          "frame": {
+            "x": 32,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-explosion-3": {
+          "frame": {
+            "x": 64,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-explosion-4": {
+          "frame": {
+            "x": 96,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-explosion-5": {
+          "frame": {
+            "x": 128,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-explosion-6": {
+          "frame": {
+            "x": 160,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-explosion-7": {
+          "frame": {
+            "x": 192,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-explosion-8": {
+          "frame": {
+            "x": 224,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-explosion-9": {
+          "frame": {
+            "x": 256,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-explosion-10": {
+          "frame": {
+            "x": 288,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-explosion-11": {
+          "frame": {
+            "x": 320,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        }
+      },
+      "meta": {
+        "image": "Effects/big-explosion.png",
+        "size": {
+          "w": 352,
+          "h": 32
+        }
+      },
+      "animations": {
+        "big-explosion": [
+          "big-explosion-1",
+          "big-explosion-2",
+          "big-explosion-3",
+          "big-explosion-4",
+          "big-explosion-5",
+          "big-explosion-6",
+          "big-explosion-7",
+          "big-explosion-8",
+          "big-explosion-9",
+          "big-explosion-10",
+          "big-explosion-11"
+        ]
+      }
+    },
+    "big-fragments": {
+      "_mkframes": {
+        "hcount": 6
+      },
+      "frames": {
+        "big-fragments-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-fragments-2": {
+          "frame": {
+            "x": 32,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-fragments-3": {
+          "frame": {
+            "x": 64,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-fragments-4": {
+          "frame": {
+            "x": 96,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-fragments-5": {
+          "frame": {
+            "x": 128,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        },
+        "big-fragments-6": {
+          "frame": {
+            "x": 160,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          }
+        }
+      },
+      "meta": {
+        "image": "Effects/big-fragments.png",
+        "size": {
+          "w": 192,
+          "h": 32
+        }
+      },
+      "animations": {
+        "big-fragments": [
+          "big-fragments-1",
+          "big-fragments-2",
+          "big-fragments-3",
+          "big-fragments-4",
+          "big-fragments-5",
+          "big-fragments-6"
+        ]
+      }
+    },
+    "bullet-impacts": {
+      "_mkframes": {
+        "hcount": 10
+      },
+      "frames": {
+        "bullet-impacts-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "bullet-impacts-2": {
+          "frame": {
+            "x": 8,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "bullet-impacts-3": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "bullet-impacts-4": {
+          "frame": {
+            "x": 24,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "bullet-impacts-5": {
+          "frame": {
+            "x": 32,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "bullet-impacts-6": {
+          "frame": {
+            "x": 40,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "bullet-impacts-7": {
+          "frame": {
+            "x": 48,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "bullet-impacts-8": {
+          "frame": {
+            "x": 56,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "bullet-impacts-9": {
+          "frame": {
+            "x": 64,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "bullet-impacts-10": {
+          "frame": {
+            "x": 72,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        }
+      },
+      "meta": {
+        "image": "Effects/bullet-impacts.png",
+        "size": {
+          "w": 80,
+          "h": 8
+        }
+      },
+      "animations": {
+        "bullet-impacts": [
+          "bullet-impacts-1",
+          "bullet-impacts-2",
+          "bullet-impacts-3",
+          "bullet-impacts-4",
+          "bullet-impacts-5",
+          "bullet-impacts-6",
+          "bullet-impacts-7",
+          "bullet-impacts-8",
+          "bullet-impacts-9",
+          "bullet-impacts-10"
+        ]
+      }
+    },
+    "hit-sparks": {
+      "_mkframes": {
+        "hcount": 6
+      },
+      "frames": {
+        "hit-sparks-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "hit-sparks-2": {
+          "frame": {
+            "x": 8,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "hit-sparks-3": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "hit-sparks-4": {
+          "frame": {
+            "x": 24,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "hit-sparks-5": {
+          "frame": {
+            "x": 32,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "hit-sparks-6": {
+          "frame": {
+            "x": 40,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        }
+      },
+      "meta": {
+        "image": "Effects/hit-sparks.png",
+        "size": {
+          "w": 48,
+          "h": 8
+        }
+      },
+      "animations": {
+        "hit-sparks": [
+          "hit-sparks-1",
+          "hit-sparks-2",
+          "hit-sparks-3",
+          "hit-sparks-4",
+          "hit-sparks-5",
+          "hit-sparks-6"
+        ]
+      }
+    },
+    "hit-spatters": {
+      "_mkframes": {
+        "hcount": 6
+      },
+      "frames": {
+        "hit-spatters-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "hit-spatters-2": {
+          "frame": {
+            "x": 8,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "hit-spatters-3": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "hit-spatters-4": {
+          "frame": {
+            "x": 24,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "hit-spatters-5": {
+          "frame": {
+            "x": 32,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "hit-spatters-6": {
+          "frame": {
+            "x": 40,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        }
+      },
+      "meta": {
+        "image": "Effects/hit-spatters.png",
+        "size": {
+          "w": 48,
+          "h": 8
+        }
+      },
+      "animations": {
+        "hit-spatters": [
+          "hit-spatters-1",
+          "hit-spatters-2",
+          "hit-spatters-3",
+          "hit-spatters-4",
+          "hit-spatters-5",
+          "hit-spatters-6"
+        ]
+      }
+    },
+    "laser-flash": {
+      "_mkframes": {
+        "hcount": 3
+      },
+      "frames": {
+        "laser-flash-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "laser-flash-2": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "laser-flash-3": {
+          "frame": {
+            "x": 32,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        }
+      },
+      "meta": {
+        "image": "Effects/laser-flash.png",
+        "size": {
+          "w": 48,
+          "h": 16
+        }
+      },
+      "animations": {
+        "laser-flash": [
+          "laser-flash-1",
+          "laser-flash-2",
+          "laser-flash-3"
+        ]
+      }
+    },
+    "muzzle-flashes": {
+      "_mkframes": {
+        "hcount": 4
+      },
+      "frames": {
+        "muzzle-flashes-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "muzzle-flashes-2": {
+          "frame": {
+            "x": 8,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "muzzle-flashes-3": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "muzzle-flashes-4": {
+          "frame": {
+            "x": 24,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        }
+      },
+      "meta": {
+        "image": "Effects/muzzle-flashes.png",
+        "size": {
+          "w": 32,
+          "h": 8
+        }
+      },
+      "animations": {
+        "muzzle-flashes": [
+          "muzzle-flashes-1",
+          "muzzle-flashes-2",
+          "muzzle-flashes-3",
+          "muzzle-flashes-4"
+        ]
+      }
+    },
+    "small-explosion": {
+      "_mkframes": {
+        "hcount": 9
+      },
+      "frames": {
+        "small-explosion-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "small-explosion-2": {
+          "frame": {
+            "x": 24,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "small-explosion-3": {
+          "frame": {
+            "x": 48,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "small-explosion-4": {
+          "frame": {
+            "x": 72,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "small-explosion-5": {
+          "frame": {
+            "x": 96,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "small-explosion-6": {
+          "frame": {
+            "x": 120,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "small-explosion-7": {
+          "frame": {
+            "x": 144,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "small-explosion-8": {
+          "frame": {
+            "x": 168,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "small-explosion-9": {
+          "frame": {
+            "x": 192,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        }
+      },
+      "meta": {
+        "image": "Effects/small-explosion.png",
+        "size": {
+          "w": 216,
+          "h": 24
+        }
+      },
+      "animations": {
+        "small-explosion": [
+          "small-explosion-1",
+          "small-explosion-2",
+          "small-explosion-3",
+          "small-explosion-4",
+          "small-explosion-5",
+          "small-explosion-6",
+          "small-explosion-7",
+          "small-explosion-8",
+          "small-explosion-9"
+        ]
+      }
+    },
+    "small-fragments": {
+      "_mkframes": {
+        "hcount": 6
+      },
+      "frames": {
+        "small-fragments-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "small-fragments-2": {
+          "frame": {
+            "x": 24,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "small-fragments-3": {
+          "frame": {
+            "x": 48,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "small-fragments-4": {
+          "frame": {
+            "x": 72,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "small-fragments-5": {
+          "frame": {
+            "x": 96,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "small-fragments-6": {
+          "frame": {
+            "x": 120,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        }
+      },
+      "meta": {
+        "image": "Effects/small-fragments.png",
+        "size": {
+          "w": 144,
+          "h": 24
+        }
+      },
+      "animations": {
+        "small-fragments": [
+          "small-fragments-1",
+          "small-fragments-2",
+          "small-fragments-3",
+          "small-fragments-4",
+          "small-fragments-5",
+          "small-fragments-6"
+        ]
+      }
+    },
+    "smoke": {
+      "frames": {
+        "smoke-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "smoke-2": {
+          "frame": {
+            "x": 8,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "smoke-3": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "smoke-4": {
+          "frame": {
+            "x": 24,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "smoke-5": {
+          "frame": {
+            "x": 32,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "smoke-6": {
+          "frame": {
+            "x": 40,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "smoke-7": {
+          "frame": {
+            "x": 48,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "smoke-8": {
+          "frame": {
+            "x": 56,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        }
+      },
+      "_mkframes": {
+        "hcount": 8
+      },
+      "meta": {
+        "image": "Effects/smoke.png",
+        "size": {
+          "w": 64,
+          "h": 8
+        }
+      },
+      "animations": {
+        "smoke": [
+          "smoke-1",
+          "smoke-2",
+          "smoke-3",
+          "smoke-4",
+          "smoke-5",
+          "smoke-6",
+          "smoke-7",
+          "smoke-8"
+        ]
+      }
+    }
+  },
+  "Obstacles and Objects": {
+    "obstacles-and-objects": {
+      "frames": {},
+      "meta": {
+        "image": "Obstacles and Objects/obstacles-and-objects.png",
+        "size": {
+          "w": 256,
+          "h": 256
+        }
+      },
+      "animations": {}
+    }
+  },
+  "Projectiles": {
+    "bullets+plasma": {
+      "_mkframes": {
+        "hcount": 3
+      },
+      "frames": {
+        "bullets+plasma-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "bullets+plasma-2": {
+          "frame": {
+            "x": 8,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "bullets+plasma-3": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        }
+      },
+      "meta": {
+        "image": "Projectiles/bullets+plasma.png",
+        "size": {
+          "w": 24,
+          "h": 8
+        }
+      },
+      "animations": {
+        "bullets+plasma": [
+          "bullets+plasma-1",
+          "bullets+plasma-2",
+          "bullets+plasma-3"
+        ]
+      }
+    },
+    "Grenade": {
+      "_mkframes": {
+        "hcount": 8
+      },
+      "frames": {
+        "Grenade-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "Grenade-2": {
+          "frame": {
+            "x": 8,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "Grenade-3": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "Grenade-4": {
+          "frame": {
+            "x": 24,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "Grenade-5": {
+          "frame": {
+            "x": 32,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "Grenade-6": {
+          "frame": {
+            "x": 40,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "Grenade-7": {
+          "frame": {
+            "x": 48,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        },
+        "Grenade-8": {
+          "frame": {
+            "x": 56,
+            "y": 0,
+            "w": 8,
+            "h": 8
+          }
+        }
+      },
+      "meta": {
+        "image": "Projectiles/Grenade.png",
+        "size": {
+          "w": 64,
+          "h": 8
+        }
+      },
+      "animations": {
+        "Grenade": [
+          "Grenade-1",
+          "Grenade-2",
+          "Grenade-3",
+          "Grenade-4",
+          "Grenade-5",
+          "Grenade-6",
+          "Grenade-7",
+          "Grenade-8"
+        ]
+      }
+    },
+    "RPG-round": {
+      "_mkframes": {
+        "hcount": 3
+      },
+      "frames": {
+        "RPG-round-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RPG-round-2": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RPG-round-3": {
+          "frame": {
+            "x": 32,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        }
+      },
+      "meta": {
+        "image": "Projectiles/RPG-round.png",
+        "size": {
+          "w": 48,
+          "h": 16
+        }
+      },
+      "animations": {
+        "RPG-round": [
+          "RPG-round-1",
+          "RPG-round-2",
+          "RPG-round-3"
+        ]
+      }
+    }
+  },
+  "Robots": {
+    "Centipede": {
+      "_mkanims": [
+        {
+          "n": "head-r0",
+          "l": 4
+        },
+        {
+          "n": "head-r1",
+          "l": 4
+        },
+        {
+          "n": "head-r2",
+          "l": 4
+        },
+        {
+          "n": "head-r3",
+          "l": 4
+        },
+        {
+          "n": "head-r4",
+          "l": 4
+        },
+        {
+          "n": "head-r5",
+          "l": 4
+        },
+        {
+          "n": "head-r6",
+          "l": 4
+        },
+        {
+          "n": "head-r7",
+          "l": 4
+        },
+        {
+          "n": "body-r0",
+          "l": 4
+        },
+        {
+          "n": "body-r1",
+          "l": 4
+        },
+        {
+          "n": "body-r2",
+          "l": 4
+        },
+        {
+          "n": "body-r3",
+          "l": 4
+        },
+        {
+          "n": "body-r4",
+          "l": 4
+        },
+        {
+          "n": "body-r5",
+          "l": 4
+        },
+        {
+          "n": "body-r6",
+          "l": 4
+        },
+        {
+          "n": "body-r7",
+          "l": 4
+        },
+        {
+          "n": "leg",
+          "l": 8
+        },
+        {
+          "n": "splash",
+          "l": 3
+        }
+      ],
+      "_mkframes": {
+        "hcount": 8,
+        "vcount": 18
+      },
+      "frames": {
+        "Centipede-head-r0-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r0-2": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r0-3": {
+          "frame": {
+            "x": 32,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r0-4": {
+          "frame": {
+            "x": 48,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r1-1": {
+          "frame": {
+            "x": 0,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r1-2": {
+          "frame": {
+            "x": 16,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r1-3": {
+          "frame": {
+            "x": 32,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r1-4": {
+          "frame": {
+            "x": 48,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r2-1": {
+          "frame": {
+            "x": 0,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r2-2": {
+          "frame": {
+            "x": 16,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r2-3": {
+          "frame": {
+            "x": 32,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r2-4": {
+          "frame": {
+            "x": 48,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r3-1": {
+          "frame": {
+            "x": 0,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r3-2": {
+          "frame": {
+            "x": 16,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r3-3": {
+          "frame": {
+            "x": 32,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r3-4": {
+          "frame": {
+            "x": 48,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r4-1": {
+          "frame": {
+            "x": 0,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r4-2": {
+          "frame": {
+            "x": 16,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r4-3": {
+          "frame": {
+            "x": 32,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r4-4": {
+          "frame": {
+            "x": 48,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r5-1": {
+          "frame": {
+            "x": 0,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r5-2": {
+          "frame": {
+            "x": 16,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r5-3": {
+          "frame": {
+            "x": 32,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r5-4": {
+          "frame": {
+            "x": 48,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r6-1": {
+          "frame": {
+            "x": 0,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r6-2": {
+          "frame": {
+            "x": 16,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r6-3": {
+          "frame": {
+            "x": 32,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r6-4": {
+          "frame": {
+            "x": 48,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r7-1": {
+          "frame": {
+            "x": 0,
+            "y": 112,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r7-2": {
+          "frame": {
+            "x": 16,
+            "y": 112,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r7-3": {
+          "frame": {
+            "x": 32,
+            "y": 112,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-head-r7-4": {
+          "frame": {
+            "x": 48,
+            "y": 112,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r0-1": {
+          "frame": {
+            "x": 0,
+            "y": 128,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r0-2": {
+          "frame": {
+            "x": 16,
+            "y": 128,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r0-3": {
+          "frame": {
+            "x": 32,
+            "y": 128,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r0-4": {
+          "frame": {
+            "x": 48,
+            "y": 128,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r1-1": {
+          "frame": {
+            "x": 0,
+            "y": 144,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r1-2": {
+          "frame": {
+            "x": 16,
+            "y": 144,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r1-3": {
+          "frame": {
+            "x": 32,
+            "y": 144,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r1-4": {
+          "frame": {
+            "x": 48,
+            "y": 144,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r2-1": {
+          "frame": {
+            "x": 0,
+            "y": 160,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r2-2": {
+          "frame": {
+            "x": 16,
+            "y": 160,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r2-3": {
+          "frame": {
+            "x": 32,
+            "y": 160,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r2-4": {
+          "frame": {
+            "x": 48,
+            "y": 160,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r3-1": {
+          "frame": {
+            "x": 0,
+            "y": 176,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r3-2": {
+          "frame": {
+            "x": 16,
+            "y": 176,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r3-3": {
+          "frame": {
+            "x": 32,
+            "y": 176,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r3-4": {
+          "frame": {
+            "x": 48,
+            "y": 176,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r4-1": {
+          "frame": {
+            "x": 0,
+            "y": 192,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r4-2": {
+          "frame": {
+            "x": 16,
+            "y": 192,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r4-3": {
+          "frame": {
+            "x": 32,
+            "y": 192,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r4-4": {
+          "frame": {
+            "x": 48,
+            "y": 192,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r5-1": {
+          "frame": {
+            "x": 0,
+            "y": 208,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r5-2": {
+          "frame": {
+            "x": 16,
+            "y": 208,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r5-3": {
+          "frame": {
+            "x": 32,
+            "y": 208,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r5-4": {
+          "frame": {
+            "x": 48,
+            "y": 208,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r6-1": {
+          "frame": {
+            "x": 0,
+            "y": 224,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r6-2": {
+          "frame": {
+            "x": 16,
+            "y": 224,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r6-3": {
+          "frame": {
+            "x": 32,
+            "y": 224,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r6-4": {
+          "frame": {
+            "x": 48,
+            "y": 224,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r7-1": {
+          "frame": {
+            "x": 0,
+            "y": 240,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r7-2": {
+          "frame": {
+            "x": 16,
+            "y": 240,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r7-3": {
+          "frame": {
+            "x": 32,
+            "y": 240,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-body-r7-4": {
+          "frame": {
+            "x": 48,
+            "y": 240,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-leg-1": {
+          "frame": {
+            "x": 0,
+            "y": 256,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-leg-2": {
+          "frame": {
+            "x": 16,
+            "y": 256,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-leg-3": {
+          "frame": {
+            "x": 32,
+            "y": 256,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-leg-4": {
+          "frame": {
+            "x": 48,
+            "y": 256,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-leg-5": {
+          "frame": {
+            "x": 64,
+            "y": 256,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-leg-6": {
+          "frame": {
+            "x": 80,
+            "y": 256,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-leg-7": {
+          "frame": {
+            "x": 96,
+            "y": 256,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-leg-8": {
+          "frame": {
+            "x": 112,
+            "y": 256,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-splash-1": {
+          "frame": {
+            "x": 0,
+            "y": 272,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-splash-2": {
+          "frame": {
+            "x": 16,
+            "y": 272,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Centipede-splash-3": {
+          "frame": {
+            "x": 32,
+            "y": 272,
+            "w": 16,
+            "h": 16
+          }
+        }
+      },
+      "meta": {
+        "image": "Robots/Centipede.png",
+        "size": {
+          "w": 128,
+          "h": 288
+        }
+      },
+      "animations": {
+        "head-r0": [
+          "Centipede-head-r0-1",
+          "Centipede-head-r0-2",
+          "Centipede-head-r0-3",
+          "Centipede-head-r0-4"
+        ],
+        "head-r1": [
+          "Centipede-head-r1-1",
+          "Centipede-head-r1-2",
+          "Centipede-head-r1-3",
+          "Centipede-head-r1-4"
+        ],
+        "head-r2": [
+          "Centipede-head-r2-1",
+          "Centipede-head-r2-2",
+          "Centipede-head-r2-3",
+          "Centipede-head-r2-4"
+        ],
+        "head-r3": [
+          "Centipede-head-r3-1",
+          "Centipede-head-r3-2",
+          "Centipede-head-r3-3",
+          "Centipede-head-r3-4"
+        ],
+        "head-r4": [
+          "Centipede-head-r4-1",
+          "Centipede-head-r4-2",
+          "Centipede-head-r4-3",
+          "Centipede-head-r4-4"
+        ],
+        "head-r5": [
+          "Centipede-head-r5-1",
+          "Centipede-head-r5-2",
+          "Centipede-head-r5-3",
+          "Centipede-head-r5-4"
+        ],
+        "head-r6": [
+          "Centipede-head-r6-1",
+          "Centipede-head-r6-2",
+          "Centipede-head-r6-3",
+          "Centipede-head-r6-4"
+        ],
+        "head-r7": [
+          "Centipede-head-r7-1",
+          "Centipede-head-r7-2",
+          "Centipede-head-r7-3",
+          "Centipede-head-r7-4"
+        ],
+        "body-r0": [
+          "Centipede-body-r0-1",
+          "Centipede-body-r0-2",
+          "Centipede-body-r0-3",
+          "Centipede-body-r0-4"
+        ],
+        "body-r1": [
+          "Centipede-body-r1-1",
+          "Centipede-body-r1-2",
+          "Centipede-body-r1-3",
+          "Centipede-body-r1-4"
+        ],
+        "body-r2": [
+          "Centipede-body-r2-1",
+          "Centipede-body-r2-2",
+          "Centipede-body-r2-3",
+          "Centipede-body-r2-4"
+        ],
+        "body-r3": [
+          "Centipede-body-r3-1",
+          "Centipede-body-r3-2",
+          "Centipede-body-r3-3",
+          "Centipede-body-r3-4"
+        ],
+        "body-r4": [
+          "Centipede-body-r4-1",
+          "Centipede-body-r4-2",
+          "Centipede-body-r4-3",
+          "Centipede-body-r4-4"
+        ],
+        "body-r5": [
+          "Centipede-body-r5-1",
+          "Centipede-body-r5-2",
+          "Centipede-body-r5-3",
+          "Centipede-body-r5-4"
+        ],
+        "body-r6": [
+          "Centipede-body-r6-1",
+          "Centipede-body-r6-2",
+          "Centipede-body-r6-3",
+          "Centipede-body-r6-4"
+        ],
+        "body-r7": [
+          "Centipede-body-r7-1",
+          "Centipede-body-r7-2",
+          "Centipede-body-r7-3",
+          "Centipede-body-r7-4"
+        ],
+        "leg": [
+          "Centipede-leg-1",
+          "Centipede-leg-2",
+          "Centipede-leg-3",
+          "Centipede-leg-4",
+          "Centipede-leg-5",
+          "Centipede-leg-6",
+          "Centipede-leg-7",
+          "Centipede-leg-8"
+        ],
+        "splash": [
+          "Centipede-splash-1",
+          "Centipede-splash-2",
+          "Centipede-splash-3"
+        ]
+      }
+    },
+    "Hornet": {
+      "_mkanims": [
+        {
+          "n": "neutral-hover"
+        },
+        {
+          "n": "firing hover"
+        }
+      ],
+      "_mkframes": {
+        "hcount": 8,
+        "vcount": 2
+      },
+      "frames": {
+        "Hornet-neutral-hover-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-neutral-hover-2": {
+          "frame": {
+            "x": 24,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-neutral-hover-3": {
+          "frame": {
+            "x": 48,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-neutral-hover-4": {
+          "frame": {
+            "x": 72,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-neutral-hover-5": {
+          "frame": {
+            "x": 96,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-neutral-hover-6": {
+          "frame": {
+            "x": 120,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-neutral-hover-7": {
+          "frame": {
+            "x": 144,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-neutral-hover-8": {
+          "frame": {
+            "x": 168,
+            "y": 0,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-firing hover-1": {
+          "frame": {
+            "x": 0,
+            "y": 24,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-firing hover-2": {
+          "frame": {
+            "x": 24,
+            "y": 24,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-firing hover-3": {
+          "frame": {
+            "x": 48,
+            "y": 24,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-firing hover-4": {
+          "frame": {
+            "x": 72,
+            "y": 24,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-firing hover-5": {
+          "frame": {
+            "x": 96,
+            "y": 24,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-firing hover-6": {
+          "frame": {
+            "x": 120,
+            "y": 24,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-firing hover-7": {
+          "frame": {
+            "x": 144,
+            "y": 24,
+            "w": 24,
+            "h": 24
+          }
+        },
+        "Hornet-firing hover-8": {
+          "frame": {
+            "x": 168,
+            "y": 24,
+            "w": 24,
+            "h": 24
+          }
+        }
+      },
+      "meta": {
+        "image": "Robots/Hornet.png",
+        "size": {
+          "w": 192,
+          "h": 48
+        }
+      },
+      "animations": {
+        "neutral-hover": [
+          "Hornet-neutral-hover-1",
+          "Hornet-neutral-hover-2",
+          "Hornet-neutral-hover-3",
+          "Hornet-neutral-hover-4",
+          "Hornet-neutral-hover-5",
+          "Hornet-neutral-hover-6",
+          "Hornet-neutral-hover-7",
+          "Hornet-neutral-hover-8"
+        ],
+        "firing hover": [
+          "Hornet-firing hover-1",
+          "Hornet-firing hover-2",
+          "Hornet-firing hover-3",
+          "Hornet-firing hover-4",
+          "Hornet-firing hover-5",
+          "Hornet-firing hover-6",
+          "Hornet-firing hover-7",
+          "Hornet-firing hover-8"
+        ]
+      }
+    },
+    "Scarab": {
+      "_mkanims": [
+        {
+          "l": 2,
+          "n": "idle"
+        },
+        {
+          "l": 4,
+          "n": "walk"
+        },
+        {
+          "l": 2,
+          "n": "firing"
+        },
+        {
+          "l": 5,
+          "n": "melee"
+        },
+        {
+          "l": 1,
+          "n": "destroyed"
+        }
+      ],
+      "_mkframes": {
+        "hcount": 5,
+        "vcount": 5
+      },
+      "frames": {
+        "Scarab-idle-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Scarab-idle-2": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Scarab-walk-1": {
+          "frame": {
+            "x": 0,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Scarab-walk-2": {
+          "frame": {
+            "x": 16,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Scarab-walk-3": {
+          "frame": {
+            "x": 32,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Scarab-walk-4": {
+          "frame": {
+            "x": 48,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Scarab-firing-1": {
+          "frame": {
+            "x": 0,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Scarab-firing-2": {
+          "frame": {
+            "x": 16,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Scarab-melee-1": {
+          "frame": {
+            "x": 0,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Scarab-melee-2": {
+          "frame": {
+            "x": 16,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Scarab-melee-3": {
+          "frame": {
+            "x": 32,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Scarab-melee-4": {
+          "frame": {
+            "x": 48,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Scarab-melee-5": {
+          "frame": {
+            "x": 64,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Scarab-destroyed": {
+          "frame": {
+            "x": 0,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        }
+      },
+      "meta": {
+        "image": "Robots/Scarab.png",
+        "size": {
+          "w": 80,
+          "h": 80
+        }
+      },
+      "animations": {
+        "idle": [
+          "Scarab-idle-1",
+          "Scarab-idle-2"
+        ],
+        "walk": [
+          "Scarab-walk-1",
+          "Scarab-walk-2",
+          "Scarab-walk-3",
+          "Scarab-walk-4"
+        ],
+        "firing": [
+          "Scarab-firing-1",
+          "Scarab-firing-2"
+        ],
+        "melee": [
+          "Scarab-melee-1",
+          "Scarab-melee-2",
+          "Scarab-melee-3",
+          "Scarab-melee-4",
+          "Scarab-melee-5"
+        ],
+        "destroyed": [
+          "Scarab-destroyed"
+        ]
+      }
+    },
+    "Spider": {
+      "_mkanims": [
+        {
+          "l": 2,
+          "n": "idle"
+        },
+        {
+          "l": 4,
+          "n": "walk"
+        },
+        {
+          "l": 2,
+          "n": "firing"
+        },
+        {
+          "l": 5,
+          "n": "melee"
+        },
+        {
+          "l": 1,
+          "n": "destroyed"
+        }
+      ],
+      "_mkframes": {
+        "hcount": 5,
+        "vcount": 5
+      },
+      "frames": {
+        "Spider-idle-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Spider-idle-2": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Spider-walk-1": {
+          "frame": {
+            "x": 0,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Spider-walk-2": {
+          "frame": {
+            "x": 16,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Spider-walk-3": {
+          "frame": {
+            "x": 32,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Spider-walk-4": {
+          "frame": {
+            "x": 48,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Spider-firing-1": {
+          "frame": {
+            "x": 0,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Spider-firing-2": {
+          "frame": {
+            "x": 16,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Spider-melee-1": {
+          "frame": {
+            "x": 0,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Spider-melee-2": {
+          "frame": {
+            "x": 16,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Spider-melee-3": {
+          "frame": {
+            "x": 32,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Spider-melee-4": {
+          "frame": {
+            "x": 48,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Spider-melee-5": {
+          "frame": {
+            "x": 64,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Spider-destroyed": {
+          "frame": {
+            "x": 0,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        }
+      },
+      "meta": {
+        "image": "Robots/Spider.png",
+        "size": {
+          "w": 80,
+          "h": 80
+        }
+      },
+      "animations": {
+        "idle": [
+          "Spider-idle-1",
+          "Spider-idle-2"
+        ],
+        "walk": [
+          "Spider-walk-1",
+          "Spider-walk-2",
+          "Spider-walk-3",
+          "Spider-walk-4"
+        ],
+        "firing": [
+          "Spider-firing-1",
+          "Spider-firing-2"
+        ],
+        "melee": [
+          "Spider-melee-1",
+          "Spider-melee-2",
+          "Spider-melee-3",
+          "Spider-melee-4",
+          "Spider-melee-5"
+        ],
+        "destroyed": [
+          "Spider-destroyed"
+        ]
+      }
+    },
+    "Wasp": {
+      "_mkframes": {
+        "hcount": 8
+      },
+      "frames": {
+        "Wasp-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Wasp-2": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Wasp-3": {
+          "frame": {
+            "x": 32,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Wasp-4": {
+          "frame": {
+            "x": 48,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Wasp-5": {
+          "frame": {
+            "x": 64,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Wasp-6": {
+          "frame": {
+            "x": 80,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Wasp-7": {
+          "frame": {
+            "x": 96,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Wasp-8": {
+          "frame": {
+            "x": 112,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        }
+      },
+      "meta": {
+        "image": "Robots/Wasp.png",
+        "size": {
+          "w": 128,
+          "h": 16
+        }
+      },
+      "animations": {
+        "Wasp": [
+          "Wasp-1",
+          "Wasp-2",
+          "Wasp-3",
+          "Wasp-4",
+          "Wasp-5",
+          "Wasp-6",
+          "Wasp-7",
+          "Wasp-8"
+        ]
+      }
+    }
+  },
+  "Soldiers": {
+    "AntiTank-Class": {
+      "frames": {
+        "AntiTank-Class-idle-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-idle-2": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-walk-1": {
+          "frame": {
+            "x": 0,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-walk-2": {
+          "frame": {
+            "x": 16,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-crawl-1": {
+          "frame": {
+            "x": 0,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-crawl-2": {
+          "frame": {
+            "x": 16,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-fire-1": {
+          "frame": {
+            "x": 0,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-fire-2": {
+          "frame": {
+            "x": 16,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-hit-1": {
+          "frame": {
+            "x": 0,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-hit-2": {
+          "frame": {
+            "x": 16,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-hit-3": {
+          "frame": {
+            "x": 32,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-death-1": {
+          "frame": {
+            "x": 0,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-death-2": {
+          "frame": {
+            "x": 16,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-death-3": {
+          "frame": {
+            "x": 32,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-death-4": {
+          "frame": {
+            "x": 48,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-death-5": {
+          "frame": {
+            "x": 64,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-throw-1": {
+          "frame": {
+            "x": 0,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-throw-2": {
+          "frame": {
+            "x": 16,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "AntiTank-Class-throw-3": {
+          "frame": {
+            "x": 32,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        }
+      },
+      "meta": {
+        "image": "Soldiers/AntiTank-Class.png",
+        "size": {
+          "w": 80,
+          "h": 112
+        }
+      },
+      "animations": {
+        "idle": [
+          "AntiTank-Class-idle-1",
+          "AntiTank-Class-idle-2"
+        ],
+        "walk": [
+          "AntiTank-Class-walk-1",
+          "AntiTank-Class-walk-2"
+        ],
+        "crawl": [
+          "AntiTank-Class-crawl-1",
+          "AntiTank-Class-crawl-2"
+        ],
+        "fire": [
+          "AntiTank-Class-fire-1",
+          "AntiTank-Class-fire-2"
+        ],
+        "hit": [
+          "AntiTank-Class-hit-1",
+          "AntiTank-Class-hit-2",
+          "AntiTank-Class-hit-3"
+        ],
+        "death": [
+          "AntiTank-Class-death-1",
+          "AntiTank-Class-death-2",
+          "AntiTank-Class-death-3",
+          "AntiTank-Class-death-4",
+          "AntiTank-Class-death-5"
+        ],
+        "throw": [
+          "AntiTank-Class-throw-1",
+          "AntiTank-Class-throw-2",
+          "AntiTank-Class-throw-3"
+        ]
+      }
+    },
+    "Assault-Class": {
+      "frames": {
+        "Assault-Class-idle-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-idle-2": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-walk-1": {
+          "frame": {
+            "x": 0,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-walk-2": {
+          "frame": {
+            "x": 16,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-crawl-1": {
+          "frame": {
+            "x": 0,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-crawl-2": {
+          "frame": {
+            "x": 16,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-fire-1": {
+          "frame": {
+            "x": 0,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-fire-2": {
+          "frame": {
+            "x": 16,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-hit-1": {
+          "frame": {
+            "x": 0,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-hit-2": {
+          "frame": {
+            "x": 16,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-hit-3": {
+          "frame": {
+            "x": 32,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-death-1": {
+          "frame": {
+            "x": 0,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-death-2": {
+          "frame": {
+            "x": 16,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-death-3": {
+          "frame": {
+            "x": 32,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-death-4": {
+          "frame": {
+            "x": 48,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-death-5": {
+          "frame": {
+            "x": 64,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-throw-1": {
+          "frame": {
+            "x": 0,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-throw-2": {
+          "frame": {
+            "x": 16,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Assault-Class-throw-3": {
+          "frame": {
+            "x": 32,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        }
+      },
+      "meta": {
+        "image": "Soldiers/Assault-Class.png",
+        "size": {
+          "w": 80,
+          "h": 112
+        }
+      },
+      "animations": {
+        "idle": [
+          "Assault-Class-idle-1",
+          "Assault-Class-idle-2"
+        ],
+        "walk": [
+          "Assault-Class-walk-1",
+          "Assault-Class-walk-2"
+        ],
+        "crawl": [
+          "Assault-Class-crawl-1",
+          "Assault-Class-crawl-2"
+        ],
+        "fire": [
+          "Assault-Class-fire-1",
+          "Assault-Class-fire-2"
+        ],
+        "hit": [
+          "Assault-Class-hit-1",
+          "Assault-Class-hit-2",
+          "Assault-Class-hit-3"
+        ],
+        "death": [
+          "Assault-Class-death-1",
+          "Assault-Class-death-2",
+          "Assault-Class-death-3",
+          "Assault-Class-death-4",
+          "Assault-Class-death-5"
+        ],
+        "throw": [
+          "Assault-Class-throw-1",
+          "Assault-Class-throw-2",
+          "Assault-Class-throw-3"
+        ]
+      }
+    },
+    "Grenadier-Class": {
+      "frames": {
+        "Grenadier-Class-idle-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-idle-2": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-walk-1": {
+          "frame": {
+            "x": 0,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-walk-2": {
+          "frame": {
+            "x": 16,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-crawl-1": {
+          "frame": {
+            "x": 0,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-crawl-2": {
+          "frame": {
+            "x": 16,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-fire-1": {
+          "frame": {
+            "x": 0,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-fire-2": {
+          "frame": {
+            "x": 16,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-hit-1": {
+          "frame": {
+            "x": 0,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-hit-2": {
+          "frame": {
+            "x": 16,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-hit-3": {
+          "frame": {
+            "x": 32,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-death-1": {
+          "frame": {
+            "x": 0,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-death-2": {
+          "frame": {
+            "x": 16,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-death-3": {
+          "frame": {
+            "x": 32,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-death-4": {
+          "frame": {
+            "x": 48,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-death-5": {
+          "frame": {
+            "x": 64,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-throw-1": {
+          "frame": {
+            "x": 0,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-throw-2": {
+          "frame": {
+            "x": 16,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Grenadier-Class-throw-3": {
+          "frame": {
+            "x": 32,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        }
+      },
+      "meta": {
+        "image": "Soldiers/Grenadier-Class.png",
+        "size": {
+          "w": 80,
+          "h": 112
+        }
+      },
+      "animations": {
+        "idle": [
+          "Grenadier-Class-idle-1",
+          "Grenadier-Class-idle-2"
+        ],
+        "walk": [
+          "Grenadier-Class-walk-1",
+          "Grenadier-Class-walk-2"
+        ],
+        "crawl": [
+          "Grenadier-Class-crawl-1",
+          "Grenadier-Class-crawl-2"
+        ],
+        "fire": [
+          "Grenadier-Class-fire-1",
+          "Grenadier-Class-fire-2"
+        ],
+        "hit": [
+          "Grenadier-Class-hit-1",
+          "Grenadier-Class-hit-2",
+          "Grenadier-Class-hit-3"
+        ],
+        "death": [
+          "Grenadier-Class-death-1",
+          "Grenadier-Class-death-2",
+          "Grenadier-Class-death-3",
+          "Grenadier-Class-death-4",
+          "Grenadier-Class-death-5"
+        ],
+        "throw": [
+          "Grenadier-Class-throw-1",
+          "Grenadier-Class-throw-2",
+          "Grenadier-Class-throw-3"
+        ]
+      }
+    },
+    "MachineGunner-Class": {
+      "frames": {
+        "MachineGunner-Class-idle-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-idle-2": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-walk-1": {
+          "frame": {
+            "x": 0,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-walk-2": {
+          "frame": {
+            "x": 16,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-crawl-1": {
+          "frame": {
+            "x": 0,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-crawl-2": {
+          "frame": {
+            "x": 16,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-fire-1": {
+          "frame": {
+            "x": 0,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-fire-2": {
+          "frame": {
+            "x": 16,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-hit-1": {
+          "frame": {
+            "x": 0,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-hit-2": {
+          "frame": {
+            "x": 16,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-hit-3": {
+          "frame": {
+            "x": 32,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-death-1": {
+          "frame": {
+            "x": 0,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-death-2": {
+          "frame": {
+            "x": 16,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-death-3": {
+          "frame": {
+            "x": 32,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-death-4": {
+          "frame": {
+            "x": 48,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-death-5": {
+          "frame": {
+            "x": 64,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-throw-1": {
+          "frame": {
+            "x": 0,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-throw-2": {
+          "frame": {
+            "x": 16,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "MachineGunner-Class-throw-3": {
+          "frame": {
+            "x": 32,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        }
+      },
+      "meta": {
+        "image": "Soldiers/MachineGunner-Class.png",
+        "size": {
+          "w": 80,
+          "h": 112
+        }
+      },
+      "animations": {
+        "idle": [
+          "MachineGunner-Class-idle-1",
+          "MachineGunner-Class-idle-2"
+        ],
+        "walk": [
+          "MachineGunner-Class-walk-1",
+          "MachineGunner-Class-walk-2"
+        ],
+        "crawl": [
+          "MachineGunner-Class-crawl-1",
+          "MachineGunner-Class-crawl-2"
+        ],
+        "fire": [
+          "MachineGunner-Class-fire-1",
+          "MachineGunner-Class-fire-2"
+        ],
+        "hit": [
+          "MachineGunner-Class-hit-1",
+          "MachineGunner-Class-hit-2",
+          "MachineGunner-Class-hit-3"
+        ],
+        "death": [
+          "MachineGunner-Class-death-1",
+          "MachineGunner-Class-death-2",
+          "MachineGunner-Class-death-3",
+          "MachineGunner-Class-death-4",
+          "MachineGunner-Class-death-5"
+        ],
+        "throw": [
+          "MachineGunner-Class-throw-1",
+          "MachineGunner-Class-throw-2",
+          "MachineGunner-Class-throw-3"
+        ]
+      }
+    },
+    "RadioOperator-Class": {
+      "frames": {
+        "RadioOperator-Class-idle-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-idle-2": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-walk-1": {
+          "frame": {
+            "x": 0,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-walk-2": {
+          "frame": {
+            "x": 16,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-crawl-1": {
+          "frame": {
+            "x": 0,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-crawl-2": {
+          "frame": {
+            "x": 16,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-fire-1": {
+          "frame": {
+            "x": 0,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-fire-2": {
+          "frame": {
+            "x": 16,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-hit-1": {
+          "frame": {
+            "x": 0,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-hit-2": {
+          "frame": {
+            "x": 16,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-hit-3": {
+          "frame": {
+            "x": 32,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-death-1": {
+          "frame": {
+            "x": 0,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-death-2": {
+          "frame": {
+            "x": 16,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-death-3": {
+          "frame": {
+            "x": 32,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-death-4": {
+          "frame": {
+            "x": 48,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-death-5": {
+          "frame": {
+            "x": 64,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-throw-1": {
+          "frame": {
+            "x": 0,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-throw-2": {
+          "frame": {
+            "x": 16,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "RadioOperator-Class-throw-3": {
+          "frame": {
+            "x": 32,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        }
+      },
+      "meta": {
+        "image": "Soldiers/RadioOperator-Class.png",
+        "size": {
+          "w": 80,
+          "h": 112
+        }
+      },
+      "animations": {
+        "idle": [
+          "RadioOperator-Class-idle-1",
+          "RadioOperator-Class-idle-2"
+        ],
+        "walk": [
+          "RadioOperator-Class-walk-1",
+          "RadioOperator-Class-walk-2"
+        ],
+        "crawl": [
+          "RadioOperator-Class-crawl-1",
+          "RadioOperator-Class-crawl-2"
+        ],
+        "fire": [
+          "RadioOperator-Class-fire-1",
+          "RadioOperator-Class-fire-2"
+        ],
+        "hit": [
+          "RadioOperator-Class-hit-1",
+          "RadioOperator-Class-hit-2",
+          "RadioOperator-Class-hit-3"
+        ],
+        "death": [
+          "RadioOperator-Class-death-1",
+          "RadioOperator-Class-death-2",
+          "RadioOperator-Class-death-3",
+          "RadioOperator-Class-death-4",
+          "RadioOperator-Class-death-5"
+        ],
+        "throw": [
+          "RadioOperator-Class-throw-1",
+          "RadioOperator-Class-throw-2",
+          "RadioOperator-Class-throw-3"
+        ]
+      }
+    },
+    "Sniper-Class": {
+      "frames": {
+        "Sniper-Class-idle-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-idle-2": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-walk-1": {
+          "frame": {
+            "x": 0,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-walk-2": {
+          "frame": {
+            "x": 16,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-crawl-1": {
+          "frame": {
+            "x": 0,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-crawl-2": {
+          "frame": {
+            "x": 16,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-fire-1": {
+          "frame": {
+            "x": 0,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-fire-2": {
+          "frame": {
+            "x": 16,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-hit-1": {
+          "frame": {
+            "x": 0,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-hit-2": {
+          "frame": {
+            "x": 16,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-hit-3": {
+          "frame": {
+            "x": 32,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-death-1": {
+          "frame": {
+            "x": 0,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-death-2": {
+          "frame": {
+            "x": 16,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-death-3": {
+          "frame": {
+            "x": 32,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-death-4": {
+          "frame": {
+            "x": 48,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-death-5": {
+          "frame": {
+            "x": 64,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-throw-1": {
+          "frame": {
+            "x": 0,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-throw-2": {
+          "frame": {
+            "x": 16,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "Sniper-Class-throw-3": {
+          "frame": {
+            "x": 32,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        }
+      },
+      "meta": {
+        "image": "Soldiers/Sniper-Class.png",
+        "size": {
+          "w": 80,
+          "h": 112
+        }
+      },
+      "animations": {
+        "idle": [
+          "Sniper-Class-idle-1",
+          "Sniper-Class-idle-2"
+        ],
+        "walk": [
+          "Sniper-Class-walk-1",
+          "Sniper-Class-walk-2"
+        ],
+        "crawl": [
+          "Sniper-Class-crawl-1",
+          "Sniper-Class-crawl-2"
+        ],
+        "fire": [
+          "Sniper-Class-fire-1",
+          "Sniper-Class-fire-2"
+        ],
+        "hit": [
+          "Sniper-Class-hit-1",
+          "Sniper-Class-hit-2",
+          "Sniper-Class-hit-3"
+        ],
+        "death": [
+          "Sniper-Class-death-1",
+          "Sniper-Class-death-2",
+          "Sniper-Class-death-3",
+          "Sniper-Class-death-4",
+          "Sniper-Class-death-5"
+        ],
+        "throw": [
+          "Sniper-Class-throw-1",
+          "Sniper-Class-throw-2",
+          "Sniper-Class-throw-3"
+        ]
+      }
+    },
+    "SquadLeader": {
+      "frames": {
+        "SquadLeader-idle-1": {
+          "frame": {
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-idle-2": {
+          "frame": {
+            "x": 16,
+            "y": 0,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-walk-1": {
+          "frame": {
+            "x": 0,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-walk-2": {
+          "frame": {
+            "x": 16,
+            "y": 16,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-crawl-1": {
+          "frame": {
+            "x": 0,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-crawl-2": {
+          "frame": {
+            "x": 16,
+            "y": 32,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-fire-1": {
+          "frame": {
+            "x": 0,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-fire-2": {
+          "frame": {
+            "x": 16,
+            "y": 48,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-hit-1": {
+          "frame": {
+            "x": 0,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-hit-2": {
+          "frame": {
+            "x": 16,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-hit-3": {
+          "frame": {
+            "x": 32,
+            "y": 64,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-death-1": {
+          "frame": {
+            "x": 0,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-death-2": {
+          "frame": {
+            "x": 16,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-death-3": {
+          "frame": {
+            "x": 32,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-death-4": {
+          "frame": {
+            "x": 48,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-death-5": {
+          "frame": {
+            "x": 64,
+            "y": 80,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-throw-1": {
+          "frame": {
+            "x": 0,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-throw-2": {
+          "frame": {
+            "x": 16,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        },
+        "SquadLeader-throw-3": {
+          "frame": {
+            "x": 32,
+            "y": 96,
+            "w": 16,
+            "h": 16
+          }
+        }
+      },
+      "meta": {
+        "image": "Soldiers/SquadLeader.png",
+        "size": {
+          "w": 80,
+          "h": 112
+        }
+      },
+      "animations": {
+        "idle": [
+          "SquadLeader-idle-1",
+          "SquadLeader-idle-2"
+        ],
+        "walk": [
+          "SquadLeader-walk-1",
+          "SquadLeader-walk-2"
+        ],
+        "crawl": [
+          "SquadLeader-crawl-1",
+          "SquadLeader-crawl-2"
+        ],
+        "fire": [
+          "SquadLeader-fire-1",
+          "SquadLeader-fire-2"
+        ],
+        "hit": [
+          "SquadLeader-hit-1",
+          "SquadLeader-hit-2",
+          "SquadLeader-hit-3"
+        ],
+        "death": [
+          "SquadLeader-death-1",
+          "SquadLeader-death-2",
+          "SquadLeader-death-3",
+          "SquadLeader-death-4",
+          "SquadLeader-death-5"
+        ],
+        "throw": [
+          "SquadLeader-throw-1",
+          "SquadLeader-throw-2",
+          "SquadLeader-throw-3"
+        ]
+      }
+    }
+  },
+  "Tileset": {
+    "tileset_arranged": {
+      "frames": {},
+      "meta": {
+        "image": "Tileset/tileset_arranged.png",
+        "size": {
+          "w": 256,
+          "h": 256
+        }
+      },
+      "animations": {}
+    },
+    "tileset_compressed": {
+      "frames": {},
+      "meta": {
+        "image": "Tileset/tileset_compressed.png",
+        "size": {
+          "w": 256,
+          "h": 256
+        }
+      },
+      "animations": {}
+    }
+  },
+  "UI": {
+    "dotted-arrows": {
+      "frames": {},
+      "meta": {
+        "image": "UI/dotted-arrows.png",
+        "size": {
+          "w": 272,
+          "h": 96
+        }
+      },
+      "animations": {}
+    },
+    "health-bars": {
+      "frames": {},
+      "meta": {
+        "image": "UI/health-bars.png",
+        "size": {
+          "w": 144,
+          "h": 16
+        }
+      },
+      "animations": {}
+    },
+    "icon-set": {
+      "frames": {},
+      "meta": {
+        "image": "UI/icon-set.png",
+        "size": {
+          "w": 224,
+          "h": 80
+        }
+      },
+      "animations": {}
+    },
+    "mouse-pointer": {
+      "frames": {},
+      "meta": {
+        "image": "UI/mouse-pointer.png",
+        "size": {
+          "w": 16,
+          "h": 16
+        }
+      },
+      "animations": {}
+    },
+    "numbers": {
+      "frames": {},
+      "meta": {
+        "image": "UI/numbers.png",
+        "size": {
+          "w": 120,
+          "h": 40
+        }
+      },
+      "animations": {}
+    },
+    "objective-flag": {
+      "frames": {},
+      "meta": {
+        "image": "UI/objective-flag.png",
+        "size": {
+          "w": 384,
+          "h": 64
+        }
+      },
+      "animations": {}
+    },
+    "objective-pulse": {
+      "frames": {},
+      "meta": {
+        "image": "UI/objective-pulse.png",
+        "size": {
+          "w": 512,
+          "h": 64
+        }
+      },
+      "animations": {}
+    },
+    "overhead-health-bars": {
+      "frames": {},
+      "meta": {
+        "image": "UI/overhead-health-bars.png",
+        "size": {
+          "w": 48,
+          "h": 48
+        }
+      },
+      "animations": {}
+    },
+    "panel-frames": {
+      "frames": {},
+      "meta": {
+        "image": "UI/panel-frames.png",
+        "size": {
+          "w": 176,
+          "h": 48
+        }
+      },
+      "animations": {}
+    },
+    "range-grid": {
+      "frames": {},
+      "meta": {
+        "image": "UI/range-grid.png",
+        "size": {
+          "w": 256,
+          "h": 16
+        }
+      },
+      "animations": {}
+    },
+    "selection-circles": {
+      "frames": {},
+      "meta": {
+        "image": "UI/selection-circles.png",
+        "size": {
+          "w": 48,
+          "h": 120
+        }
+      },
+      "animations": {}
+    },
+    "selection-cursor": {
+      "frames": {},
+      "meta": {
+        "image": "UI/selection-cursor.png",
+        "size": {
+          "w": 160,
+          "h": 8
+        }
+      },
+      "animations": {}
+    },
+    "solid-arrows-thick": {
+      "frames": {},
+      "meta": {
+        "image": "UI/solid-arrows-thick.png",
+        "size": {
+          "w": 96,
+          "h": 192
+        }
+      },
+      "animations": {}
+    },
+    "solid-arrows-thin": {
+      "frames": {},
+      "meta": {
+        "image": "UI/solid-arrows-thin.png",
+        "size": {
+          "w": 96,
+          "h": 192
+        }
+      },
+      "animations": {}
+    },
+    "squad-insignia": {
+      "frames": {},
+      "meta": {
+        "image": "UI/squad-insignia.png",
+        "size": {
+          "w": 240,
+          "h": 216
+        }
+      },
+      "animations": {}
+    },
+    "target-cursor": {
+      "frames": {},
+      "meta": {
+        "image": "UI/target-cursor.png",
+        "size": {
+          "w": 32,
+          "h": 8
+        }
+      },
+      "animations": {}
+    },
+    "terrain-icons": {
+      "frames": {},
+      "meta": {
+        "image": "UI/terrain-icons.png",
+        "size": {
+          "w": 256,
+          "h": 32
+        }
+      },
+      "animations": {}
+    }
+  }
+}

@@ -1,3 +1,5 @@
+const NO_LOGIN = true
+
 const HTML = (title = "oui", body = '<h1>OUI</h1>') => `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,7 +28,7 @@ const LOGIN_FORM = (username) => HTML('login', `
 <section>
     <label for="current-password">Password</label>
     <input id="current-password" name="password" type="password" autocomplete="current-password" required>
-</section>
+section>
 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 <button type="submit">Sign in</button>
 </form>
@@ -150,7 +152,7 @@ server.register(fastifyStatic, {
     cacheControl: false,
     allowedPath: (pathname, root, req, res) => {
         console.log('FASTIFY STATIC ASK IF OK', { pathname, root, username: req?.user?.username })
-        return req.isAuthenticated() ? true : false
+        return (NO_LOGIN || req.isAuthenticated()) ? true : false
         //res.redirect('/login');
     }
 })
@@ -158,7 +160,7 @@ import * as fsp from "node:fs/promises"
 server.get(
     '/*',
     async (req, reply) => {
-        if (req.isUnauthenticated()) {
+        if ((!NO_LOGIN) && req.isUnauthenticated()) {
             return reply.redirect('/login')
         } else {
             const filename = path.join(__dirname, 'dist', req.params['*'])

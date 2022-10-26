@@ -47,8 +47,8 @@ async function restGet() {
     const r = await getJson('/zozo/apppp')
     console.log('FETCHED', r)
 }
-restGet()
-restPostCreateGame({ maxClients: 1 })
+//restGet()
+//restPostCreateGame({ maxClients: 1 })
 
 
 const postLoginForm = async () => {
@@ -76,4 +76,4 @@ const postLoginForm = async () => {
     })
     console.log('POST FORM RETRUNS DATA', data)
 }
-postLoginForm()
+// postLoginForm()
