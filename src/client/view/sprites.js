@@ -20,9 +20,10 @@ export const testSpritesheet = async (app) => {
     const { atlasData, spritesheet } = await loadSpritesheet('combined.json')
     let x = 0
     let y = 0
+    console.log('animations',atlasData.animations)
 
     Object.keys(atlasData.animations).forEach(animationName => {
-        console.log(animationName)
+      //  console.log(animationName)
         const asprite = new PIXI.AnimatedSprite(spritesheet.animations[animationName]);
 
         asprite.animationSpeed = 0.1

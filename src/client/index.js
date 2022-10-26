@@ -12,6 +12,9 @@ const sprite2 = PIXI.Sprite.from('assets/hands.png');
 import { testSpritesheet } from './view/sprites.js'
 testSpritesheet(app)
 
+import {testTilemap} from './view/tilemap.js'
+testTilemap(app)
+
 import { processGameUpdate, getCurrentState } from './state.js'
 import { makeWsUrl } from './network.js'
 if (false) {
