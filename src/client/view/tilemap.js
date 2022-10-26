@@ -56,19 +56,29 @@ export const loadTilemap = async (tilemapName, app) => {
     const tilemapContainer = new PIXI.Container()
     tilemapContainer.zIndex = 0
     app.stage.addChild(tilemapContainer)
+
+    const pixelshown = { w: 640, h: 360 }
+
+    const position = { x: 0, y: 0 }
+    const speed = { x: 1, y: 1 }
+    const min = {
+        x: -1 * (tilemapData.width * tilemapData.tilewidth) + pixelshown.w,
+        y: -1 * (tilemapData.height * tilemapData.tileheight) + pixelshown.h
+    }
+    const max = { x: 0, y: 0 }
+
     app.ticker.add(() => {
-        const t = Date.now()
-        const a = t / 1000
-        const target = {
-            x: tilemapContainer.x = - Math.abs(Math.cos(a) * 100),
-            y: tilemapContainer.x = - Math.abs(Math.cos(a) * 100)
-        }
-        const diff = {
-            x: target.x - tilemapContainer.x,
-            y: target.y - tilemapContainer.y
-        }
-        tilemapContainer.x += Math.sign(diff.x)
-        tilemapContainer.y += Math.sign(diff.y)
+
+        position.x += speed.x
+        position.y += speed.y
+
+        if (position.x > max.x) { position.x = max.x; speed.x *= -1 }
+        if (position.x < min.x) { position.x = min.x; speed.x *= -1 }
+        if (position.y > max.y) { position.y = max.y; speed.y *= -1 }
+        if (position.y < min.y) { position.y = min.y; speed.y *= -1 }
+
+        tilemapContainer.x = position.x
+        tilemapContainer.y = position.y
     })
 
     for (let layerIndex = 0; layerIndex < tilemapData.layers.length; layerIndex++) {
