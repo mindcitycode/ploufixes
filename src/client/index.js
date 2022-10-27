@@ -13,34 +13,34 @@ if (false) {
     }
     animationFrame()
 
+}
 
-    function websocket() {
+function websocket() {
 
 
-        const socket = new WebSocket(makeWsUrl('/hello-ws'))
-        console.log(socket)
+    const socket = new WebSocket(makeWsUrl('/hello-ws',80))
+    console.log(socket)
 
-        socket.addEventListener('open', function (event) {
-            console.log('socket is opened')
-            socket.send('Coucou le serveur !');
-        });
-        socket.addEventListener('close', function (event) {
-            console.log('Byebye le serveur !');
-        });
-        socket.addEventListener('message', function (event) {
-            //    console.log('Voici un message du serveur', event.data);
-            const state = JSON.parse(event.data)
-            sprite.x = state.position[0]
-            sprite.y = state.position[1]
-            processGameUpdate(state)
-            //        console.log('state', state)
-        });
+    socket.addEventListener('open', function (event) {
+        console.log('socket is opened')
+        socket.send('Coucou le serveur !');
+    });
+    socket.addEventListener('close', function (event) {
+        console.log('Byebye le serveur !');
+    });
+    socket.addEventListener('message', function (event) {
+        //    console.log('Voici un message du serveur', event.data);
+        const state = JSON.parse(event.data)
+        sprite.x = state.position[0]
+        sprite.y = state.position[1]
+        processGameUpdate(state)
+        //        console.log('state', state)
+    });
 
-        socket.addEventListener('error', function (event) {
-            console.log('Voici un message de erreur', event);
-        });
-
-    }
-    websocket()
+    socket.addEventListener('error', function (event) {
+        console.log('Voici un message de erreur', event);
+    });
 
 }
+websocket()
+

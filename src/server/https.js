@@ -28,7 +28,7 @@ const LOGIN_FORM = (username) => HTML('login', `
 <section>
     <label for="current-password">Password</label>
     <input id="current-password" name="password" type="password" autocomplete="current-password" required>
-section>
+<section>
 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 <button type="submit">Sign in</button>
 </form>
@@ -51,10 +51,15 @@ const server = fastify({
     https: {
         // mkcert -install -cert-file ./fastify.cert -key-file ./fastify.key localhost
         allowHTTP1: true, // fallback support for HTTP1
-        key: fs.readFileSync(path.join(__dirname, 'https', 'fastify.key')),
-        cert: fs.readFileSync(path.join(__dirname, 'https', 'fastify.cert'))
+    //    key: fs.readFileSync(path.join(__dirname, 'https', 'fastify.localhost.key')),
+     //   cert: fs.readFileSync(path.join(__dirname, 'https', 'fastify.localhost.cert'))
+        // mkcert -install -cert-file ./fastify.192.168.1.11.cert -key-file ./fastify.192.168.1.11.key 192.168.1.11
+     
+        key: fs.readFileSync(path.join(__dirname, 'https', 'fastify.192.168.1.11.key')),
+        cert: fs.readFileSync(path.join(__dirname, 'https', 'fastify.192.168.1.11.cert'))
     }
 })
+
 
 import { Authenticator } from '@fastify/passport'
 import fastifyCookie from '@fastify/cookie'
@@ -65,6 +70,8 @@ const fastifyPassport = new Authenticator()
 
 const basicLocalStrategy = BasicLocalStrategy()
 fastifyPassport.use('test', basicLocalStrategy)
+
+
 
 await server.register(fastifyCookie)
 await server.register(fastifySession, {
@@ -107,6 +114,8 @@ server.get(
     }
 )
 
+
+
 import fastifyMultipart from '@fastify/multipart'
 import fastifyFormBody from '@fastify/formbody'
 
@@ -143,6 +152,22 @@ server.get(
     }
 )
 
+import fastifyWebsocket from '@fastify/websocket'
+await server.register(fastifyWebsocket, {
+    //   options: { maxPayload: 1048576 }
+});
+server.get('/hello-ws', { websocket: true }, (connection, req) => {
+    console.log('ùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùù webserver request')
+    //connection.socket.send("hello from server")
+    connection.socket.on('message', message => {
+        console.log('received socket message',message.toString())
+        connection.socket.send('Hello Fastify WebSockets');
+    });
+  //  clientSends.push(connection.socket.send.bind(connection.socket))
+});
+
+
+
 import fastifyStatic from '@fastify/static'
 server.register(fastifyStatic, {
     // only assets because html must be redirected
@@ -156,6 +181,8 @@ server.register(fastifyStatic, {
         //res.redirect('/login');
     }
 })
+
+
 import * as fsp from "node:fs/promises"
 server.get(
     '/*',
@@ -173,7 +200,8 @@ server.get(
 )
 
 
-const host = 'localhost'//'192.168.1.11'
+//const host = 'localhost'
+const host = '192.168.1.11'
 const port = '80'
 const options = { host, port }
 
