@@ -1,3 +1,5 @@
+import { Bus } from '../common/bus.js'
+import { WorldUpdateMessage } from '../common/messages.js'
 import {
     createWorld,
     Types,
@@ -19,65 +21,24 @@ import {
 
 import { Position } from './components/position.js'
 import { Velocity } from './components/velocity.js'
+import { PermanentId } from './components/permanentId.js'
 
-export const BestFriend = defineComponent({ who: Types.eid })
+import { timeSystem, movementSystem, destroyerSystem, permnentIdAttributionSystem } from './systems/systems.js'
 
-
-const timeSystem = world => {
-    const { time } = world
-    const now = performance.now()
-    const delta = now - time.then
-    time.delta = delta
-    time.elapsed += delta
-    time.then = now
-    return world
-}
-
-const movementQuery = defineQuery([Position, Velocity])
-const movementSystem = world => {
-    const { time: { delta } } = world
-    const ents = movementQuery(world)
-    for (let i = 0; i < ents.length; i++) {
-        const eid = ents[i]
-        Position.x[eid] += Velocity.x[eid] * delta
-        Position.y[eid] += Velocity.y[eid] * delta
-    }
-    return world
-
-}
-const destroyerSystem = world => {
-    const ents = movementQuery(world)
-    for (let i = 0; i < ents.length; i++) {
-        const eid = ents[i]
-        removeEntity(world, eid)
-/*
-        const eid2 = addEntity(world)
-        addComponent(world, Position, eid2)
-        addComponent(world, Velocity, eid2)
-        Position.x[eid2] = Math.random()
-    */  }
-    return world
-}
-const pipeline = pipe(movementSystem, timeSystem, destroyerSystem)
+const pipeline = pipe(movementSystem, timeSystem, destroyerSystem, permnentIdAttributionSystem)
 
 const packBasePath = 'assets/Robot Warfare Asset Pack 22-11-24'
-
 const loadTilemap = async tilemapName => {
     const tilemapPath = [packBasePath, tilemapName].join('/')
     const tilemapData = await fetch(tilemapPath).then(x => x.json())
     console.log('tilemapData', tilemapData)
-
-
 }
-
-import { Bus } from '../common/bus.js'
-import { WorldUpdateMessage } from '../common/messages.js'
 
 const createRegisteredWorld = () => {
     const world = createWorld()
     registerComponent(world, Position)
     registerComponent(world, Velocity)
-//    registerComponent(world, BestFriend)
+    registerComponent(world, PermanentId)
     return world
 }
 
@@ -93,52 +54,45 @@ const createGame = () => {
     // update bus
     const worldBus = new Bus()
 
-    // create default entities
-    const eid = addEntity(world)
-    addComponent(world, Position, eid)
-    addComponent(world, Velocity, eid)
-    Velocity.x[eid] = 1.23
-    Velocity.y[eid] = 1.23
+    // load world
 
-    const eid2 = addEntity(world)
- //   addComponent(world, BestFriend, eid2)
-   // BestFriend.who[eid2] = eid
+    // create default entities
+    const eid0 = addEntity(world)
+    {
+        const eid = eid0
+        addComponent(world, Position, eid)
+        addComponent(world, Velocity, eid)
+        addComponent(world, PermanentId, eid)
+        Position.x[eid] = 0
+        Position.y[eid] = 0
+        Velocity.x[eid] = 1
+        Velocity.y[eid] = 2
+        PermanentId.pid[eid] = 0
+    }
+    const eid1 = addEntity(world)
+    {
+        const eid = eid1
+        addComponent(world, Position, eid)
+        addComponent(world, Velocity, eid)
+        addComponent(world, PermanentId, eid)
+        Position.x[eid] = 20
+        Position.y[eid] = 20
+        Velocity.x[eid] = 1
+        Velocity.y[eid] = 1
+        PermanentId.pid[eid] = 0
+    }
+    //    removeEntity(world,eid)
+    //  removeEntity(world,eid2)
     // world attributes (not serialized)
-    world.time = { delta: 0, elapsed: 0, then: performance.now() }
+    world.time = { delta: 0, elapsed: 0, then: performance.now() / 1000 }
+    world.permanentId = { nextOne: 1 }
 
     // world step
-    let nStep = 0
     const step = () => {
-   /*     
-        if (nStep === 3) {
-            console.log('remove',eid)
-            removeEntity(world, eid)
-        } else if ( nStep === 4){
-            console.log('remove',eid2)
-            removeEntity(world, eid)
-
-        }
-     */   pipeline(world)
-
-        const entities = getAllEntities(world)
-        console.log('-------------------')
-        entities.forEach(e => {
-            console.log('s!', e, 'exists', entityExists(world,e))
-            console.log('s!', e, 'position', hasComponent(world, Position, e) ? (Position.x[e]) : 'non')
-            console.log('s!', e, 'velocity', hasComponent(world, Velocity, e) ? (Velocity.x[e]) : 'non')
-     //       console.log('s!', e, 'bestfriend', hasComponent(world, BestFriend, e) ? (BestFriend.who[e]) : 'non')
-        })
-
-
-        worldBus.say(
-            WorldUpdateMessage(
-                Date.now(),
-                serialize(world)
-            )
-        )
-        nStep++
+        pipeline(world)
+        worldBus.say(WorldUpdateMessage(Date.now(), serialize(world)))
     }
-
+    // run
     let intervalHandler = undefined
     const start = () => { intervalHandler = setInterval(step, 1000 / frameRate) }
     const stop = () => { clearInterval(intervalHandler) }
@@ -155,43 +109,34 @@ const createGame = () => {
 const game = createGame()
 
 const reWorld = createRegisteredWorld()
-const desserialize = defineDeserializer(reWorld)
+const deseralize = defineDeserializer(reWorld)
 
 game.bus.addListener(worldUpdateMessage => {
 
-    console.log('got message', worldUpdateMessage)
+    //  console.log('got message', worldUpdateMessage)
     const { t, serializedWorld } = worldUpdateMessage
-
-    console.log('t', t)
-
-    desserialize(reWorld, serializedWorld, DESERIALIZE_MODE.MAP)
-
+    deseralize(reWorld, serializedWorld, DESERIALIZE_MODE.MAP)
     const entities = getAllEntities(reWorld)
     entities.forEach(eid => {
-        console.log(eid, 'exists?', entityExists(reWorld, eid) ? 'OUI' : 'non')
-        console.log(eid, 'position', hasComponent(reWorld, Position, eid) ? (Position.x[eid]) : 'non')
-        console.log(eid, 'velocity', hasComponent(reWorld, Velocity, eid) ? (Velocity.x[eid]) : 'non')
-     //   console.log(eid, 'bestfriend', hasComponent(reWorld, BestFriend, eid) ? (BestFriend.who[eid]) : 'non')
+        const exists = entityExists(reWorld, eid)
+        const hasPosition = hasComponent(reWorld, Position, eid)
+        const hasVelocity = hasComponent(reWorld, Velocity, eid)
+        const hasPermanentId = hasComponent(reWorld, PermanentId, eid)
+
+        const position_x = Position.x[eid]
+        const position_y = Position.y[eid]
+        const velocity_x = Velocity.x[eid]
+        const velocity_y = Velocity.y[eid]
+        const permanentId_pid = PermanentId.pid[eid]
+        const object = {
+            eid,
+            exists,
+            Position: { hasPosition, position_x, position_y },
+            Velocity: { hasVelocity, velocity_x, velocity_y },
+            PermanentId: { hasPermanentId, permanentId_pid }
+        }
+        //console.log(JSON.stringify(object))
+        console.log(object)
     })
-
-    //    deleteWorld(reWorld)
-    //  console.log('a position', e)
-    // hasComponent(reWorld, Position, e)
-    // console.log('a position', e)
-
-
-    //console.log(entities)
-
-    //    const eid = entities[0]
-    //  console.log(Velocity.x[eid], Velocity.y[eid])
-    // console.log(BestFriend.who[entities[1]])
-
-    //    console.log(entities)
 })
 game.start()
-/*game.step()
-game.step()
-game.step()
-game.step()
-game.step()
-game.step()*/
