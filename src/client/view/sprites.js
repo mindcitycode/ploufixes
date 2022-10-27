@@ -3,7 +3,7 @@ const packBasePath = 'assets/Robot Warfare Asset Pack 22-11-24'
 const packSpriteSheetsFilename = 'spritesheets.json'
 const combinedJsonSpriteSheetFilename = 'combined.json'
 
-export const loadSpritesheet = async (atlasName) => {
+export const loadSpritesheet = async (atlasName, packBasePath) => {
     const altasPath = [packBasePath, atlasName].join('/')
     const atlasData = await fetch(altasPath).then(x => x.json())
     const imagePath = [packBasePath, atlasData.meta.image].join('/')
@@ -17,11 +17,13 @@ export const loadSpritesheet = async (atlasName) => {
 
 export const testSpritesheet = async (container) => {
 
-    const { atlasData, spritesheet } = await loadSpritesheet('combined.json')
+    const { atlasData, spritesheet } = await loadSpritesheet('combined.json', packBasePath)
     let x = 0
     let y = 0
     console.log('animations', atlasData.animations)
 
+    console.log('frames names',Object.keys(atlasData.frames))
+    console.log('animation names',Object.keys(atlasData.animations))
     Object.keys(atlasData.animations).forEach(animationName => {
         //  console.log(animationName)
         const asprite = new PIXI.AnimatedSprite(spritesheet.animations[animationName]);

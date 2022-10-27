@@ -30,6 +30,7 @@ const initialize = async () => {
     const spritesContainer = new PIXI.Container()
     spritesContainer.zIndex = 666
     scrollableContainer.addChild(spritesContainer)
+    //  const { atlasData, spritesheet } = await loadSpritesheet('combined.json', packBasePath)
 
     testSpritesheet(spritesContainer)
 
@@ -79,31 +80,6 @@ const ScrollablePositioner = (scrollableContainer, terrainBounds, viewSize) => {
     }
 }
 
-const moveIt = (scrollableContainer, terrainBounds, viewSize, app) => {
-
-    const position = { x: 0, y: 0 }
-    const speed = { x: 1, y: 1 }
-
-    const bounds = getTerrainTopLeftPositionBounds(terrainBounds, viewSize)
-
-    app.ticker.add(() => {
-
-        position.x += speed.x
-        position.y += speed.y
-
-        if (position.x > bounds.maxX) { speed.x *= -1 }
-        if (position.x < bounds.minX) { speed.x *= -1 }
-        if (position.y > bounds.maxY) { speed.y *= -1 }
-        if (position.y < bounds.minY) { speed.y *= -1 }
-    })
-
-    app.ticker.add(() => {
-        scrollableContainer.x = position.x
-        scrollableContainer.y = position.y
-        clampPositionToBounds(scrollableContainer, bounds)
-    })
-}
-
 import { Bounds, getHeight, getWidth } from '../../common/bounds.js';
 
 const getTerrainTopLeftPositionBounds = (terrainBounds, viewSize, bounds = Bounds()) => {
@@ -122,4 +98,3 @@ const clampPositionToBounds = (position, bounds) => {
 }
 
 initialize()
-1
