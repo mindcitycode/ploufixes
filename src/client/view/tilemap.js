@@ -33,14 +33,19 @@ export const atlasDataFromTileset = tilesetData => {
     }
     return atlasData
 }
-export const loadTilemap = async (tilemapName, app) => {
+
+export const loadTilemap = async (tilemapName) => {
+
+    // load tilemap data
     const tilemapPath = [packBasePath, tilemapName].join('/')
     const tilemapData = await fetch(tilemapPath).then(x => x.json())
     console.log('tilemapData', tilemapData)
 
+    // build atlas data from tilemap
     const atlasseDatas = tilemapData.tilesets.map(atlasDataFromTileset)
-    console.log(atlasseDatas)
+    console.log('atlassesData', atlasseDatas)
 
+    // build spritesheet for tilemap from atlas data
     const spritesheets = atlasseDatas.map(atlasData => {
         const imagePath = [packBasePath, atlasData.meta.image].join('/')
         const spritesheet = new PIXI.Spritesheet(
@@ -50,15 +55,52 @@ export const loadTilemap = async (tilemapName, app) => {
         return spritesheet
     })
     await Promise.all(spritesheets.map(spritesheet => spritesheet.parse()))
+    console.log('tilemapspritesheets', spritesheets)
 
-    console.log('tilemap spritesheets', spritesheets)
+    return {
+        tilemapName,
+        tilemapData,
+        atlasseDatas,
+        spritesheets
+    }
+}
+
+export const instanciateTilemap = async (loaded) => {
 
     const tilemapContainer = new PIXI.Container()
     tilemapContainer.zIndex = 0
-    app.stage.addChild(tilemapContainer)
+
+    const tilemapData = loaded.tilemapData
+    const spritesheets = loaded.spritesheets
+
+    for (let layerIndex = 0; layerIndex < tilemapData.layers.length; layerIndex++) {
+        const layer = tilemapData.layers[layerIndex]
+        for (let i = 0; i < layer.width; i++) {
+            for (let j = 0; j < layer.height; j++) {
+                const offset = i + j * layer.width
+                const v = layer.data[offset]
+                const gid = v & ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG | ROTATED_HEXAGONAL_120_FLAG);
+                const x = i * tilemapData.tilewidth
+                const y = j * tilemapData.tileheight
+                const asprite = new PIXI.Sprite(spritesheets[0].textures[gid])
+                asprite.x = x
+                asprite.y = y
+                tilemapContainer.addChild(asprite)
+            }
+        }
+    }
+
+    return {
+        tilemapContainer,
+    }
+
+}
+
+const moveIt = (loaded, tilemapContainer, app) => {
+
+    const tilemapData = loaded.tilemapData
 
     const pixelshown = { w: 640, h: 360 }
-
     const position = { x: 0, y: 0 }
     const speed = { x: 1, y: 1 }
     const min = {
@@ -80,39 +122,14 @@ export const loadTilemap = async (tilemapName, app) => {
         tilemapContainer.x = position.x
         tilemapContainer.y = position.y
     })
-
-    for (let layerIndex = 0; layerIndex < tilemapData.layers.length; layerIndex++) {
-        const layer = tilemapData.layers[layerIndex]
-        for (let i = 0; i < layer.width; i++) {
-            for (let j = 0; j < layer.height; j++) {
-                const offset = i + j * layer.width
-                const v = layer.data[offset]
-                const gid = v & ~(FLIPPED_HORIZONTALLY_FLAG | FLIPPED_VERTICALLY_FLAG | FLIPPED_DIAGONALLY_FLAG | ROTATED_HEXAGONAL_120_FLAG);
-                const x = i * tilemapData.tilewidth
-                const y = j * tilemapData.tileheight
-                //    const asprite = new PIXI.AnimatedSprite(spritesheets[0].animations[gid])
-                //const asprite = new PIXI.TilingSprite(spritesheets[0].textures[gid])
-                const asprite = new PIXI.Sprite(spritesheets[0].textures[gid])
-                //asprite.zIndex = 0
-                asprite.x = x
-                asprite.y = y
-                tilemapContainer.addChild(asprite)
-
-            }
-        }
-    }
-
-    /*
-    
-    const imagePath = [packBasePath, tilemapData.meta.image].join('/')
-    const spritesheet = new PIXI.Spritesheet(
-        PIXI.BaseTexture.from(imagePath),
-        tilemapData
-    );
-    await spritesheet.parse()
-    return { atlasData: tilemapData, spritesheet }
-*/
 }
-export const testTilemap = (app) => {
-    loadTilemap(tilemapFilename, app)
+
+
+export const testTilemap = async (app) => {
+    const loaded = await loadTilemap(tilemapFilename, app)
+    const instance = await instanciateTilemap(loaded, app)
+    app.stage.addChild(instance.tilemapContainer)
+
+    moveIt(loaded, instance.tilemapContainer, app)
+    console.log('tilemapContainer', instance.tilemapContainer)
 }

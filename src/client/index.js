@@ -1,12 +1,12 @@
 import './view/style.css'
 import * as PIXI from 'pixi.js'
 
-for ( let i = 0 ; i < 5000 ; i++ ){
+/*for ( let i = 0 ; i < 5000 ; i++ ){
     const j = i / 16 * 9
     if ( j === Math.floor(j)){
         console.log(i,j)
     }
-}
+}*/
 
 const app = new PIXI.Application({ width: 640, height: 640 });
 document.body.appendChild(app.view);
