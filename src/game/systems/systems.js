@@ -27,6 +27,13 @@ export const movementSystem = world => {
         const eid = ents[i]
         Position.x[eid] += Velocity.x[eid] * delta
         Position.y[eid] += Velocity.y[eid] * delta
+
+        if ( Position.x[eid] > 300 ){
+            Position.x[eid] = 0
+        }
+        if ( Position.y[eid] > 300 ){
+            Position.y[eid] = 0
+        }
     }
     return world
 

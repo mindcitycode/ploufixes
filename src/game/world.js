@@ -34,7 +34,7 @@ const loadTilemap = async tilemapName => {
     console.log('tilemapData', tilemapData)
 }
 
-const createRegisteredWorld = () => {
+export const createRegisteredWorld = () => {
     const world = createWorld()
     registerComponent(world, Position)
     registerComponent(world, Velocity)
@@ -42,7 +42,7 @@ const createRegisteredWorld = () => {
     return world
 }
 
-const createGame = () => {
+export const createGame = () => {
 
     // properties
     const frameRate = 1 // 10
@@ -106,22 +106,14 @@ const createGame = () => {
 }
 
 
-const game = createGame()
 
-const reWorld = createRegisteredWorld()
-const deseralize = defineDeserializer(reWorld)
-
-game.bus.addListener(worldUpdateMessage => {
-
-    //  console.log('got message', worldUpdateMessage)
-    const { t, serializedWorld } = worldUpdateMessage
-    deseralize(reWorld, serializedWorld, DESERIALIZE_MODE.MAP)
-    const entities = getAllEntities(reWorld)
+export const worldEntitiesToObject = world => {
+    const entities = getAllEntities(world)
     entities.forEach(eid => {
-        const exists = entityExists(reWorld, eid)
-        const hasPosition = hasComponent(reWorld, Position, eid)
-        const hasVelocity = hasComponent(reWorld, Velocity, eid)
-        const hasPermanentId = hasComponent(reWorld, PermanentId, eid)
+        const exists = entityExists(world, eid)
+        const hasPosition = hasComponent(world, Position, eid)
+        const hasVelocity = hasComponent(world, Velocity, eid)
+        const hasPermanentId = hasComponent(world, PermanentId, eid)
 
         const position_x = Position.x[eid]
         const position_y = Position.y[eid]
@@ -138,5 +130,17 @@ game.bus.addListener(worldUpdateMessage => {
         //console.log(JSON.stringify(object))
         console.log(object)
     })
-})
-game.start()
+}
+const test = () => {
+    const game = createGame()
+    const reWorld = createRegisteredWorld()
+    const deserialize = defineDeserializer(reWorld)
+    game.bus.addListener(worldUpdateMessage => {
+
+        //  console.log('got message', worldUpdateMessage)
+        const { t, serializedWorld } = worldUpdateMessage
+        deserialize(reWorld, serializedWorld, DESERIALIZE_MODE.MAP)
+        console.log(worldEntitiesToObject(reWorld))
+    })
+    game.start()
+}

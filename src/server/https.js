@@ -51,10 +51,10 @@ const server = fastify({
     https: {
         // mkcert -install -cert-file ./fastify.cert -key-file ./fastify.key localhost
         allowHTTP1: true, // fallback support for HTTP1
-    //    key: fs.readFileSync(path.join(__dirname, 'https', 'fastify.localhost.key')),
-     //   cert: fs.readFileSync(path.join(__dirname, 'https', 'fastify.localhost.cert'))
+        //    key: fs.readFileSync(path.join(__dirname, 'https', 'fastify.localhost.key')),
+        //   cert: fs.readFileSync(path.join(__dirname, 'https', 'fastify.localhost.cert'))
         // mkcert -install -cert-file ./fastify.192.168.1.11.cert -key-file ./fastify.192.168.1.11.key 192.168.1.11
-     
+
         key: fs.readFileSync(path.join(__dirname, 'https', 'fastify.192.168.1.11.key')),
         cert: fs.readFileSync(path.join(__dirname, 'https', 'fastify.192.168.1.11.cert'))
     }
@@ -156,14 +156,25 @@ import fastifyWebsocket from '@fastify/websocket'
 await server.register(fastifyWebsocket, {
     //   options: { maxPayload: 1048576 }
 });
+
+import { createGame } from '../game/world.js'
+const game = createGame()
+game.start()
+
 server.get('/hello-ws', { websocket: true }, (connection, req) => {
     console.log('ùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùù webserver request')
+  
+    game.bus.addListener( worldUpdateMessage => {
+        console.log('send update',typeof worldUpdateMessage)
+        console.log('send update',JSON.stringify(worldUpdateMessage))
+        connection.socket.send(worldUpdateMessage)//.serializedWorld)
+    })
     //connection.socket.send("hello from server")
     connection.socket.on('message', message => {
-        console.log('received socket message',message.toString())
-        connection.socket.send('Hello Fastify WebSockets');
+        console.log('received socket message', message.toString())
+      //  connection.socket.send('Hello Fastify WebSockets');
     });
-  //  clientSends.push(connection.socket.send.bind(connection.socket))
+    //  clientSends.push(connection.socket.send.bind(connection.socket))
 });
 
 

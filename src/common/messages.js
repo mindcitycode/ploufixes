@@ -14,8 +14,31 @@ export const GameClientJoinedMessage = id => ({ type: MSG_TYPE_GAME_CLIENT_JOINE
 export const MSG_TYPE_GAME_CREATED_OK = 6
 export const MSG_TYPE_GAME_CREATED_KO = 7
 
-export const GameCreatedOkMessage = id => ({ type : MSG_TYPE_GAME_CREATED_OK, gameId : id })
-export const GameCreatedKoMessage = () => ({ type : MSG_TYPE_GAME_CREATED_KO })
+export const GameCreatedOkMessage = id => ({ type: MSG_TYPE_GAME_CREATED_OK, gameId: id })
+export const GameCreatedKoMessage = () => ({ type: MSG_TYPE_GAME_CREATED_KO })
 
 export const MSG_TYPE_WORLD_UPDATE = 100
-export const WorldUpdateMessage = (t,serializedWorld) => ({ type : MSG_TYPE_WORLD_UPDATE, t, serializedWorld/*gameId : id */})
+
+export const WorldUpdateMessage = (t, serializedWorld) => {
+    const array = new ArrayBuffer(10)
+    new DataView(array).setUint16(0, MSG_TYPE_WORLD_UPDATE)
+    new DataView(array).setBigInt64(2, BigInt(t))
+    return Buffer.concat([new Uint8Array(array), new Uint8Array(serializedWorld)])
+}
+export const parseBinaryMessage = arrayBuffer => {
+    const view = new DataView(arrayBuffer)
+    const type = view.getUint16(0)
+    switch (type) {
+        case MSG_TYPE_WORLD_UPDATE: {
+            const date = Number(view.getBigInt64(2))
+            return {
+                type,
+                date,
+                serializedWorld: arrayBuffer.slice(10)
+            }
+        }
+        default: {
+            throw new Error('Unknown binary message type ' + type)
+        }
+    }
+}
