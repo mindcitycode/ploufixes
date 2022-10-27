@@ -25,6 +25,7 @@
     "fastify": "^4.9.2",
     "passport-local": "^1.0.0",
     "pixi.js": "^6.5.7",
+    "rbush": "^3.0.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

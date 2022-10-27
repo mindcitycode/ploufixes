@@ -1,12 +1,9 @@
 import * as PIXI from 'pixi.js'
+import { FLIPPED_DIAGONALLY_FLAG, FLIPPED_HORIZONTALLY_FLAG, FLIPPED_VERTICALLY_FLAG, ROTATED_HEXAGONAL_120_FLAG } from '../../common/tilemap.js'
 
 const packBasePath = 'assets/Robot Warfare Asset Pack 22-11-24'
 const tilemapFilename = 'map0.tmj'
 
-const FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
-const FLIPPED_VERTICALLY_FLAG = 0x40000000;
-const FLIPPED_DIAGONALLY_FLAG = 0x20000000;
-const ROTATED_HEXAGONAL_120_FLAG = 0x10000000;
 //gids.push({ {"meta":{"image":"combined.png","size":{"w":328,"h":328}},"frames":{"SquadLeader-throw-3":{"frame":{"x":128,"y":312,"w":16,"h":16}}}
 
 export const atlasDataFromTileset = tilesetData => {
@@ -65,8 +62,9 @@ export const loadTilemap = async (tilemapName) => {
     }
 }
 
-export const instanciateTilemap = async (loaded) => {
+export const instanciateTilemapContainer = async (loaded) => {
 
+    // instanciate display
     const tilemapContainer = new PIXI.Container()
     tilemapContainer.zIndex = 0
 
@@ -135,11 +133,15 @@ const getPositionBounds = (tilemapData, screenSize, bounds = { min: { x: 0, y: 0
     return bounds;
 }
 
+import { instanciateTilemapRTree } from '../../common/tree.js'
+
 export const testTilemap = async (app) => {
     const loaded = await loadTilemap(tilemapFilename)
-    const instance = await instanciateTilemap(loaded)
-    app.stage.addChild(instance.tilemapContainer)
+    const tilemapContainer = await instanciateTilemapContainer(loaded)
+    app.stage.addChild(tilemapContainer.tilemapContainer)
 
-    moveIt(loaded, instance.tilemapContainer, app)
-    console.log('tilemapContainer', instance.tilemapContainer)
+    const tilemapRTree = await instanciateTilemapRTree(loaded.tilemapData)
+    console.log('tilemapRTree', tilemapRTree)
+    moveIt(loaded, tilemapContainer.tilemapContainer, app)
+    console.log('tilemapContainer', tilemapContainer.tilemapContainer)
 }
