@@ -102,32 +102,42 @@ const moveIt = (loaded, tilemapContainer, app) => {
 
     const pixelshown = { w: 640, h: 360 }
     const position = { x: 0, y: 0 }
-    const speed = { x: 1, y: 1 }
-    const min = {
-        x: -1 * (tilemapData.width * tilemapData.tilewidth) + pixelshown.w,
-        y: -1 * (tilemapData.height * tilemapData.tileheight) + pixelshown.h
-    }
-    const max = { x: 0, y: 0 }
+    const speed = { x: 1, y: 0 }
+
 
     app.ticker.add(() => {
+
+        const bounds = getPositionBounds(tilemapData, pixelshown)
 
         position.x += speed.x
         position.y += speed.y
 
-        if (position.x > max.x) { position.x = max.x; speed.x *= -1 }
-        if (position.x < min.x) { position.x = min.x; speed.x *= -1 }
-        if (position.y > max.y) { position.y = max.y; speed.y *= -1 }
-        if (position.y < min.y) { position.y = min.y; speed.y *= -1 }
+        if (position.x > bounds.max.x) { speed.x *= -1 }
+        if (position.x < bounds.min.x) { speed.x *= -1 }
+        if (position.y > bounds.max.y) { speed.y *= -1 }
+        if (position.y < bounds.min.y) { speed.y *= -1 }
+
+        if (position.x > bounds.max.x) { position.x = bounds.max.x; }
+        if (position.x < bounds.min.x) { position.x = bounds.min.x; }
+        if (position.y > bounds.max.y) { position.y = bounds.max.y; }
+        if (position.y < bounds.min.y) { position.y = bounds.min.y; }
 
         tilemapContainer.x = position.x
         tilemapContainer.y = position.y
     })
 }
 
+const getPositionBounds = (tilemapData, screenSize, bounds = { min: { x: 0, y: 0 }, max: { x: 0, y: 0 } }) => {
+    bounds.min.x = -1 * (tilemapData.width * tilemapData.tilewidth) + screenSize.w
+    bounds.min.y = -1 * (tilemapData.height * tilemapData.tileheight) + screenSize.h
+    bounds.max.x = 0
+    bounds.max.y = 0
+    return bounds;
+}
 
 export const testTilemap = async (app) => {
-    const loaded = await loadTilemap(tilemapFilename, app)
-    const instance = await instanciateTilemap(loaded, app)
+    const loaded = await loadTilemap(tilemapFilename)
+    const instance = await instanciateTilemap(loaded)
     app.stage.addChild(instance.tilemapContainer)
 
     moveIt(loaded, instance.tilemapContainer, app)
