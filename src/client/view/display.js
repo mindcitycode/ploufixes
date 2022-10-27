@@ -37,24 +37,54 @@ const initialize = async () => {
     const parsedTilemap = await parseTilemap(tilemapFilename, packBasePath)
     const tilemapContainer = await instanciateTilemapContainer(parsedTilemap)
     const terrainBounds = getTilemapDataBounds(parsedTilemap.tilemapData)
+    console.log('terrainBounds', terrainBounds)
 
     scrollableContainer.addChild(tilemapContainer)
     tilemapContainer.zIndex = 0
 
-    moveIt(scrollableContainer, terrainBounds, viewSize, app)
+    // view positioning 
+    const scrollablePositioner = ScrollablePositioner(scrollableContainer, terrainBounds, viewSize)
 
-    /*
-        const tilemapRTree = await instanciateTilemapRTree(loaded.tilemapData)
-    */
+    const centerTarget = { x: terrainBounds.maxX, y: terrainBounds.maxY }
+
+    const rps = 0.1
+    const circle = {
+        radius: Math.max(getWidth(terrainBounds), getHeight(terrainBounds)) / 2,
+        center: {
+            x: (terrainBounds.minX + terrainBounds.maxX) / 2,
+            y: (terrainBounds.minY + terrainBounds.maxY) / 2,
+        }
+    }
+    console.log('circle', circle)
+    app.ticker.add(() => {
+        const ts = Date.now() / 1000
+        const a = ts * 2 * Math.PI * rps
+        centerTarget.x = circle.center.x + circle.radius * Math.cos(a)
+        centerTarget.y = circle.center.y + circle.radius * Math.sin(a)
+        scrollablePositioner.centerOnTarget(centerTarget)
+    })
+
 
 }
 
-const moveIt = (movableContainer, terrainBounds, viewSize, app) => {
+const ScrollablePositioner = (scrollableContainer, terrainBounds, viewSize) => {
+    const topLeftPositionBounds = getTerrainTopLeftPositionBounds(terrainBounds, viewSize)
+    const centerOnTarget = (target) => {
+        scrollableContainer.x = viewSize.w / 2 - target.x
+        scrollableContainer.y = viewSize.h / 2 - target.y
+        clampPositionToBounds(scrollableContainer, topLeftPositionBounds)
+    }
+    return {
+        centerOnTarget
+    }
+}
+
+const moveIt = (scrollableContainer, terrainBounds, viewSize, app) => {
 
     const position = { x: 0, y: 0 }
     const speed = { x: 1, y: 1 }
 
-    const bounds = getTerrtainPositionBounds(terrainBounds, viewSize)
+    const bounds = getTerrainTopLeftPositionBounds(terrainBounds, viewSize)
 
     app.ticker.add(() => {
 
@@ -65,22 +95,26 @@ const moveIt = (movableContainer, terrainBounds, viewSize, app) => {
         if (position.x < bounds.minX) { speed.x *= -1 }
         if (position.y > bounds.maxY) { speed.y *= -1 }
         if (position.y < bounds.minY) { speed.y *= -1 }
+    })
 
-        clampToBounds(position, bounds)
-        movableContainer.x = position.x
-        movableContainer.y = position.y
+    app.ticker.add(() => {
+        scrollableContainer.x = position.x
+        scrollableContainer.y = position.y
+        clampPositionToBounds(scrollableContainer, bounds)
     })
 }
 
-import { Bounds } from '../../common/bounds.js';
-const getTerrtainPositionBounds = (terrainBounds, viewSize, bounds = Bounds()) => {
+import { Bounds, getHeight, getWidth } from '../../common/bounds.js';
+
+const getTerrainTopLeftPositionBounds = (terrainBounds, viewSize, bounds = Bounds()) => {
     bounds.minX = -1 * terrainBounds.maxX + viewSize.w
     bounds.minY = -1 * terrainBounds.maxY + viewSize.h
     bounds.maxX = 0
     bounds.maxY = 0
     return bounds;
 }
-const clampToBounds = (position, bounds) => {
+
+const clampPositionToBounds = (position, bounds) => {
     if (position.x > bounds.maxX) { position.x = bounds.maxX; }
     if (position.x < bounds.minX) { position.x = bounds.minX; }
     if (position.y > bounds.maxY) { position.y = bounds.maxY; }
@@ -88,3 +122,4 @@ const clampToBounds = (position, bounds) => {
 }
 
 initialize()
+1
