@@ -45,7 +45,7 @@ export const createRegisteredWorld = () => {
 export const createGame = () => {
 
     // properties
-    const frameRate = 1 // 10
+    const frameRate =  10
 
     // create world and serializer 
     const world = createRegisteredWorld()
@@ -65,8 +65,8 @@ export const createGame = () => {
         addComponent(world, PermanentId, eid)
         Position.x[eid] = 0
         Position.y[eid] = 0
-        Velocity.x[eid] = 1
-        Velocity.y[eid] = 2
+        Velocity.x[eid] = 10
+        Velocity.y[eid] = 10
         PermanentId.pid[eid] = 0
     }
     const eid1 = addEntity(world)
@@ -77,8 +77,8 @@ export const createGame = () => {
         addComponent(world, PermanentId, eid)
         Position.x[eid] = 20
         Position.y[eid] = 20
-        Velocity.x[eid] = 1
-        Velocity.y[eid] = 1
+        Velocity.x[eid] = 10
+        Velocity.y[eid] = 10
         PermanentId.pid[eid] = 0
     }
     //    removeEntity(world,eid)
@@ -109,6 +109,7 @@ export const createGame = () => {
 
 export const worldEntitiesToObject = world => {
     const entities = getAllEntities(world)
+    const objects = []
     entities.forEach(eid => {
         const exists = entityExists(world, eid)
         const hasPosition = hasComponent(world, Position, eid)
@@ -128,8 +129,10 @@ export const worldEntitiesToObject = world => {
             PermanentId: { hasPermanentId, permanentId_pid }
         }
         //console.log(JSON.stringify(object))
-        console.log(object)
+        // console.log(object)
+        objects.push(object)
     })
+    return objects
 }
 const test = () => {
     const game = createGame()

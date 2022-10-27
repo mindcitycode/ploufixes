@@ -1,12 +1,12 @@
 import './style.css'
 import * as PIXI from 'pixi.js'
-import { testSpritesheet } from './sprites.js'
+import { loadSpritesheet, testSpritesheet } from './sprites.js'
 import { parseTilemap, instanciateTilemapContainer } from './tilemap.js'
 import { resizeCanvas } from './screen.js';
 import { instanciateTilemapRTree } from '../../common/tree.js'
 import { getTilemapDataBounds } from '../../common/tilemap.js'
 
-const initialize = async () => {
+export const createDisplay = async () => {
 
     // properties
     const viewSize = { w: 640, h: 360 }
@@ -30,9 +30,15 @@ const initialize = async () => {
     const spritesContainer = new PIXI.Container()
     spritesContainer.zIndex = 666
     scrollableContainer.addChild(spritesContainer)
-    //  const { atlasData, spritesheet } = await loadSpritesheet('combined.json', packBasePath)
+    const { atlasData, spritesheet } = await loadSpritesheet('combined.json', packBasePath)
+    
+    // create a sprite
+    const asprite = new PIXI.AnimatedSprite(spritesheet.animations["big-explosion"]);
+    spritesContainer.addChild(asprite)
+    asprite.animationSpeed = 0.1
+    asprite.gotoAndPlay(0)
 
-    testSpritesheet(spritesContainer)
+    //    testSpritesheet(spritesContainer)
 
     // tilemap
     const parsedTilemap = await parseTilemap(tilemapFilename, packBasePath)
@@ -48,6 +54,7 @@ const initialize = async () => {
 
     const centerTarget = { x: terrainBounds.maxX, y: terrainBounds.maxY }
 
+    /*
     const rps = 0.1
     const circle = {
         radius: Math.max(getWidth(terrainBounds), getHeight(terrainBounds)) / 2,
@@ -64,8 +71,8 @@ const initialize = async () => {
         centerTarget.y = circle.center.y + circle.radius * Math.sin(a)
         scrollablePositioner.centerOnTarget(centerTarget)
     })
-
-
+    */
+    return asprite
 }
 
 const ScrollablePositioner = (scrollableContainer, terrainBounds, viewSize) => {
@@ -97,4 +104,4 @@ const clampPositionToBounds = (position, bounds) => {
     if (position.y < bounds.minY) { position.y = bounds.minY; }
 }
 
-initialize()
+//createDisplay()

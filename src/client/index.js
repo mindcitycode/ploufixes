@@ -1,27 +1,33 @@
-import './view/display.js'
+import { createDisplay } from './view/display.js'
 
 import { processGameUpdate, getCurrentState } from './state.js'
 import { makeWsUrl } from './network.js'
 import { MSG_TYPE_WORLD_UPDATE, parseBinaryMessage } from '../common/messages.js'
 import { createRegisteredWorld, worldEntitiesToObject } from '../game/world.js'
-import { defineDeserializer, DESERIALIZE_MODE } from 'bitecs'
-if (false) {
+import { defineDeserializer, DESERIALIZE_MODE, getAllEntities, hasComponent } from 'bitecs'
+import { Position } from '../game/components/position.js'
+
+const go = async () => {
+    const asprite = await createDisplay()
+
     const animationFrame = () => {
         const state = getCurrentState()
+        //console.log('>',state)
         if (state?.position) {
-            sprite2.x = state.position[0]
-            sprite2.y = state.position[1]
+            asprite.x = state.position[0]
+            asprite.y = state.position[1]
         }
         requestAnimationFrame(animationFrame)
     }
     animationFrame()
-
 }
+go()
+
 
 function websocket() {
 
 
-    const socket = new WebSocket(makeWsUrl('/hello-ws',80))
+    const socket = new WebSocket(makeWsUrl('/hello-ws', 80))
     console.log(socket)
 
     socket.addEventListener('open', function (event) {
@@ -37,21 +43,27 @@ function websocket() {
     const deserialize = defineDeserializer(world)
 
     socket.addEventListener('message', async function (event) {
-        console.log('Voici un message du serveur', event.data);
-
+       
         const arrayBuffer = await event.data.arrayBuffer()
-        const parsed = parseBinaryMessage( arrayBuffer )
-        console.log(parsed.serializedWorld)
+        const parsed = parseBinaryMessage(arrayBuffer)
         deserialize(world, parsed.serializedWorld, DESERIALIZE_MODE.MAP)
-        console.log(worldEntitiesToObject(world))
+    //    console.log(worldEntitiesToObject(world))
 
-        
-       /* const state = JSON.parse(event.data)
-        sprite.x = state.position[0]
-        sprite.y = state.position[1]
+        const positions = getAllEntities(world).filter(eid => (
+            hasComponent(world, Position, eid)
+        )).map(eid => {
+            return [
+                Position.x[eid],
+                Position.y[eid],
+            ]
+        })
+        const state = {
+            t: parsed.t,
+            position: positions[0],
+        }
         processGameUpdate(state)
-        */
-        //        console.log('state', state)
+
+       
     });
 
     socket.addEventListener('error', function (event) {

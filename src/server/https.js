@@ -162,13 +162,13 @@ const game = createGame()
 game.start()
 
 server.get('/hello-ws', { websocket: true }, (connection, req) => {
-    console.log('ùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùùù webserver request')
+
+    console.log('websocket connection')
   
     game.bus.addListener( worldUpdateMessage => {
-        console.log('send update',typeof worldUpdateMessage)
-        console.log('send update',JSON.stringify(worldUpdateMessage))
         connection.socket.send(worldUpdateMessage)//.serializedWorld)
     })
+    
     //connection.socket.send("hello from server")
     connection.socket.on('message', message => {
         console.log('received socket message', message.toString())

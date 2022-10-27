@@ -30,10 +30,10 @@ export const parseBinaryMessage = arrayBuffer => {
     const type = view.getUint16(0)
     switch (type) {
         case MSG_TYPE_WORLD_UPDATE: {
-            const date = Number(view.getBigInt64(2))
+            const t = Number(view.getBigInt64(2))
             return {
                 type,
-                date,
+                t,
                 serializedWorld: arrayBuffer.slice(10)
             }
         }

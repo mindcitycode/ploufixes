@@ -42,14 +42,15 @@ export const destroyerSystem = world => {
     const ents = movementQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
-        removeEntity(world, eid)
+/*        removeEntity(world, eid)
 
         const eid2 = addEntity(world)
         addComponent(world, Position, eid2)
         addComponent(world, Velocity, eid2)
-    }
+    */   }
     return world
 }
+
 export const permanentIdQuery = defineQuery([PermanentId])
 export const permnentIdAttributionSystem = world => {
     const { permanentId } = world
