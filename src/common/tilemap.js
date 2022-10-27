@@ -64,3 +64,12 @@ export const parseTilesProperties = tilemapData => {
     }
     return tilesProperties
 }
+
+import { Bounds } from './bounds.js'
+export const getTilemapDataBounds = (tilemapData, bounds = Bounds()) => {
+    bounds.minX = 0
+    bounds.minY = 0
+    bounds.maxX = tilemapData.width * tilemapData.tilewidth
+    bounds.maxY = tilemapData.height * tilemapData.tileheight
+    return bounds
+}

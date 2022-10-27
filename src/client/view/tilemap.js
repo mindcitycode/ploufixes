@@ -29,7 +29,7 @@ export const atlasDataFromTileset = tilesetData => {
     return atlasData
 }
 
-export const loadTilemap = async (tilemapName, packBasePath) => {
+export const parseTilemap = async (tilemapName, packBasePath) => {
 
     // load tilemap data
     const tilemapPath = [packBasePath, tilemapName].join('/')
@@ -59,7 +59,6 @@ export const loadTilemap = async (tilemapName, packBasePath) => {
         spritesheets
     }
 }
-
 export const instanciateTilemapContainer = async (loaded) => {
 
     // instanciate display
@@ -85,48 +84,5 @@ export const instanciateTilemapContainer = async (loaded) => {
         }
     }
 
-    return {
-        tilemapContainer,
-    }
-
+    return tilemapContainer
 }
-
-const moveIt = (loaded, tilemapContainer, app) => {
-
-    const tilemapData = loaded.tilemapData
-
-    const pixelshown = { w: 640, h: 360 }
-    const position = { x: 0, y: 0 }
-    const speed = { x: 1, y: 0 }
-
-
-    app.ticker.add(() => {
-
-        const bounds = getPositionBounds(tilemapData, pixelshown)
-
-        position.x += speed.x
-        position.y += speed.y
-
-        if (position.x > bounds.max.x) { speed.x *= -1 }
-        if (position.x < bounds.min.x) { speed.x *= -1 }
-        if (position.y > bounds.max.y) { speed.y *= -1 }
-        if (position.y < bounds.min.y) { speed.y *= -1 }
-
-        if (position.x > bounds.max.x) { position.x = bounds.max.x; }
-        if (position.x < bounds.min.x) { position.x = bounds.min.x; }
-        if (position.y > bounds.max.y) { position.y = bounds.max.y; }
-        if (position.y < bounds.min.y) { position.y = bounds.min.y; }
-
-        tilemapContainer.x = position.x
-        tilemapContainer.y = position.y
-    })
-}
-
-const getPositionBounds = (tilemapData, screenSize, bounds = { min: { x: 0, y: 0 }, max: { x: 0, y: 0 } }) => {
-    bounds.min.x = -1 * (tilemapData.width * tilemapData.tilewidth) + screenSize.w
-    bounds.min.y = -1 * (tilemapData.height * tilemapData.tileheight) + screenSize.h
-    bounds.max.x = 0
-    bounds.max.y = 0
-    return bounds;
-}
-

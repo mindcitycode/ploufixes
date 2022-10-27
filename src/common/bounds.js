@@ -1,0 +1,1 @@
+export const Bounds = (minX = 0, minY = 0, maxX = 0, maxY = 0) => ({ minX, minY, maxX, maxY })
