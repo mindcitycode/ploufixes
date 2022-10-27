@@ -3,6 +3,7 @@ const MSG_TYPE_HERE_IS_YOUR_ID = 2
 const MSG_TYPE_CANNOT_CONNECT_SERVER_FULL = 3
 const MSG_TYPE_GAME_CLIENT_LEFT = 4
 const MSG_TYPE_GAME_CLIENT_JOINED = 5
+
 export const GameTerminateMessage = id => ({ type: MSG_TYPE_GAME_TERMINATE, gameId: id })
 export const HereIsYourIdMessage = id => ({ type: MSG_TYPE_HERE_IS_YOUR_ID, clientId: id })
 export const CannotConnectServerFullMessage = () => ({ type: MSG_TYPE_CANNOT_CONNECT_SERVER_FULL })
@@ -15,3 +16,6 @@ export const MSG_TYPE_GAME_CREATED_KO = 7
 
 export const GameCreatedOkMessage = id => ({ type : MSG_TYPE_GAME_CREATED_OK, gameId : id })
 export const GameCreatedKoMessage = () => ({ type : MSG_TYPE_GAME_CREATED_KO })
+
+export const MSG_TYPE_WORLD_UPDATE = 100
+export const WorldUpdateMessage = (t,serializedWorld) => ({ type : MSG_TYPE_WORLD_UPDATE, t, serializedWorld/*gameId : id */})
