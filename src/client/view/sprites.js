@@ -15,7 +15,7 @@ export const loadSpritesheet = async (atlasName) => {
     return { atlasData, spritesheet }
 }
 
-export const testSpritesheet = async (app) => {
+export const testSpritesheet = async (container) => {
 
     const { atlasData, spritesheet } = await loadSpritesheet('combined.json')
     let x = 0
@@ -34,9 +34,7 @@ export const testSpritesheet = async (app) => {
             x = 0
             y += 32
         }
-        asprite.zIndex = 100
-        app.stage.addChild(asprite)
+        container.addChild(asprite)
         asprite.gotoAndPlay(0)
-
     })
 }
