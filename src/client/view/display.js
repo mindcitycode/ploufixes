@@ -5,12 +5,18 @@ import { parseTilemap, instanciateTilemapContainer } from './tilemap.js'
 import { resizeCanvas } from './screen.js';
 import { instanciateTilemapRTree } from '../../common/tree.js'
 import { getTilemapDataBounds } from '../../common/tilemap.js'
+import { installFonts } from './text.js'
+import { Bounds, getHeight, getWidth } from '../../common/bounds.js';
+import { createTitleMenu } from './text.js';
 
 export const createDisplay = async () => {
 
     // properties
     const viewSize = { w: 640, h: 360 }
     const scaleToInteger = true
+
+    // install fonts
+    await installFonts()
 
     // create app
     const app = new PIXI.Application({ width: viewSize.w, height: viewSize.h });
@@ -20,12 +26,6 @@ export const createDisplay = async () => {
     console.log('view', app.view)
 
     const loadGame = async (gameOptions) => {
-
-        /*
-                const packBasePath = 'Robot Warfare Asset Pack 22-11-24'
-                const tilemapFilename = 'map0.tmj'
-                const spriteAtlasFilename = 'combined.json'
-        */
 
         const { packBasePath, tilemapFilename, spriteAtlasFilename } = gameOptions
 
@@ -43,9 +43,10 @@ export const createDisplay = async () => {
         scrollableContainer.addChild(spritesContainer)
         const { atlasData, spritesheet } = await loadSpritesheet(spriteAtlasFilename, packBasePath)
 
-        const tf = await createTextFields()
-        tf.zIndex = 888
-        scrollableContainer.addChild(tf)
+        // title/menu container
+        const menuContainer = await createTitleMenu()
+        menuContainer.zIndex = 888
+     //   scrollableContainer.addChild(menuContainer)
 
         // sprites
         const aSprites = new Map()
@@ -61,12 +62,12 @@ export const createDisplay = async () => {
             return aSprites.get(pid) || createASprite(pid)
         }
         const removeASprite = pid => {
-            const aSprite = aSprites.get( pid )
-            if ( aSprite ){
+            const aSprite = aSprites.get(pid)
+            if (aSprite) {
                 aSprite.destroy()
             }
         }
-       
+
         // tilemap
         const parsedTilemap = await parseTilemap(tilemapFilename, packBasePath)
         const tilemapContainer = await instanciateTilemapContainer(parsedTilemap)
@@ -130,9 +131,6 @@ const ScrollablePositioner = (scrollableContainer, terrainBounds, viewSize) => {
         centerOnTarget
     }
 }
-
-import { Bounds, getHeight, getWidth } from '../../common/bounds.js';
-import { createTextFields } from './text.js';
 
 const getTerrainTopLeftPositionBounds = (terrainBounds, viewSize, bounds = Bounds()) => {
     bounds.minX = -1 * terrainBounds.maxX + viewSize.w

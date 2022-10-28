@@ -7,7 +7,10 @@ import { createRegisteredWorld, worldEntitiesToObject } from '../game/world.js'
 import { defineDeserializer, DESERIALIZE_MODE, getAllEntities, hasComponent } from 'bitecs'
 import { Position } from '../game/components/position.js'
 
+
 const go = async () => {
+
+    
 
     const display = await createDisplay()
     let gameDisplay = undefined
