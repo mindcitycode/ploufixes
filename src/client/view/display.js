@@ -31,7 +31,7 @@ export const createDisplay = async () => {
     spritesContainer.zIndex = 666
     scrollableContainer.addChild(spritesContainer)
     const { atlasData, spritesheet } = await loadSpritesheet('combined.json', packBasePath)
-    
+
     // create a sprite
     const asprite = new PIXI.AnimatedSprite(spritesheet.animations["big-explosion"]);
     spritesContainer.addChild(asprite)
@@ -52,9 +52,12 @@ export const createDisplay = async () => {
     // view positioning 
     const scrollablePositioner = ScrollablePositioner(scrollableContainer, terrainBounds, viewSize)
 
-    const centerTarget = { x: terrainBounds.maxX, y: terrainBounds.maxY }
+    //    showAroundTerrain(terrainBounds, scrollablePositioner, app)
+    return asprite
+}
 
-    /*
+const showAroundTerrain = (terrainBounds, scrollablePositioner, app) => {
+    const centerTarget = { x: terrainBounds.maxX, y: terrainBounds.maxY }
     const rps = 0.1
     const circle = {
         radius: Math.max(getWidth(terrainBounds), getHeight(terrainBounds)) / 2,
@@ -64,15 +67,16 @@ export const createDisplay = async () => {
         }
     }
     console.log('circle', circle)
-    app.ticker.add(() => {
+    const tick = () => {
         const ts = Date.now() / 1000
         const a = ts * 2 * Math.PI * rps
         centerTarget.x = circle.center.x + circle.radius * Math.cos(a)
         centerTarget.y = circle.center.y + circle.radius * Math.sin(a)
         scrollablePositioner.centerOnTarget(centerTarget)
-    })
-    */
-    return asprite
+
+    }
+    app.ticker.add( tick )
+    return () => app.ticker.remove( tick )
 }
 
 const ScrollablePositioner = (scrollableContainer, terrainBounds, viewSize) => {
