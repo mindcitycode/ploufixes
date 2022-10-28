@@ -43,6 +43,10 @@ export const createDisplay = async () => {
         scrollableContainer.addChild(spritesContainer)
         const { atlasData, spritesheet } = await loadSpritesheet(spriteAtlasFilename, packBasePath)
 
+        const tf = await createTextFields()
+        tf.zIndex = 888
+        scrollableContainer.addChild(tf)
+
         // sprites
         const aSprites = new Map()
         const createASprite = pid => {
@@ -128,6 +132,7 @@ const ScrollablePositioner = (scrollableContainer, terrainBounds, viewSize) => {
 }
 
 import { Bounds, getHeight, getWidth } from '../../common/bounds.js';
+import { createTextFields } from './text.js';
 
 const getTerrainTopLeftPositionBounds = (terrainBounds, viewSize, bounds = Bounds()) => {
     bounds.minX = -1 * terrainBounds.maxX + viewSize.w
