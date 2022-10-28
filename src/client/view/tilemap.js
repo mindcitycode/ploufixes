@@ -29,10 +29,11 @@ export const atlasDataFromTileset = tilesetData => {
     return atlasData
 }
 
+import { assetPath } from '../assetPath.js'
 export const parseTilemap = async (tilemapName, packBasePath) => {
 
     // load tilemap data
-    const tilemapPath = [packBasePath, tilemapName].join('/')
+    const tilemapPath = assetPath(packBasePath, tilemapName)
     const tilemapData = await fetch(tilemapPath).then(x => x.json())
     console.log('tilemapData', tilemapData)
 
@@ -42,7 +43,7 @@ export const parseTilemap = async (tilemapName, packBasePath) => {
 
     // build spritesheet for tilemap from atlas data
     const spritesheets = atlasseDatas.map(atlasData => {
-        const imagePath = [packBasePath, atlasData.meta.image].join('/')
+        const imagePath = assetPath(packBasePath, atlasData.meta.image)
         const spritesheet = new PIXI.Spritesheet(
             PIXI.BaseTexture.from(imagePath),
             atlasData

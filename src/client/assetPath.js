@@ -1,0 +1,1 @@
+export const assetPath = (...p) => ['assets', ...p].join('/')

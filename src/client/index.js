@@ -2,7 +2,7 @@ import { createDisplay } from './view/display.js'
 
 import { processGameUpdate, getCurrentState } from './state.js'
 import { makeWsUrl } from './network.js'
-import { MSG_TYPE_WORLD_UPDATE, parseBinaryMessage } from '../common/messages.js'
+import { MSG_TYPE_GAME_CREATION_OPTIONS, MSG_TYPE_WORLD_UPDATE, parseBinaryMessage } from '../common/messages.js'
 import { createRegisteredWorld, worldEntitiesToObject } from '../game/world.js'
 import { defineDeserializer, DESERIALIZE_MODE, getAllEntities, hasComponent } from 'bitecs'
 import { Position } from '../game/components/position.js'
@@ -46,7 +46,7 @@ function websocket() {
 
 
     socket.addEventListener('message', async function (event) {
-        //try {
+
         if ((event.data instanceof Blob)) {
             const arrayBuffer = await event.data.arrayBuffer()
             const message = parseBinaryMessage(arrayBuffer)
@@ -69,16 +69,21 @@ function websocket() {
                     break;
                 }
                 default: {
-                    throw new Error('wrong message type', message.type)
+                    throw new Error('wrong (binary) message type', message.type)
                 }
             }
         } else {
             const message = JSON.parse(event.data)
-            console.log('DATA', event.data, typeof event.data, message)
+            switch (message.type) {
+                case MSG_TYPE_GAME_CREATION_OPTIONS: {
+                    console.log('game creation options message',message)
+                    break;
+                }
+                default: {
+                    throw new Error('wrong (json) message type', message.type)
+                }
+            }
         }
-        //} catch (e) {
-        //   console.error(e)
-        //}
     });
 
 

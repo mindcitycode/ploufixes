@@ -11,7 +11,7 @@ export const createDisplay = async () => {
     // properties
     const viewSize = { w: 640, h: 360 }
     const scaleToInteger = true
-    const packBasePath = 'assets/Robot Warfare Asset Pack 22-11-24'
+    const packBasePath = 'Robot Warfare Asset Pack 22-11-24'
     const tilemapFilename = 'map0.tmj'
 
     // create app
