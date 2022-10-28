@@ -137,6 +137,7 @@ export const worldEntitiesToObject = world => {
     })
     return objects
 }
+
 const test = () => {
     const game = createGame()
     const reWorld = createRegisteredWorld()
