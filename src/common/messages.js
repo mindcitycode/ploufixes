@@ -29,12 +29,11 @@ export const WorldUpdateMessage = (t, serializedWorld) => {
     return Buffer.concat([new Uint8Array(array), new Uint8Array(serializedWorld)])
 }
 
-export const parseBinaryMessage = arrayBuffer => {
+export const parseBinaryServerMessage = arrayBuffer => {
 
     const view = new DataView(arrayBuffer)
     const type = view.getUint16(0)
-   // console.log('type0',type)
-  
+
     switch (type) {
         case MSG_TYPE_WORLD_UPDATE: {
             const t = Number(view.getBigInt64(2))
@@ -43,9 +42,41 @@ export const parseBinaryMessage = arrayBuffer => {
                 t,
                 serializedWorld: arrayBuffer.slice(10)
             }
+
         }
         default: {
-            throw new Error('Unknown binary message type ' + type)
+            throw new Error('Unknown binary server message type ' + type)
+        }
+    }
+}
+
+// client -> server
+
+export const MSG_TYPE_CLIENT_KEY_CONTROLLER_INPUT = 300
+export const ClientKeyControllerInputMessage = state => {
+    const array = new ArrayBuffer(4)
+    const dataView = new DataView(array)
+    dataView.setUint16(0, MSG_TYPE_CLIENT_KEY_CONTROLLER_INPUT)
+    dataView.setUint16(2, state)
+    return array
+}
+
+function toArrayBuffer(buffer) {
+    return buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
+}
+export const parseBinaryClientMessage = buffer => {
+    const arrayBuffer = toArrayBuffer(buffer)
+    const dataView = new DataView(arrayBuffer)
+    const type = dataView.getUint16(0)
+    switch (type) {
+        case MSG_TYPE_CLIENT_KEY_CONTROLLER_INPUT: {
+            return {
+                type,
+                state: dataView.getUint16(2)
+            }
+        }
+        default: {
+            throw new Error('Unknown binary client message type ' + type)
         }
     }
 }

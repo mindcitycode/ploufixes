@@ -1,5 +1,5 @@
 import { Bus } from '../common/bus.js'
-import { WorldUpdateMessage } from '../common/messages.js'
+import { MSG_TYPE_CLIENT_KEY_CONTROLLER_INPUT, WorldUpdateMessage } from '../common/messages.js'
 import {
     createWorld,
     Types,
@@ -35,10 +35,10 @@ export const createRegisteredWorld = () => {
     return world
 }
 
-export const createGame = ({tilemapData}) => {
+export const createGame = ({ tilemapData }) => {
 
     // properties
-    const frameRate =  10
+    const frameRate = 10
 
     // create world and serializer 
     const world = createRegisteredWorld()
@@ -91,11 +91,20 @@ export const createGame = ({tilemapData}) => {
     const start = () => { intervalHandler = setInterval(step, 1000 / frameRate) }
     const stop = () => { clearInterval(intervalHandler) }
 
+    // inputs
+    const onClientMessage = (message) => {
+        switch (message.type) {
+            case MSG_TYPE_CLIENT_KEY_CONTROLLER_INPUT: {
+                console.log('message !!!!!',message)
+            }
+        }
+    }
     return {
         worldUpdatedBus,
         stop: () => clearInterval(intervalHandler),
         start,
         step,
+        onClientMessage
     }
 }
 

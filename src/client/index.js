@@ -2,15 +2,18 @@ import { createDisplay } from './view/display.js'
 
 import { processGameUpdate, getCurrentState } from './state.js'
 import { makeWsUrl } from './network.js'
-import { MSG_TYPE_GAME_CREATION_OPTIONS, MSG_TYPE_WORLD_UPDATE, parseBinaryMessage } from '../common/messages.js'
+import { ClientKeyControllerInputMessage, MSG_TYPE_GAME_CREATION_OPTIONS, MSG_TYPE_WORLD_UPDATE, parseBinaryServerMessage } from '../common/messages.js'
 import { createRegisteredWorld, worldEntitiesToObject } from '../game/world.js'
 import { defineDeserializer, DESERIALIZE_MODE, getAllEntities, hasComponent } from 'bitecs'
 import { Position } from '../game/components/position.js'
+import { KeyboardInput } from './inputs.js'
 
 
 const go = async () => {
 
-    
+
+    const keyboardInput = KeyboardInput()
+
 
     const display = await createDisplay()
     let gameDisplay = undefined
@@ -40,16 +43,25 @@ const go = async () => {
         const socket = new WebSocket(makeWsUrl('/hello-ws', 80))
         console.log('websocket', socket)
 
+        const sendKeyboardInputMessage = (state) => socket.send(ClientKeyControllerInputMessage(state))
+
         socket.addEventListener('open', function (event) {
             console.log('socket is opened')
-            socket.send('Coucou le serveur !');
+        //    socket.send('Coucou le serveur !');
+            keyboardInput.bus.addListener(sendKeyboardInputMessage)
         });
+
+        const onCloseOrError = () => {
+            keyboardInput.bus.removeListener(sendKeyboardInputMessage)
+        }
         socket.addEventListener('close', function (event) {
             console.log('Byebye le serveur !');
+            onCloseOrError()
         });
 
         socket.addEventListener('error', function (event) {
             console.log('Voici un message de erreur', event);
+            onCloseOrError()
         });
 
 
@@ -57,7 +69,7 @@ const go = async () => {
 
             if ((event.data instanceof Blob)) {
                 const arrayBuffer = await event.data.arrayBuffer()
-                const message = parseBinaryMessage(arrayBuffer)
+                const message = parseBinaryServerMessage(arrayBuffer)
                 switch (message.type) {
                     case MSG_TYPE_WORLD_UPDATE: {
                         deserialize(world, message.serializedWorld, DESERIALIZE_MODE.MAP)

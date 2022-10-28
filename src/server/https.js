@@ -161,7 +161,7 @@ import { loadTilemapFromFs } from './serverAssets.js'
 const gameOptions = {
     packBasePath: 'Robot Warfare Asset Pack 22-11-24',
     tilemapFilename: 'map0.tmj',
-    spriteAtlasFilename : 'combined.json'
+    spriteAtlasFilename: 'combined.json'
 
 }
 const tilemapData = await loadTilemapFromFs(gameOptions.tilemapFilename, gameOptions.packBasePath)
@@ -170,20 +170,20 @@ game.start()
 
 server.get('/hello-ws', { websocket: true }, (connection, req) => {
 
-    /*console.log('websocket connection')
-    connection.socket.send(JSON.stringify(['this', 'is', 'an', 'json array']))
-    connection.socket.send(JSON.stringify({ 'this': 'is', 'an': 'json object' }))
-    connection.socket.send(JSON.stringify('"this is a json tring"'))
-*/
+    // send game options
     connection.socket.send(JSON.stringify(GameCreationOptionsMessages(gameOptions)))
     game.worldUpdatedBus.addListener(worldUpdateMessage => {
-        connection.socket.send(worldUpdateMessage)//.serializedWorld)
+        // send world update
+        connection.socket.send(worldUpdateMessage)
     })
 
-    //connection.socket.send("hello from server")
-    connection.socket.on('message', message => {
-        console.log('received socket message', message.toString())
-        //  connection.socket.send('Hello Fastify WebSockets');
+    connection.socket.on('message', async message => {
+        try {
+            const parsed = parseBinaryClientMessage(message)
+            game.onClientMessage(parsed)
+        } catch (e) {
+            console.log(e)
+        }
     });
     //  clientSends.push(connection.socket.send.bind(connection.socket))
 });
@@ -206,7 +206,7 @@ server.register(fastifyStatic, {
 
 
 import * as fsp from "node:fs/promises"
-import { GameCreationOptionsMessages } from '../common/messages.js'
+import { GameCreationOptionsMessages, parseBinaryClientMessage } from '../common/messages.js'
 server.get(
     '/*',
     async (req, reply) => {
