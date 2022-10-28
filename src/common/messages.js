@@ -20,6 +20,7 @@ export const GameCreatedKoMessage = () => ({ type: MSG_TYPE_GAME_CREATED_KO })
 export const MSG_TYPE_GAME_CREATION_OPTIONS = 100
 export const GameCreationOptionsMessages = gameOptions => ({ type: MSG_TYPE_GAME_CREATION_OPTIONS, gameOptions })
 
+
 export const MSG_TYPE_WORLD_UPDATE = 200
 export const WorldUpdateMessage = (t, serializedWorld) => {
     const array = new ArrayBuffer(10)
@@ -29,8 +30,11 @@ export const WorldUpdateMessage = (t, serializedWorld) => {
 }
 
 export const parseBinaryMessage = arrayBuffer => {
+
     const view = new DataView(arrayBuffer)
     const type = view.getUint16(0)
+   // console.log('type0',type)
+  
     switch (type) {
         case MSG_TYPE_WORLD_UPDATE: {
             const t = Number(view.getBigInt64(2))

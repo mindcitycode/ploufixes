@@ -160,7 +160,7 @@ import { createGame } from '../game/world.js'
 import { loadTilemapFromFs } from './serverAssets.js'
 const gameOptions = {
     tilemapName: 'map0.tmj',
-    packBasePath : 'Robot Warfare Asset Pack 22-11-24'
+    packBasePath: 'Robot Warfare Asset Pack 22-11-24'
 }
 const tilemapData = await loadTilemapFromFs(gameOptions.tilemapName, gameOptions.packBasePath)
 const game = createGame({ tilemapData })
@@ -173,7 +173,7 @@ server.get('/hello-ws', { websocket: true }, (connection, req) => {
     connection.socket.send(JSON.stringify({ 'this': 'is', 'an': 'json object' }))
     connection.socket.send(JSON.stringify('"this is a json tring"'))
 */
-    connection.socket.send(JSON.stringify(GameCreationOptionsMessages(gameOptions)))
+    //  connection.socket.send(JSON.stringify(GameCreationOptionsMessages(gameOptions)))
 
 
     game.worldUpdatedBus.addListener(worldUpdateMessage => {

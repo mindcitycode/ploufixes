@@ -26,6 +26,8 @@ go()
 
 function websocket() {
 
+    const world = createRegisteredWorld()
+    const deserialize = defineDeserializer(world)
 
     const socket = new WebSocket(makeWsUrl('/hello-ws', 80))
     console.log('websocket', socket)
@@ -42,10 +44,9 @@ function websocket() {
         console.log('Voici un message de erreur', event);
     });
 
-    const world = createRegisteredWorld()
-    const deserialize = defineDeserializer(world)
 
     socket.addEventListener('message', async function (event) {
+        //try {
         if ((event.data instanceof Blob)) {
             const arrayBuffer = await event.data.arrayBuffer()
             const message = parseBinaryMessage(arrayBuffer)
@@ -65,15 +66,19 @@ function websocket() {
                         position: positions[0],
                     }
                     processGameUpdate(state)
+                    break;
                 }
                 default: {
-                    throw new Error('wrong message type', type)
+                    throw new Error('wrong message type', message.type)
                 }
             }
         } else {
             const message = JSON.parse(event.data)
             console.log('DATA', event.data, typeof event.data, message)
         }
+        //} catch (e) {
+        //   console.error(e)
+        //}
     });
 
 
