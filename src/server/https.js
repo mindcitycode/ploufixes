@@ -168,7 +168,14 @@ const tilemapData = await loadTilemapFromFs(gameOptions.tilemapFilename, gameOpt
 const game = createGame({ tilemapData })
 game.start()
 
+const IDLE_CHECK_ACTIVATED = true
+const IDLE_MAXIMUM_DURATION_SECONDS = 30
+const IDLE_CHECK_INTERVAL_SECONDS = 10
+
+
 server.get('/hello-ws', { websocket: true }, (connection, req) => {
+
+    let lastSeen = Date.now()
 
     // send game options
     connection.socket.send(JSON.stringify(GameCreationOptionsMessages(gameOptions)))
@@ -178,6 +185,7 @@ server.get('/hello-ws', { websocket: true }, (connection, req) => {
     })
 
     connection.socket.on('message', async message => {
+        lastSeen = Date.now()
         try {
             const parsed = parseBinaryClientMessage(message)
             game.onClientMessage(parsed)
@@ -185,7 +193,22 @@ server.get('/hello-ws', { websocket: true }, (connection, req) => {
             console.log(e)
         }
     });
-    //  clientSends.push(connection.socket.send.bind(connection.socket))
+
+    let interval;
+    const checkAlive = () => {
+        const now = Date.now()
+        const idleDurationSeconds = (now - lastSeen) / 1000
+        const removeClient = idleDurationSeconds > IDLE_MAXIMUM_DURATION_SECONDS
+        if (removeClient) {
+            clearInterval(interval)
+            connection.socket.send(ClientBeenIdleTooLongMessage())
+            connection.socket.close()
+        }
+    }
+    if (IDLE_CHECK_ACTIVATED) {
+        interval = setInterval(checkAlive, 1000 * IDLE_CHECK_INTERVAL_SECONDS)
+    }
+      //  clientSends.push(connection.socket.send.bind(connection.socket))
 });
 
 import fastifyStatic from '@fastify/static'
@@ -204,7 +227,7 @@ server.register(fastifyStatic, {
 
 
 import * as fsp from "node:fs/promises"
-import { GameCreationOptionsMessages, parseBinaryClientMessage } from '../common/messages.js'
+import { ClientBeenIdleTooLongMessage, GameCreationOptionsMessages, parseBinaryClientMessage } from '../common/messages.js'
 server.get(
     '/*',
     async (req, reply) => {

@@ -28,7 +28,12 @@ export const WorldUpdateMessage = (t, serializedWorld) => {
     new DataView(array).setBigInt64(2, BigInt(t))
     return Buffer.concat([new Uint8Array(array), new Uint8Array(serializedWorld)])
 }
-
+export const MSG_TYPE_CLIENT_BEEN_IDLE_TOO_LONG = 201
+export const ClientBeenIdleTooLongMessage = () => {
+    const array = new ArrayBuffer(2)
+    new DataView(array).setUint16(0, MSG_TYPE_CLIENT_BEEN_IDLE_TOO_LONG)
+    return Buffer.concat([new Uint8Array(array)])
+}
 export const parseBinaryServerMessage = arrayBuffer => {
 
     const view = new DataView(arrayBuffer)
@@ -42,7 +47,9 @@ export const parseBinaryServerMessage = arrayBuffer => {
                 t,
                 serializedWorld: arrayBuffer.slice(10)
             }
-
+        }
+        case MSG_TYPE_CLIENT_BEEN_IDLE_TOO_LONG: {
+            return { type }
         }
         default: {
             throw new Error('Unknown binary server message type ' + type)
