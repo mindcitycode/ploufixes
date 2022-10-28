@@ -66,7 +66,6 @@ const showAroundTerrain = (terrainBounds, scrollablePositioner, app) => {
             y: (terrainBounds.minY + terrainBounds.maxY) / 2,
         }
     }
-    console.log('circle', circle)
     const tick = () => {
         const ts = Date.now() / 1000
         const a = ts * 2 * Math.PI * rps
