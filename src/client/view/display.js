@@ -11,9 +11,6 @@ export const createDisplay = async () => {
     // properties
     const viewSize = { w: 640, h: 360 }
     const scaleToInteger = true
-    const packBasePath = 'Robot Warfare Asset Pack 22-11-24'
-    const tilemapFilename = 'map0.tmj'
-    const spriteAtlasFilename = 'combined.json'
 
     // create app
     const app = new PIXI.Application({ width: viewSize.w, height: viewSize.h });
@@ -22,40 +19,78 @@ export const createDisplay = async () => {
     app.ticker.add(() => resizeCanvas(app.view, viewSize, scaleToInteger))
     console.log('view', app.view)
 
-    // const scrollable container ( terrain + sprites on terrain )
-    const scrollableContainer = new PIXI.Container()
-    scrollableContainer.sortableChildren = true
-    app.stage.addChild(scrollableContainer)
+    const loadGame = async (gameOptions) => {
 
-    // sprites container
-    const spritesContainer = new PIXI.Container()
-    spritesContainer.zIndex = 666
-    scrollableContainer.addChild(spritesContainer)
-    const { atlasData, spritesheet } = await loadSpritesheet(spriteAtlasFilename, packBasePath)
+        /*
+                const packBasePath = 'Robot Warfare Asset Pack 22-11-24'
+                const tilemapFilename = 'map0.tmj'
+                const spriteAtlasFilename = 'combined.json'
+        */
 
-    // create a sprite
-    const asprite = new PIXI.AnimatedSprite(spritesheet.animations["big-explosion"]);
-    spritesContainer.addChild(asprite)
-    asprite.animationSpeed = 0.1
-    asprite.gotoAndPlay(0)
+        const { packBasePath, tilemapFilename, spriteAtlasFilename } = gameOptions
 
-    //    testSpritesheet(spritesContainer)
+        const gameContainer = new PIXI.Container()
+        app.stage.addChild(gameContainer)
 
-    // tilemap
-    const parsedTilemap = await parseTilemap(tilemapFilename, packBasePath)
-    const tilemapContainer = await instanciateTilemapContainer(parsedTilemap)
+        // const scrollable container ( terrain + sprites on terrain )
+        const scrollableContainer = new PIXI.Container()
+        scrollableContainer.sortableChildren = true
+        gameContainer.addChild(scrollableContainer)
 
-    const terrainBounds = getTilemapDataBounds(parsedTilemap.tilemapData)
-    console.log('terrainBounds', terrainBounds)
+        // sprites container
+        const spritesContainer = new PIXI.Container()
+        spritesContainer.zIndex = 666
+        scrollableContainer.addChild(spritesContainer)
+        const { atlasData, spritesheet } = await loadSpritesheet(spriteAtlasFilename, packBasePath)
 
-    scrollableContainer.addChild(tilemapContainer)
-    tilemapContainer.zIndex = 0
+        // sprites
+        const aSprites = new Map()
+        const createASprite = pid => {
+            const aSprite = new PIXI.AnimatedSprite(spritesheet.animations["big-explosion"]);
+            aSprite.animationSpeed = 0.1
+            aSprite.gotoAndPlay(0)
+            aSprites.set(pid, aSprite)
+            spritesContainer.addChild(aSprite)
+            return aSprite
+        }
+        const getOrCreateASprite = pid => {
+            return aSprites.get(pid) || createASprite(pid)
+        }
+        const removeASprite = pid => {
+            const aSprite = aSprites.get( pid )
+            if ( aSprite ){
+                aSprite.destroy()
+            }
+        }
+       
+        // tilemap
+        const parsedTilemap = await parseTilemap(tilemapFilename, packBasePath)
+        const tilemapContainer = await instanciateTilemapContainer(parsedTilemap)
 
-    // view positioning 
-    const scrollablePositioner = ScrollablePositioner(scrollableContainer, terrainBounds, viewSize)
+        const terrainBounds = getTilemapDataBounds(parsedTilemap.tilemapData)
+        console.log('terrainBounds', terrainBounds)
 
+        scrollableContainer.addChild(tilemapContainer)
+        tilemapContainer.zIndex = 0
+
+        // view positioning 
+        const scrollablePositioner = ScrollablePositioner(scrollableContainer, terrainBounds, viewSize)
+
+        return {
+            destroy: () => {
+                gameContainer.destroy(true, true)
+            },
+            getOrCreateASprite,
+            removeASprite
+        }
+    }
     // const stopShowAroundTerrain = showAroundTerrain(terrainBounds, scrollablePositioner, app)
-    return asprite
+    return {
+        destroy: () => {
+            app.destroy(true, true)
+        },
+        loadGame
+    }
 }
 
 const showAroundTerrain = (terrainBounds, scrollablePositioner, app) => {

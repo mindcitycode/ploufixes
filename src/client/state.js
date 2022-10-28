@@ -40,9 +40,37 @@ function getBaseUpdate() {
 }
 function interpolatePositions(basePosition, nextPosition, r) {
     return [
-        basePosition[0] * (1-r) + nextPosition[0] * r,
-        basePosition[1] * (1-r) + nextPosition[1] * r,
+        basePosition[0] * (1 - r) + nextPosition[0] * r,
+        basePosition[1] * (1 - r) + nextPosition[1] * r,
     ]
+}
+function interpolateFloat(basePosition, nextPosition, r) {
+    return basePosition * (1 - r) + nextPosition * r
+}
+function interpolateObjects(baseOws, nextOws, r) {
+    const basePids = Object.keys(baseOws.byPid)
+    const ows = {
+        byPid : {}
+    }
+    basePids.forEach(pid => {
+        const baseObject = baseOws.byPid[pid]
+        const nextObject = nextOws.byPid[pid]
+        const interpolatedObject = {
+            baseObject,nextObject,
+       
+            PermanentId:  { 
+                hasPermanentId: true, 
+                permanentId_pid: pid 
+            },
+            Position: {
+                hasPosition: true, 
+                position_x: interpolateFloat(baseObject.Position.position_x,nextObject.Position.position_x,r),
+                position_y: interpolateFloat(baseObject.Position.position_y,nextObject.Position.position_y,r),
+            }
+        }
+        ows.byPid[pid] = interpolatedObject
+    })
+    return ows
 }
 export function getCurrentState() {
     if (!firstServerTimestamp) {
@@ -63,7 +91,8 @@ export function getCurrentState() {
         const next = gameUpdates[base + 1];
         const r = (serverTime - baseUpdate.t) / (next.t - baseUpdate.t);
         return {
-            position: interpolatePositions(baseUpdate.position, next.position, r)
+            t : interpolateFloat(baseUpdate.t,next.t,r),
+            ows: interpolateObjects(baseUpdate.ows, next.ows, r)
             //me: interpolateObject(baseUpdate.me, next.me, r),
             //others: interpolateObjectArray(baseUpdate.others, next.others, r),
             //bullets: interpolateObjectArray(baseUpdate.bullets, next.bullets, r),

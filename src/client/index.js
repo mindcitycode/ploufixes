@@ -8,85 +8,105 @@ import { defineDeserializer, DESERIALIZE_MODE, getAllEntities, hasComponent } fr
 import { Position } from '../game/components/position.js'
 
 const go = async () => {
-    const asprite = await createDisplay()
+
+    const display = await createDisplay()
+    let gameDisplay = undefined
 
     const animationFrame = () => {
         const state = getCurrentState()
-        //console.log('>',state)
-        if (state?.position) {
-            asprite.x = state.position[0]
-            asprite.y = state.position[1]
+
+        if (Math.random() > 0.99) {
+            console.log('>>>>>>', state)
+        }
+        if (gameDisplay !== undefined) {
+            for (const [pid, object] of Object.entries(state.ows.byPid)) {
+                console.log(object)
+                const asprite = gameDisplay.getOrCreateASprite(pid)
+                asprite.x = object.Position.position_x
+                asprite.y = object.Position.position_y
+                //console.log(pid)
+            }
+
         }
         requestAnimationFrame(animationFrame)
     }
     animationFrame()
+
+
+    function websocket() {
+
+        const world = createRegisteredWorld()
+        const deserialize = defineDeserializer(world)
+
+        const socket = new WebSocket(makeWsUrl('/hello-ws', 80))
+        console.log('websocket', socket)
+
+        socket.addEventListener('open', function (event) {
+            console.log('socket is opened')
+            socket.send('Coucou le serveur !');
+        });
+        socket.addEventListener('close', function (event) {
+            console.log('Byebye le serveur !');
+        });
+
+        socket.addEventListener('error', function (event) {
+            console.log('Voici un message de erreur', event);
+        });
+
+
+        socket.addEventListener('message', async function (event) {
+
+            if ((event.data instanceof Blob)) {
+                const arrayBuffer = await event.data.arrayBuffer()
+                const message = parseBinaryMessage(arrayBuffer)
+                switch (message.type) {
+                    case MSG_TYPE_WORLD_UPDATE: {
+                        const object = worldEntitiesToObject(world)
+                        const ows = {
+                            byPid: Object.fromEntries(object.filter(o => o.PermanentId.hasPermanentId === true).map(o => {
+                                return [o.PermanentId.permanentId_pid, o]
+                            })),
+                            noPid: object.filter(o => o.PermanentId.hasPermanentId === false)
+                        }
+                        deserialize(world, message.serializedWorld, DESERIALIZE_MODE.MAP)
+                        const positions = getAllEntities(world).filter(eid => (
+                            hasComponent(world, Position, eid)
+                        )).map(eid => {
+                            return [
+                                Position.x[eid],
+                                Position.y[eid],
+                            ]
+                        })
+                        const state = {
+                            t: message.t,
+                            //                            position: positions[0],
+                            ows
+                        }
+                        processGameUpdate(state)
+                        break;
+                    }
+                    default: {
+                        throw new Error('wrong (binary) message type', message.type)
+                    }
+                }
+            } else {
+                const message = JSON.parse(event.data)
+                switch (message.type) {
+                    case MSG_TYPE_GAME_CREATION_OPTIONS: {
+                        console.log('game creation options message', message)
+                        gameDisplay = await display.loadGame(message.gameOptions)
+                        break;
+                    }
+                    default: {
+                        throw new Error('wrong (json) message type', message.type)
+                    }
+                }
+            }
+        });
+
+
+    }
+    websocket()
+
 }
 go()
-
-
-function websocket() {
-
-    const world = createRegisteredWorld()
-    const deserialize = defineDeserializer(world)
-
-    const socket = new WebSocket(makeWsUrl('/hello-ws', 80))
-    console.log('websocket', socket)
-
-    socket.addEventListener('open', function (event) {
-        console.log('socket is opened')
-        socket.send('Coucou le serveur !');
-    });
-    socket.addEventListener('close', function (event) {
-        console.log('Byebye le serveur !');
-    });
-
-    socket.addEventListener('error', function (event) {
-        console.log('Voici un message de erreur', event);
-    });
-
-
-    socket.addEventListener('message', async function (event) {
-
-        if ((event.data instanceof Blob)) {
-            const arrayBuffer = await event.data.arrayBuffer()
-            const message = parseBinaryMessage(arrayBuffer)
-            switch (message.type) {
-                case MSG_TYPE_WORLD_UPDATE: {
-                    deserialize(world, message.serializedWorld, DESERIALIZE_MODE.MAP)
-                    const positions = getAllEntities(world).filter(eid => (
-                        hasComponent(world, Position, eid)
-                    )).map(eid => {
-                        return [
-                            Position.x[eid],
-                            Position.y[eid],
-                        ]
-                    })
-                    const state = {
-                        t: message.t,
-                        position: positions[0],
-                    }
-                    processGameUpdate(state)
-                    break;
-                }
-                default: {
-                    throw new Error('wrong (binary) message type', message.type)
-                }
-            }
-        } else {
-            const message = JSON.parse(event.data)
-            switch (message.type) {
-                case MSG_TYPE_GAME_CREATION_OPTIONS: {
-                    console.log('game creation options message',message)
-                    break;
-                }
-                default: {
-                    throw new Error('wrong (json) message type', message.type)
-                }
-            }
-        }
-    });
-
-
-}
-websocket()
-
