@@ -22,17 +22,10 @@ import {
 import { Position } from './components/position.js'
 import { Velocity } from './components/velocity.js'
 import { PermanentId } from './components/permanentId.js'
-
 import { timeSystem, movementSystem, destroyerSystem, permnentIdAttributionSystem } from './systems/systems.js'
+import { getTilemapDataBounds } from '../common/tilemap.js'
 
 const pipeline = pipe(movementSystem, timeSystem, destroyerSystem, permnentIdAttributionSystem)
-
-const packBasePath = 'assets/Robot Warfare Asset Pack 22-11-24'
-const loadTilemap = async tilemapName => {
-    const tilemapPath = [packBasePath, tilemapName].join('/')
-    const tilemapData = await fetch(tilemapPath).then(x => x.json())
-    console.log('tilemapData', tilemapData)
-}
 
 export const createRegisteredWorld = () => {
     const world = createWorld()
@@ -42,7 +35,7 @@ export const createRegisteredWorld = () => {
     return world
 }
 
-export const createGame = () => {
+export const createGame = ({tilemapData}) => {
 
     // properties
     const frameRate =  10
@@ -52,9 +45,10 @@ export const createGame = () => {
     const serialize = defineSerializer(world)
 
     // update bus
-    const worldBus = new Bus()
+    const worldUpdatedBus = new Bus()
 
     // load world
+    const terrainBounds = getTilemapDataBounds(tilemapData)
 
     // create default entities
     const eid0 = addEntity(world)
@@ -90,7 +84,7 @@ export const createGame = () => {
     // world step
     const step = () => {
         pipeline(world)
-        worldBus.say(WorldUpdateMessage(Date.now(), serialize(world)))
+        worldUpdatedBus.say(WorldUpdateMessage(Date.now(), serialize(world)))
     }
     // run
     let intervalHandler = undefined
@@ -98,7 +92,7 @@ export const createGame = () => {
     const stop = () => { clearInterval(intervalHandler) }
 
     return {
-        bus: worldBus,
+        worldUpdatedBus,
         stop: () => clearInterval(intervalHandler),
         start,
         step,

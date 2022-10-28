@@ -39,10 +39,9 @@ const LOGIN_FORM = (username) => HTML('login', `
 
 /////////////////////////////////////////////////
 import fs from 'fs'
-import path, { dirname } from 'path'
-import { fileURLToPath } from 'url';
-const __dirname = dirname(path.join(fileURLToPath(import.meta.url), '..', '..'));
+import path from 'path'
 
+import { __dirname } from './dirname.js'
 import fastify from 'fastify'
 
 const server = fastify({
@@ -158,21 +157,33 @@ await server.register(fastifyWebsocket, {
 });
 
 import { createGame } from '../game/world.js'
-const game = createGame()
+import { loadTilemapFromFs } from './serverAssets.js'
+const gameOptions = {
+    tilemapName: 'map0.tmj',
+    packBasePath : 'Robot Warfare Asset Pack 22-11-24'
+}
+const tilemapData = await loadTilemapFromFs(gameOptions.tilemapName, gameOptions.packBasePath)
+const game = createGame({ tilemapData })
 game.start()
 
 server.get('/hello-ws', { websocket: true }, (connection, req) => {
 
-    console.log('websocket connection')
-  
-    game.bus.addListener( worldUpdateMessage => {
+    /*console.log('websocket connection')
+    connection.socket.send(JSON.stringify(['this', 'is', 'an', 'json array']))
+    connection.socket.send(JSON.stringify({ 'this': 'is', 'an': 'json object' }))
+    connection.socket.send(JSON.stringify('"this is a json tring"'))
+*/
+    connection.socket.send(JSON.stringify(GameCreationOptionsMessages(gameOptions)))
+
+
+    game.worldUpdatedBus.addListener(worldUpdateMessage => {
         connection.socket.send(worldUpdateMessage)//.serializedWorld)
     })
-    
+
     //connection.socket.send("hello from server")
     connection.socket.on('message', message => {
         console.log('received socket message', message.toString())
-      //  connection.socket.send('Hello Fastify WebSockets');
+        //  connection.socket.send('Hello Fastify WebSockets');
     });
     //  clientSends.push(connection.socket.send.bind(connection.socket))
 });
@@ -195,6 +206,7 @@ server.register(fastifyStatic, {
 
 
 import * as fsp from "node:fs/promises"
+import { GameCreationOptionsMessages } from '../common/messages.js'
 server.get(
     '/*',
     async (req, reply) => {

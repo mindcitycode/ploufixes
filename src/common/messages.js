@@ -17,14 +17,17 @@ export const MSG_TYPE_GAME_CREATED_KO = 7
 export const GameCreatedOkMessage = id => ({ type: MSG_TYPE_GAME_CREATED_OK, gameId: id })
 export const GameCreatedKoMessage = () => ({ type: MSG_TYPE_GAME_CREATED_KO })
 
-export const MSG_TYPE_WORLD_UPDATE = 100
+export const MSG_TYPE_GAME_CREATION_OPTIONS = 100
+export const GameCreationOptionsMessages = gameOptions => ({ type: MSG_TYPE_GAME_CREATION_OPTIONS, gameOptions })
 
+export const MSG_TYPE_WORLD_UPDATE = 200
 export const WorldUpdateMessage = (t, serializedWorld) => {
     const array = new ArrayBuffer(10)
     new DataView(array).setUint16(0, MSG_TYPE_WORLD_UPDATE)
     new DataView(array).setBigInt64(2, BigInt(t))
     return Buffer.concat([new Uint8Array(array), new Uint8Array(serializedWorld)])
 }
+
 export const parseBinaryMessage = arrayBuffer => {
     const view = new DataView(arrayBuffer)
     const type = view.getUint16(0)
