@@ -25,7 +25,7 @@ const go = async () => {
 
         if (gameDisplay !== undefined) {
             if (state?.ows?.byPid) {
-                console.log(Object.keys(state.ows.byPid))
+               // console.log(Object.keys(state.ows.byPid))
                 for (const [pid, object] of Object.entries(state.ows.byPid)) {
                     const asprite = gameDisplay.getOrCreateASprite(pid)
                     asprite.x = object.Position.position_x

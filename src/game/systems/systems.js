@@ -26,11 +26,11 @@ export const controlSystem = world => {
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
         const pid = PermanentId.pid[eid]
-        for (i = 0; i < world.incomingControls.length; i++) {
-            if (world.incomingControls[i].pid === pid) {
-                const incomingState = world.incomingControls[i].state
-                world.incomingControls.splice(i, 1)
-                i--
+        for (let j = 0; j < world.incomingControls.length; j++) {
+            if (world.incomingControls[j].pid === pid) {
+                const incomingState = world.incomingControls[j].state
+                world.incomingControls.splice(j, 1)
+                j--
                 Velocity.y[eid] = 100 * (((incomingState & DIRECTION_UP) ? -1 : 0) + ((incomingState & DIRECTION_DOWN) ? 1 : 0))
                 Velocity.x[eid] = 100 * (((incomingState & DIRECTION_LEFT) ? -1 : 0) + ((incomingState & DIRECTION_RIGHT) ? 1 : 0))
             }
