@@ -177,6 +177,12 @@ server.get('/hello-ws', { websocket: true }, (connection, req) => {
 
     let lastSeen = Date.now()
 
+    // add client to game, get game permanentId for client
+    const permanentId = game.addClient()
+
+    // send permanent id to client
+    connection.socket.send(HereIsYourPidMessage(permanentId))
+
     // send game options
     connection.socket.send(JSON.stringify(GameCreationOptionsMessages(gameOptions)))
     game.worldUpdatedBus.addListener(worldUpdateMessage => {
@@ -190,7 +196,7 @@ server.get('/hello-ws', { websocket: true }, (connection, req) => {
             const parsed = parseBinaryClientMessage(message)
             game.onClientMessage(parsed)
         } catch (e) {
-            console.log(e)
+            console.error(e)
         }
     });
 
@@ -208,7 +214,7 @@ server.get('/hello-ws', { websocket: true }, (connection, req) => {
     if (IDLE_CHECK_ACTIVATED) {
         interval = setInterval(checkAlive, 1000 * IDLE_CHECK_INTERVAL_SECONDS)
     }
-      //  clientSends.push(connection.socket.send.bind(connection.socket))
+    //  clientSends.push(connection.socket.send.bind(connection.socket))
 });
 
 import fastifyStatic from '@fastify/static'
@@ -227,7 +233,7 @@ server.register(fastifyStatic, {
 
 
 import * as fsp from "node:fs/promises"
-import { ClientBeenIdleTooLongMessage, GameCreationOptionsMessages, parseBinaryClientMessage } from '../common/messages.js'
+import { ClientBeenIdleTooLongMessage, GameCreationOptionsMessages, HereIsYourPidMessage, parseBinaryClientMessage } from '../common/messages.js'
 server.get(
     '/*',
     async (req, reply) => {

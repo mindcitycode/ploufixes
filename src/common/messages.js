@@ -34,6 +34,14 @@ export const ClientBeenIdleTooLongMessage = () => {
     new DataView(array).setUint16(0, MSG_TYPE_CLIENT_BEEN_IDLE_TOO_LONG)
     return Buffer.concat([new Uint8Array(array)])
 }
+export const MSG_TYPE_HERE_IS_YOUR_PID = 202
+export const HereIsYourPidMessage = pid => {
+    const array = new ArrayBuffer(10)
+    new DataView(array).setUint16(0, MSG_TYPE_HERE_IS_YOUR_PID)
+    new DataView(array).setUint32(2, pid)
+    return Buffer.concat([new Uint8Array(array)])
+
+}
 export const parseBinaryServerMessage = arrayBuffer => {
 
     const view = new DataView(arrayBuffer)
@@ -42,14 +50,22 @@ export const parseBinaryServerMessage = arrayBuffer => {
     switch (type) {
         case MSG_TYPE_WORLD_UPDATE: {
             const t = Number(view.getBigInt64(2))
+            const serializedWorld = arrayBuffer.slice(10)
             return {
                 type,
                 t,
-                serializedWorld: arrayBuffer.slice(10)
+                serializedWorld 
             }
         }
         case MSG_TYPE_CLIENT_BEEN_IDLE_TOO_LONG: {
             return { type }
+        }
+        case MSG_TYPE_HERE_IS_YOUR_PID : {
+            const pid = view.getUint32(2)
+            return { 
+                type,
+                pid
+            }
         }
         default: {
             throw new Error('Unknown binary server message type ' + type)

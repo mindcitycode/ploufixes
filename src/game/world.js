@@ -81,6 +81,7 @@ export const createGame = ({ tilemapData }) => {
     world.time = { delta: 0, elapsed: 0, then: performance.now() / 1000 }
     world.permanentId = { nextOne: 1 }
 
+
     // world step
     const step = () => {
         pipeline(world)
@@ -92,10 +93,32 @@ export const createGame = ({ tilemapData }) => {
     const stop = () => { clearInterval(intervalHandler) }
 
     // inputs
+    const addClient = () => {
+
+        const clientPermanentId = world.permanentId.nextOne
+        world.permanentId.nextOne += 1
+
+        const eid = addEntity(world)
+        {
+            const eid = eid1
+            addComponent(world, Position, eid)
+            addComponent(world, Velocity, eid)
+            addComponent(world, PermanentId, eid)
+            Position.x[eid] = 20
+            Position.y[eid] = 20
+            Velocity.x[eid] = 10
+            Velocity.y[eid] = 10
+            PermanentId.pid[eid] = clientPermanentId
+        }
+        return clientPermanentId
+    }
+    const removeClient = (clientPermanentId) => {
+
+    }
     const onClientMessage = (message) => {
         switch (message.type) {
             case MSG_TYPE_CLIENT_KEY_CONTROLLER_INPUT: {
-                console.log('message !!!!!',message)
+                console.log('message !!!!!', message)
             }
         }
     }
@@ -104,7 +127,8 @@ export const createGame = ({ tilemapData }) => {
         stop: () => clearInterval(intervalHandler),
         start,
         step,
-        onClientMessage
+        onClientMessage,
+        addClient
     }
 }
 

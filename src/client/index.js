@@ -2,7 +2,7 @@ import { createDisplay } from './view/display.js'
 
 import { processGameUpdate, getCurrentState } from './state.js'
 import { makeWsUrl } from './network.js'
-import { ClientKeyControllerInputMessage, MSG_TYPE_CLIENT_BEEN_IDLE_TOO_LONG, MSG_TYPE_GAME_CREATION_OPTIONS, MSG_TYPE_WORLD_UPDATE, parseBinaryServerMessage } from '../common/messages.js'
+import { ClientKeyControllerInputMessage, MSG_TYPE_CLIENT_BEEN_IDLE_TOO_LONG, MSG_TYPE_GAME_CREATION_OPTIONS, MSG_TYPE_HERE_IS_YOUR_PID, MSG_TYPE_WORLD_UPDATE, parseBinaryServerMessage } from '../common/messages.js'
 import { createRegisteredWorld, worldEntitiesToObject } from '../game/world.js'
 import { defineDeserializer, DESERIALIZE_MODE, getAllEntities, hasComponent } from 'bitecs'
 import { Position } from '../game/components/position.js'
@@ -72,6 +72,7 @@ const go = async () => {
                 const message = parseBinaryServerMessage(arrayBuffer)
                 switch (message.type) {
                     case MSG_TYPE_WORLD_UPDATE: {
+                        console.log('world update')
                         deserialize(world, message.serializedWorld, DESERIALIZE_MODE.MAP)
                         const object = worldEntitiesToObject(world)
                         const ows = {
@@ -87,6 +88,11 @@ const go = async () => {
                     case MSG_TYPE_CLIENT_BEEN_IDLE_TOO_LONG : {
                         console.error('BEEN IDLE TOO LONG')
                         socket.close()
+                        break;
+                    }
+                    case MSG_TYPE_HERE_IS_YOUR_PID : {
+                        const pid = message.pid
+                        console.log('I been affected the permanent id',pid)
                         break;
                     }
                     default: {
