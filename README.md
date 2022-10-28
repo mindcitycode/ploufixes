@@ -2,6 +2,18 @@
 
 a multiplayer game
 
+## usage
+
+DO NOT USE !
+
+server :
+
+        node .\src\server\https.js
+
+client build ((served by server) :
+
+        npm run dev
+
 ## instance
 
 an instance might be running here : [https://mindcitycode.github.io/pages/ploufixes/dist](https://mindcitycode.github.io/pages/ploufixes/dist)
