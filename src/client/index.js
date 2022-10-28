@@ -23,7 +23,6 @@ const go = async () => {
                 asprite.x = object.Position.position_x
                 asprite.y = object.Position.position_y
             }
-
         }
         requestAnimationFrame(animationFrame)
     }
@@ -58,6 +57,7 @@ const go = async () => {
                 const message = parseBinaryMessage(arrayBuffer)
                 switch (message.type) {
                     case MSG_TYPE_WORLD_UPDATE: {
+                        deserialize(world, message.serializedWorld, DESERIALIZE_MODE.MAP)
                         const object = worldEntitiesToObject(world)
                         const ows = {
                             byPid: Object.fromEntries(object.filter(o => o.PermanentId.hasPermanentId === true).map(o => {
@@ -65,20 +65,7 @@ const go = async () => {
                             })),
                             noPid: object.filter(o => o.PermanentId.hasPermanentId === false)
                         }
-                        deserialize(world, message.serializedWorld, DESERIALIZE_MODE.MAP)
-                        const positions = getAllEntities(world).filter(eid => (
-                            hasComponent(world, Position, eid)
-                        )).map(eid => {
-                            return [
-                                Position.x[eid],
-                                Position.y[eid],
-                            ]
-                        })
-                        const state = {
-                            t: message.t,
-                            //                            position: positions[0],
-                            ows
-                        }
+                        const state = { t: message.t, ows }
                         processGameUpdate(state)
                         break;
                     }
