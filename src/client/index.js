@@ -15,16 +15,13 @@ const go = async () => {
     const animationFrame = () => {
         const state = getCurrentState()
 
-        if (Math.random() > 0.99) {
-            console.log('>>>>>>', state)
-        }
+        // if (Math.random() > 0.99) console.log('>>>>>>', state)
+
         if (gameDisplay !== undefined) {
             for (const [pid, object] of Object.entries(state.ows.byPid)) {
-                console.log(object)
                 const asprite = gameDisplay.getOrCreateASprite(pid)
                 asprite.x = object.Position.position_x
                 asprite.y = object.Position.position_y
-                //console.log(pid)
             }
 
         }
