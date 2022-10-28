@@ -188,8 +188,6 @@ server.get('/hello-ws', { websocket: true }, (connection, req) => {
     //  clientSends.push(connection.socket.send.bind(connection.socket))
 });
 
-
-
 import fastifyStatic from '@fastify/static'
 server.register(fastifyStatic, {
     // only assets because html must be redirected
