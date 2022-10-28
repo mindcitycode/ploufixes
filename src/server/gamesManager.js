@@ -56,7 +56,7 @@ class Game {
 
     gameParameters = new GameParameters()
     gameClients = new Map()
-
+    
     constructor(gameParameters) {
         this.gameParameters.copy(gameParameters)
     }

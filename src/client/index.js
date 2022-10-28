@@ -28,7 +28,7 @@ function websocket() {
 
 
     const socket = new WebSocket(makeWsUrl('/hello-ws', 80))
-    console.log(socket)
+    console.log('websocket', socket)
 
     socket.addEventListener('open', function (event) {
         console.log('socket is opened')
@@ -38,37 +38,44 @@ function websocket() {
         console.log('Byebye le serveur !');
     });
 
+    socket.addEventListener('error', function (event) {
+        console.log('Voici un message de erreur', event);
+    });
 
     const world = createRegisteredWorld()
     const deserialize = defineDeserializer(world)
 
     socket.addEventListener('message', async function (event) {
-       
-        const arrayBuffer = await event.data.arrayBuffer()
-        const parsed = parseBinaryMessage(arrayBuffer)
-        deserialize(world, parsed.serializedWorld, DESERIALIZE_MODE.MAP)
-    //    console.log(worldEntitiesToObject(world))
-
-        const positions = getAllEntities(world).filter(eid => (
-            hasComponent(world, Position, eid)
-        )).map(eid => {
-            return [
-                Position.x[eid],
-                Position.y[eid],
-            ]
-        })
-        const state = {
-            t: parsed.t,
-            position: positions[0],
+        if ((event.data instanceof Blob)) {
+            const arrayBuffer = await event.data.arrayBuffer()
+            const message = parseBinaryMessage(arrayBuffer)
+            switch (message.type) {
+                case MSG_TYPE_WORLD_UPDATE: {
+                    deserialize(world, message.serializedWorld, DESERIALIZE_MODE.MAP)
+                    const positions = getAllEntities(world).filter(eid => (
+                        hasComponent(world, Position, eid)
+                    )).map(eid => {
+                        return [
+                            Position.x[eid],
+                            Position.y[eid],
+                        ]
+                    })
+                    const state = {
+                        t: message.t,
+                        position: positions[0],
+                    }
+                    processGameUpdate(state)
+                }
+                default: {
+                    throw new Error('wrong message type', type)
+                }
+            }
+        } else {
+            const message = JSON.parse(event.data)
+            console.log('DATA', event.data, typeof event.data, message)
         }
-        processGameUpdate(state)
-
-       
     });
 
-    socket.addEventListener('error', function (event) {
-        console.log('Voici un message de erreur', event);
-    });
 
 }
 websocket()
