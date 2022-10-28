@@ -15,11 +15,6 @@ export const createDisplay = async () => {
     const tilemapFilename = 'map0.tmj'
     const spriteAtlasFilename = 'combined.json'
 
-    /*
-    packBasePath: 'Robot Warfare Asset Pack 22-11-24',
-    tilemapName: 'map0.tmj',
-    spriteAtlasName : 'combined.json'
-*/
     // create app
     const app = new PIXI.Application({ width: viewSize.w, height: viewSize.h });
     document.body.appendChild(app.view);
