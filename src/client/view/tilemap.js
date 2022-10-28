@@ -30,10 +30,10 @@ export const atlasDataFromTileset = tilesetData => {
 }
 
 import { assetPath } from '../assetPath.js'
-export const parseTilemap = async (tilemapName, packBasePath) => {
+export const parseTilemap = async (tilemapFilename, packBasePath) => {
 
     // load tilemap data
-    const tilemapPath = assetPath(packBasePath, tilemapName)
+    const tilemapPath = assetPath(packBasePath, tilemapFilename)
     const tilemapData = await fetch(tilemapPath).then(x => x.json())
     console.log('tilemapData', tilemapData)
 
@@ -54,7 +54,7 @@ export const parseTilemap = async (tilemapName, packBasePath) => {
     console.log('tilemapspritesheets', spritesheets)
 
     return {
-        tilemapName,
+        tilemapFilename,
         tilemapData,
         atlasseDatas,
         spritesheets

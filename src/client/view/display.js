@@ -13,7 +13,13 @@ export const createDisplay = async () => {
     const scaleToInteger = true
     const packBasePath = 'Robot Warfare Asset Pack 22-11-24'
     const tilemapFilename = 'map0.tmj'
+    const spriteAtlasFilename = 'combined.json'
 
+    /*
+    packBasePath: 'Robot Warfare Asset Pack 22-11-24',
+    tilemapName: 'map0.tmj',
+    spriteAtlasName : 'combined.json'
+*/
     // create app
     const app = new PIXI.Application({ width: viewSize.w, height: viewSize.h });
     document.body.appendChild(app.view);
@@ -30,7 +36,7 @@ export const createDisplay = async () => {
     const spritesContainer = new PIXI.Container()
     spritesContainer.zIndex = 666
     scrollableContainer.addChild(spritesContainer)
-    const { atlasData, spritesheet } = await loadSpritesheet('combined.json', packBasePath)
+    const { atlasData, spritesheet } = await loadSpritesheet(spriteAtlasFilename, packBasePath)
 
     // create a sprite
     const asprite = new PIXI.AnimatedSprite(spritesheet.animations["big-explosion"]);
@@ -43,6 +49,7 @@ export const createDisplay = async () => {
     // tilemap
     const parsedTilemap = await parseTilemap(tilemapFilename, packBasePath)
     const tilemapContainer = await instanciateTilemapContainer(parsedTilemap)
+
     const terrainBounds = getTilemapDataBounds(parsedTilemap.tilemapData)
     console.log('terrainBounds', terrainBounds)
 
@@ -52,7 +59,7 @@ export const createDisplay = async () => {
     // view positioning 
     const scrollablePositioner = ScrollablePositioner(scrollableContainer, terrainBounds, viewSize)
 
-    //    showAroundTerrain(terrainBounds, scrollablePositioner, app)
+    // const stopShowAroundTerrain = showAroundTerrain(terrainBounds, scrollablePositioner, app)
     return asprite
 }
 
@@ -74,8 +81,8 @@ const showAroundTerrain = (terrainBounds, scrollablePositioner, app) => {
         scrollablePositioner.centerOnTarget(centerTarget)
 
     }
-    app.ticker.add( tick )
-    return () => app.ticker.remove( tick )
+    app.ticker.add(tick)
+    return () => app.ticker.remove(tick)
 }
 
 const ScrollablePositioner = (scrollableContainer, terrainBounds, viewSize) => {

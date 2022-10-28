@@ -4,8 +4,8 @@ const packSpriteSheetsFilename = 'spritesheets.json'
 const combinedJsonSpriteSheetFilename = 'combined.json'
 
 import { assetPath } from '../assetPath.js'
-export const loadSpritesheet = async (spriteAtlasName, packBasePath) => {
-    const altasPath = assetPath(packBasePath, spriteAtlasName)
+export const loadSpritesheet = async (spriteAtlasFilename, packBasePath) => {
+    const altasPath = assetPath(packBasePath, spriteAtlasFilename)
     const atlasData = await fetch(altasPath).then(x => x.json())
     const imagePath = assetPath(packBasePath, atlasData.meta.image)
     const spritesheet = new PIXI.Spritesheet(

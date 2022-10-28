@@ -160,11 +160,11 @@ import { createGame } from '../game/world.js'
 import { loadTilemapFromFs } from './serverAssets.js'
 const gameOptions = {
     packBasePath: 'Robot Warfare Asset Pack 22-11-24',
-    tilemapName: 'map0.tmj',
-    spriteAtlasName : 'combined.json'
+    tilemapFilename: 'map0.tmj',
+    spriteAtlasFilename : 'combined.json'
 
 }
-const tilemapData = await loadTilemapFromFs(gameOptions.tilemapName, gameOptions.packBasePath)
+const tilemapData = await loadTilemapFromFs(gameOptions.tilemapFilename, gameOptions.packBasePath)
 const game = createGame({ tilemapData })
 game.start()
 
