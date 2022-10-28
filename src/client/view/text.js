@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { Assets } from '@pixi/assets';
-import { assetPath } from '../assetPath.js';
+import { assetPath } from '../clientAssets.js';
 
 export const fontPath = (...p) => assetPath('fonts', ...p)
 

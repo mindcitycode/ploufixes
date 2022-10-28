@@ -3,7 +3,7 @@ const packBasePath = 'assets/Robot Warfare Asset Pack 22-11-24'
 const packSpriteSheetsFilename = 'spritesheets.json'
 const combinedJsonSpriteSheetFilename = 'combined.json'
 
-import { assetPath } from '../assetPath.js'
+import { assetPath } from '../clientAssets.js'
 export const loadSpritesheet = async (spriteAtlasFilename, packBasePath) => {
     const altasPath = assetPath(packBasePath, spriteAtlasFilename)
     const atlasData = await fetch(altasPath).then(x => x.json())

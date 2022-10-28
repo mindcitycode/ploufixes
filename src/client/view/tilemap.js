@@ -29,7 +29,7 @@ export const atlasDataFromTileset = tilesetData => {
     return atlasData
 }
 
-import { assetPath } from '../assetPath.js'
+import { assetPath } from '../clientAssets.js'
 export const parseTilemap = async (tilemapFilename, packBasePath) => {
 
     // load tilemap data
