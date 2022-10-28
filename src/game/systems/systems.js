@@ -48,10 +48,10 @@ export const movementSystem = world => {
         Position.x[eid] += Velocity.x[eid] * delta
         Position.y[eid] += Velocity.y[eid] * delta
 
-        if (Position.x[eid] > 300) {
+        if (Position.x[eid] > 1000) {
             Position.x[eid] = 0
         }
-        if (Position.y[eid] > 300) {
+        if (Position.y[eid] > 800) {
             Position.y[eid] = 0
         }
     }

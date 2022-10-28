@@ -8,6 +8,7 @@ import { getTilemapDataBounds } from '../../common/tilemap.js'
 import { installFonts } from './text.js'
 import { Bounds, getHeight, getWidth } from '../../common/bounds.js';
 import { createTitleMenu } from './text.js';
+import { ANIM_BIG_EXPLOSION, ANIM_GRENADIER_CLASS_CRAWL, ANIM_SCARAB_WALK, getAnimationName } from '../../common/generated-game-animations-definitions.js';
 
 export const createDisplay = async () => {
 
@@ -51,7 +52,17 @@ export const createDisplay = async () => {
         // sprites
         const aSprites = new Map()
         const createASprite = pid => {
-            const aSprite = new PIXI.AnimatedSprite(spritesheet.animations["big-explosion"]);
+            console.log('pid', pid)
+            const animationName = getAnimationName(
+                parseInt(pid) +
+                //ANIM_BIG_EXPLOSION 
+                //   ANIM_SCARAB_WALK + (pid || 0)
+                ANIM_GRENADIER_CLASS_CRAWL
+                // 101
+            )
+
+            const aSprite = new PIXI.AnimatedSprite(spritesheet.animations[animationName])
+            //const aSprite = new PIXI.AnimatedSprite(spritesheet.animations["big-explosion"]);
             aSprite.animationSpeed = 0.1
             aSprite.gotoAndPlay(0)
             aSprites.set(pid, aSprite)
@@ -86,7 +97,8 @@ export const createDisplay = async () => {
                 gameContainer.destroy(true, true)
             },
             getOrCreateASprite,
-            removeASprite
+            removeASprite,
+            scrollablePositioner,
         }
     }
     // const stopShowAroundTerrain = showAroundTerrain(terrainBounds, scrollablePositioner, app)

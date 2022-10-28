@@ -17,19 +17,26 @@ const go = async () => {
 
     const display = await createDisplay()
     let gameDisplay = undefined
+    let affectedPid = undefined
 
     const animationFrame = () => {
         const state = getCurrentState()
 
         // if (Math.random() > 0.99) console.log('>>>>>>', state)
 
+
         if (gameDisplay !== undefined) {
             if (state?.ows?.byPid) {
                // console.log(Object.keys(state.ows.byPid))
                 for (const [pid, object] of Object.entries(state.ows.byPid)) {
                     const asprite = gameDisplay.getOrCreateASprite(pid)
-                    asprite.x = object.Position.position_x
-                    asprite.y = object.Position.position_y
+                    asprite.x = Math.round(object.Position.position_x)
+                    asprite.y = Math.round(object.Position.position_y)
+                    //console.log(pid,affectedPid)
+                    if ( parseInt(pid) === parseInt(affectedPid) ){
+                        console.log('here')
+                        gameDisplay.scrollablePositioner.centerOnTarget(asprite)
+                    }
                 }
             }
         }
@@ -75,7 +82,7 @@ const go = async () => {
                 const message = parseBinaryServerMessage(arrayBuffer)
                 switch (message.type) {
                     case MSG_TYPE_WORLD_UPDATE: {
-                        console.log('world update')
+                        // console.log('world update')
                         deserialize(world, message.serializedWorld, DESERIALIZE_MODE.MAP)
                         const object = worldEntitiesToObject(world)
                         const ows = {
@@ -95,6 +102,7 @@ const go = async () => {
                     }
                     case MSG_TYPE_HERE_IS_YOUR_PID: {
                         const pid = message.pid
+                        affectedPid = pid
                         console.log('I been affected the permanent id', pid)
                         break;
                     }
