@@ -24,10 +24,13 @@ const go = async () => {
         // if (Math.random() > 0.99) console.log('>>>>>>', state)
 
         if (gameDisplay !== undefined) {
-            for (const [pid, object] of Object.entries(state.ows.byPid)) {
-                const asprite = gameDisplay.getOrCreateASprite(pid)
-                asprite.x = object.Position.position_x
-                asprite.y = object.Position.position_y
+            if (state?.ows?.byPid) {
+                console.log(Object.keys(state.ows.byPid))
+                for (const [pid, object] of Object.entries(state.ows.byPid)) {
+                    const asprite = gameDisplay.getOrCreateASprite(pid)
+                    asprite.x = object.Position.position_x
+                    asprite.y = object.Position.position_y
+                }
             }
         }
         requestAnimationFrame(animationFrame)
@@ -47,7 +50,7 @@ const go = async () => {
 
         socket.addEventListener('open', function (event) {
             console.log('socket is opened')
-        //    socket.send('Coucou le serveur !');
+            //    socket.send('Coucou le serveur !');
             keyboardInput.bus.addListener(sendKeyboardInputMessage)
         });
 
@@ -85,14 +88,14 @@ const go = async () => {
                         processGameUpdate(state)
                         break;
                     }
-                    case MSG_TYPE_CLIENT_BEEN_IDLE_TOO_LONG : {
+                    case MSG_TYPE_CLIENT_BEEN_IDLE_TOO_LONG: {
                         console.error('BEEN IDLE TOO LONG')
                         socket.close()
                         break;
                     }
-                    case MSG_TYPE_HERE_IS_YOUR_PID : {
+                    case MSG_TYPE_HERE_IS_YOUR_PID: {
                         const pid = message.pid
-                        console.log('I been affected the permanent id',pid)
+                        console.log('I been affected the permanent id', pid)
                         break;
                     }
                     default: {

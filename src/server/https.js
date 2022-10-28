@@ -45,7 +45,7 @@ import { __dirname } from './dirname.js'
 import fastify from 'fastify'
 
 const server = fastify({
-    logger: true,
+    logger: false,
     http2: true,
     https: {
         // mkcert -install -cert-file ./fastify.cert -key-file ./fastify.key localhost
@@ -168,7 +168,7 @@ const tilemapData = await loadTilemapFromFs(gameOptions.tilemapFilename, gameOpt
 const game = createGame({ tilemapData })
 game.start()
 
-const IDLE_CHECK_ACTIVATED = true
+const IDLE_CHECK_ACTIVATED = false
 const IDLE_MAXIMUM_DURATION_SECONDS = 30
 const IDLE_CHECK_INTERVAL_SECONDS = 10
 
@@ -189,12 +189,15 @@ server.get('/hello-ws', { websocket: true }, (connection, req) => {
         // send world update
         connection.socket.send(worldUpdateMessage)
     })
-
+    connection.socket.on('close', async message => {
+        console.log('client closed')
+        game.removeClient(permanentId)
+    })
     connection.socket.on('message', async message => {
         lastSeen = Date.now()
         try {
             const parsed = parseBinaryClientMessage(message)
-            game.onClientMessage(parsed)
+            game.onClientMessage(permanentId, parsed)
         } catch (e) {
             console.error(e)
         }
@@ -225,7 +228,7 @@ server.register(fastifyStatic, {
     prefix: '/assets/',
     cacheControl: false,
     allowedPath: (pathname, root, req, res) => {
-        console.log('FASTIFY STATIC ASK IF OK', { pathname, root, username: req?.user?.username })
+        //console.log('FASTIFY STATIC ASK IF OK', { pathname, root, username: req?.user?.username })
         return (NO_LOGIN || req.isAuthenticated()) ? true : false
         //res.redirect('/login');
     }
@@ -241,7 +244,7 @@ server.get(
             return reply.redirect('/login')
         } else {
             const filename = path.join(__dirname, 'dist', req.params['*'])
-            console.log('read needed filenme', filename)
+            // console.log('read needed filenme', filename)
             const text = await fsp.readFile(filename)
             reply.type('text/html').code(200) // even images can be served with wrong type
             return text

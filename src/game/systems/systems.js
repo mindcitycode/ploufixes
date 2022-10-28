@@ -8,7 +8,8 @@ import {
 import { Position } from '../components/position.js'
 import { Velocity } from '../components/velocity.js'
 import { PermanentId } from '../components/permanentId.js'
-
+import { KeyControl } from '../components/keyControl.js'
+import { DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP } from '../../common/keyController.js'
 export const timeSystem = world => {
 
     const { time } = world
@@ -19,6 +20,25 @@ export const timeSystem = world => {
     time.then = now
     return world
 }
+export const externalKeyControlQuery = defineQuery([PermanentId, KeyControl, Velocity])
+export const controlSystem = world => {
+    const ents = externalKeyControlQuery(world)
+    for (let i = 0; i < ents.length; i++) {
+        const eid = ents[i]
+        const pid = PermanentId.pid[eid]
+        for (i = 0; i < world.incomingControls.length; i++) {
+            if (world.incomingControls[i].pid === pid) {
+                const incomingState = world.incomingControls[i].state
+                world.incomingControls.splice(i, 1)
+                i--
+                Velocity.y[eid] = 100 * (((incomingState & DIRECTION_UP) ? -1 : 0) + ((incomingState & DIRECTION_DOWN) ? 1 : 0))
+                Velocity.x[eid] = 100 * (((incomingState & DIRECTION_LEFT) ? -1 : 0) + ((incomingState & DIRECTION_RIGHT) ? 1 : 0))
+            }
+        }
+    }
+    return world
+}
+
 export const movementQuery = defineQuery([Position, Velocity])
 export const movementSystem = world => {
     const { time: { delta } } = world
@@ -28,10 +48,10 @@ export const movementSystem = world => {
         Position.x[eid] += Velocity.x[eid] * delta
         Position.y[eid] += Velocity.y[eid] * delta
 
-        if ( Position.x[eid] > 300 ){
+        if (Position.x[eid] > 300) {
             Position.x[eid] = 0
         }
-        if ( Position.y[eid] > 300 ){
+        if (Position.y[eid] > 300) {
             Position.y[eid] = 0
         }
     }
@@ -60,6 +80,16 @@ export const permnentIdAttributionSystem = world => {
         if (PermanentId.pid[eid] === 0) {
             PermanentId.pid[eid] = permanentId.nextOne
             permanentId.nextOne++
+        }
+        {
+            const removeIndex = world.removeList.indexOf(PermanentId.pid[eid])
+            if (removeIndex >= 0) {
+                world.removeList.splice(removeIndex, 1)
+                console.log('SYSTEM::permnentIdAttributionSystem', 'remove', PermanentId.pid[eid])
+                removeEntity(world, eid)
+                console.log('SYSTEM::permnentIdAttributionSystem', 'removed eid', eid)
+
+            }
         }
     }
     return world

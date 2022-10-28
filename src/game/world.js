@@ -19,19 +19,21 @@ import {
     entityExists,
 } from 'bitecs'
 
+import { timeSystem, movementSystem, destroyerSystem, permnentIdAttributionSystem, controlSystem } from './systems/systems.js'
+import { getTilemapDataBounds } from '../common/tilemap.js'
 import { Position } from './components/position.js'
 import { Velocity } from './components/velocity.js'
 import { PermanentId } from './components/permanentId.js'
-import { timeSystem, movementSystem, destroyerSystem, permnentIdAttributionSystem } from './systems/systems.js'
-import { getTilemapDataBounds } from '../common/tilemap.js'
+import { KeyControl } from './components/keyControl.js'
 
-const pipeline = pipe(movementSystem, timeSystem, destroyerSystem, permnentIdAttributionSystem)
+const pipeline = pipe(controlSystem, movementSystem, timeSystem, destroyerSystem, permnentIdAttributionSystem)
 
 export const createRegisteredWorld = () => {
     const world = createWorld()
     registerComponent(world, Position)
     registerComponent(world, Velocity)
     registerComponent(world, PermanentId)
+    registerComponent(world, KeyControl)
     return world
 }
 
@@ -80,7 +82,8 @@ export const createGame = ({ tilemapData }) => {
     // world attributes (not serialized)
     world.time = { delta: 0, elapsed: 0, then: performance.now() / 1000 }
     world.permanentId = { nextOne: 1 }
-
+    world.removeList = [] // permanentids
+    world.incomingControls = [] //  [permanentId,state]
 
     // world step
     const step = () => {
@@ -100,25 +103,28 @@ export const createGame = ({ tilemapData }) => {
 
         const eid = addEntity(world)
         {
-            const eid = eid1
             addComponent(world, Position, eid)
             addComponent(world, Velocity, eid)
             addComponent(world, PermanentId, eid)
-            Position.x[eid] = 20
-            Position.y[eid] = 20
-            Velocity.x[eid] = 10
+            addComponent(world, KeyControl, eid)
+            Position.x[eid] = 20 * Math.random()
+            Position.y[eid] = 20 * Math.random()
+            Velocity.x[eid] = 10 + 5 * Math.random()
             Velocity.y[eid] = 10
             PermanentId.pid[eid] = clientPermanentId
+            KeyControl.state[eid] = 0
         }
+        console.log('client add with permanent id', clientPermanentId)
         return clientPermanentId
     }
     const removeClient = (clientPermanentId) => {
-
+        world.removeList.push(clientPermanentId)
     }
-    const onClientMessage = (message) => {
+    const onClientMessage = (pid, message) => {
         switch (message.type) {
             case MSG_TYPE_CLIENT_KEY_CONTROLLER_INPUT: {
-                console.log('message !!!!!', message)
+                const state = message.state // controller state
+                world.incomingControls.push({ pid, state })
             }
         }
     }
@@ -128,7 +134,8 @@ export const createGame = ({ tilemapData }) => {
         start,
         step,
         onClientMessage,
-        addClient
+        addClient,
+        removeClient
     }
 }
 
