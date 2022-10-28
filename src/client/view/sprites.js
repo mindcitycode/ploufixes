@@ -7,6 +7,7 @@ import { assetPath } from '../clientAssets.js'
 export const loadSpritesheet = async (spriteAtlasFilename, packBasePath) => {
     const altasPath = assetPath(packBasePath, spriteAtlasFilename)
     const atlasData = await fetch(altasPath).then(x => x.json())
+    console.log('animations', atlasData.animations)
     const imagePath = assetPath(packBasePath, atlasData.meta.image)
     const spritesheet = new PIXI.Spritesheet(
         PIXI.BaseTexture.from(imagePath),
@@ -21,7 +22,6 @@ export const testSpritesheet = async (container) => {
     const { atlasData, spritesheet } = await loadSpritesheet('combined.json', packBasePath)
     let x = 0
     let y = 0
-    console.log('animations', atlasData.animations)
 
     console.log('frames names', Object.keys(atlasData.frames))
     console.log('animation names', Object.keys(atlasData.animations))
