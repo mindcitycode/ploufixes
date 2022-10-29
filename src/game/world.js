@@ -28,6 +28,7 @@ import { PermanentId } from './components/permanentId.js'
 import { KeyControl } from './components/keyControl.js'
 import { Action } from './components/action.js'
 import { Character } from './components/character.js'
+import { Orientation } from './components/orientation.js'
 
 const pipeline = pipe(
     controlSystem,
@@ -45,7 +46,7 @@ export const createRegisteredWorld = () => {
     registerComponent(world, KeyControl)
     registerComponent(world, Action)
     registerComponent(world, Character)
-
+    registerComponent(world, Orientation)
     return world
 }
 
