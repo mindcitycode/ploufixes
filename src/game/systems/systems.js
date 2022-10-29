@@ -146,7 +146,7 @@ export const movementSystem = world => {
 
         // set action
         if (hasComponent(world, Action, eid)) {
-            const isMoving = ((Velocity.x[eid] !== 0) || (Velocity.x[eid] !== 0))
+            const isMoving = ((Velocity.x[eid] !== 0) || (Velocity.y[eid] !== 0))
             const currentAction = Action.type[eid]
             if (isMoving === false) {
                 if (currentAction === ACTION_TYPE_WALK) {
