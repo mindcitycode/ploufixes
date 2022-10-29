@@ -83,59 +83,65 @@ export const movementSystem = world => {
 
         const currentx = Position.x[eid]
         const currenty = Position.y[eid]
+
         // compute new position
         const d = {
             x: Velocity.x[eid] * delta,
             y: Velocity.y[eid] * delta
         }
-        const size = { x: 16, y: 16 }
-        const anchor = { x: 0.5, y: 1 }
         const pos = {
             x: Math.floor(currentx),
             y: Math.floor(currenty)
         }
-        const border = 1
-        // on y axis
-        if (d.y !== 0) {
-            const bounds = getBoundingBox(pos.x, Math.floor(pos.y + d.y), size.x, size.y, anchor.x, anchor.y, _bounds)
-            const colliders = world.tilemapRTree.tree.search(bounds)
-            if (colliders.length) {
-                //console.log('y ===',currentx,currenty,'-',pos,bounds)
-                //console.log('y',colliders)
-                if (d.y < 0) {
-                    const yLimit = Math.max(...colliders.map(c => c.maxY))
-                    //Position.y[eid] = yLimit + 1 + size.y * anchor.y
-                    pos.y = yLimit + border + size.y * anchor.y
-                } else if (d.y > 0) {
-                    const yLimit = Math.min(...colliders.map(c => c.minY))
-                    //Position.y[eid] = yLimit - 1 - size.y * (1 - anchor.y)
-                    pos.y = yLimit - border - size.y * (1 - anchor.y)
-                }
-            } else {
-                pos.y += d.y
+        if (!hasComponent(world, KeyControl, eid)) {
+            // do not try to collide anything
+            pos.x += d.x
+            pos.y += d.y
+        } else {
+            const size = { x: 16, y: 16 }
+            const anchor = { x: 0.5, y: 1 }
+            const border = 1
+            // on y axis
+            if (d.y !== 0) {
+                const bounds = getBoundingBox(pos.x, Math.floor(pos.y + d.y), size.x, size.y, anchor.x, anchor.y, _bounds)
+                const colliders = world.tilemapRTree.tree.search(bounds)
+                if (colliders.length) {
+                    //console.log('y ===',currentx,currenty,'-',pos,bounds)
+                    //console.log('y',colliders)
+                    if (d.y < 0) {
+                        const yLimit = Math.max(...colliders.map(c => c.maxY))
+                        //Position.y[eid] = yLimit + 1 + size.y * anchor.y
+                        pos.y = yLimit + border + size.y * anchor.y
+                    } else if (d.y > 0) {
+                        const yLimit = Math.min(...colliders.map(c => c.minY))
+                        //Position.y[eid] = yLimit - 1 - size.y * (1 - anchor.y)
+                        pos.y = yLimit - border - size.y * (1 - anchor.y)
+                    }
+                } else {
+                    pos.y += d.y
 
+                }
+            }
+            pos.y = Math.floor(pos.y)
+            // on x axis
+            if (d.x !== 0) {
+                const bounds = getBoundingBox(Math.floor(pos.x + d.x), pos.y, size.x, size.y, anchor.x, anchor.y, _bounds)
+                const colliders = world.tilemapRTree.tree.search(bounds)
+                if (colliders.length) {
+                    // console.log('x ===',currentx,currenty,'-',pos,bounds)
+                    // console.log('x',colliders)
+                    if (d.x < 0) {
+                        const xLimit = Math.max(...colliders.map(c => c.maxX))
+                        pos.x = xLimit + border + size.x * anchor.x
+                    } else if (d.x > 0) {
+                        const xLimit = Math.min(...colliders.map(c => c.minX))
+                        pos.x = xLimit - border - size.x * (1 - anchor.x)
+                    }
+                } else {
+                    pos.x += d.x
+                }
             }
         }
-        pos.y = Math.floor(pos.y)
-        // on x axis
-        if (d.x !== 0) {
-            const bounds = getBoundingBox(Math.floor(pos.x + d.x), pos.y, size.x, size.y, anchor.x, anchor.y, _bounds)
-            const colliders = world.tilemapRTree.tree.search(bounds)
-            if (colliders.length) {
-               // console.log('x ===',currentx,currenty,'-',pos,bounds)
-               // console.log('x',colliders)
-                if (d.x < 0) {
-                    const xLimit = Math.max(...colliders.map(c => c.maxX))
-                    pos.x = xLimit + border + size.x * anchor.x
-                } else if (d.x > 0) {
-                    const xLimit = Math.min(...colliders.map(c => c.minX))
-                    pos.x = xLimit - border - size.x * (1 - anchor.x)
-                }
-            } else {
-                pos.x += d.x
-            }
-        }
-
         Position.x[eid] = Math.floor(pos.x)
         Position.y[eid] = Math.floor(pos.y)
 
