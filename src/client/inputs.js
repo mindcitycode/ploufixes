@@ -1,5 +1,5 @@
 import { Bus } from "../common/bus.js"
-import { DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT } from "../common/keyController.js"
+import { DIRECTION_UP, DIRECTION_RIGHT, DIRECTION_DOWN, DIRECTION_LEFT, ACTION_FIRE } from "../common/keyController.js"
 export const KeyboardInput = () => {
     const bus = new Bus()
     const watch = [
@@ -7,6 +7,11 @@ export const KeyboardInput = () => {
         ['key', 'ArrowRight', DIRECTION_RIGHT],
         ['key', 'ArrowDown', DIRECTION_DOWN],
         ['key', 'ArrowLeft', DIRECTION_LEFT],
+        ['code', 'KeyW', DIRECTION_UP],
+        ['code', 'KeyD', DIRECTION_RIGHT],
+        ['code', 'KeyS', DIRECTION_DOWN],
+        ['code', 'KeyA', DIRECTION_LEFT],
+        ['code', 'Space', ACTION_FIRE],
     ]
     let state = 0
     let lastState = state
@@ -17,7 +22,6 @@ export const KeyboardInput = () => {
         }
     }
     const keydown = (e) => {
-        if (e.repeat) return
         watch.forEach(([type, value, control]) => {
             if (e[type] === value) {
                 state |= control
