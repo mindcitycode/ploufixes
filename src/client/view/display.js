@@ -49,7 +49,7 @@ export const createDisplay = async () => {
         menuContainer.zIndex = 888
         //  scrollableContainer.addChild(menuContainer)
 
-        // sprites
+        // sprites, anchored middle-bottom
         const aSprites = new Map()
         const createASprite = pid => {
             console.log('pid', pid)
