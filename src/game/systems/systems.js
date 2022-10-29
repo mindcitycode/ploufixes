@@ -84,19 +84,17 @@ export const movementSystem = world => {
         const currentx = Position.x[eid]
         const currenty = Position.y[eid]
         // compute new position
-        //const posx = currentx + Math.sign(Velocity.x[eid] * delta)
-        //const posy = currenty + Math.sign(Velocity.y[eid] * delta)
         const d = {
             x: Velocity.x[eid] * delta,
             y: Velocity.y[eid] * delta
         }
         const size = { x: 16, y: 16 }
         const anchor = { x: 0.5, y: 1 }
-
         const pos = {
             x: currentx,
             y: currenty
         }
+        // on y axis
         if (d.y !== 0) {
             const bounds = getBoundingBox(pos.x, pos.y + d.y, size.x, size.y, anchor.x, anchor.y, _bounds)
             const colliders = world.tilemapRTree.tree.search(bounds)
