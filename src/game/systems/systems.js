@@ -92,34 +92,48 @@ export const movementSystem = world => {
         }
         const size = { x: 16, y: 16 }
         const anchor = { x: 0.5, y: 1 }
-     
-        const pos = {
-            x: currentx + d.x,
-            y: currenty + d.y
-        }
-   
-        const bounds = getBoundingBox(pos.x, pos.y, size.x, size.y, anchor.x, anchor.y, _bounds)
-        const colliders = world.tilemapRTree.tree.search(bounds)
-        if (colliders.length) {
-            if (Velocity.y[eid] < 0) {
-                const yLimit = Math.max(...colliders.map(c => c.maxY))
-                Position.y[eid] = yLimit + 1 + size.y * anchor.y
-            } else if (Velocity.y[eid] > 0) {
-                const yLimit = Math.min(...colliders.map(c => c.minY))
-                Position.y[eid] = yLimit - 1 - size.y * (1 - anchor.y)
-            }
 
-            if (Velocity.x[eid] < 0) {
-                const xLimit = Math.max(...colliders.map(c => c.maxX))
-                Position.x[eid] = xLimit + 1 + size.x * anchor.x
-            } else if (Velocity.x[eid] > 0) {
-                const xLimit = Math.min(...colliders.map(c => c.minX))
-                Position.x[eid] = xLimit - 1 - size.x * (1 - anchor.x)
-            }
-        } else {
-            Position.x[eid] = Math.round(pos.x)
-            Position.y[eid] = Math.round(pos.y)
+        const pos = {
+            x: currentx,
+            y: currenty
         }
+        if (d.y !== 0) {
+            const bounds = getBoundingBox(pos.x, pos.y + d.y, size.x, size.y, anchor.x, anchor.y, _bounds)
+            const colliders = world.tilemapRTree.tree.search(bounds)
+            if (colliders.length) {
+                if (d.y < 0) {
+                    const yLimit = Math.max(...colliders.map(c => c.maxY))
+                    //Position.y[eid] = yLimit + 1 + size.y * anchor.y
+                    pos.y = yLimit + 1 + size.y * anchor.y
+                } else if (d.y > 0) {
+                    const yLimit = Math.min(...colliders.map(c => c.minY))
+                    //Position.y[eid] = yLimit - 1 - size.y * (1 - anchor.y)
+                    pos.y = yLimit - 1 - size.y * (1 - anchor.y)
+                }
+            } else {
+                pos.y += d.y
+            }
+        }
+        // on x axis
+        if (d.x !== 0) {
+            const bounds = getBoundingBox(pos.x + d.x, pos.y, size.x, size.y, anchor.x, anchor.y, _bounds)
+            const colliders = world.tilemapRTree.tree.search(bounds)
+            if (colliders.length) {
+                if (d.x < 0) {
+                    const xLimit = Math.max(...colliders.map(c => c.maxX))
+                    pos.x = xLimit + 1 + size.x * anchor.x
+                } else if (d.x > 0) {
+                    const xLimit = Math.min(...colliders.map(c => c.minX))
+                    pos.x = xLimit - 1 - size.x * (1 - anchor.x)
+                }
+            } else {
+                pos.x += d.x
+            }
+        }
+
+        Position.x[eid] = pos.x
+        Position.y[eid] = pos.y
+
 
 
         //   console.log('colliders', colliders)
