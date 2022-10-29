@@ -56,8 +56,7 @@ function interpolateObjects(baseOws, nextOws, r) {
         const baseObject = baseOws.byPid[pid]
         const nextObject = nextOws.byPid[pid]
         const interpolatedObject = {
-            baseObject,nextObject,
-       
+            baseObject,nextObject,    
             PermanentId:  { 
                 hasPermanentId: true, 
                 permanentId_pid: pid 
@@ -66,6 +65,18 @@ function interpolateObjects(baseOws, nextOws, r) {
                 hasPosition: true, 
                 position_x: interpolateFloat(baseObject.Position.position_x,nextObject.Position.position_x,r),
                 position_y: interpolateFloat(baseObject.Position.position_y,nextObject.Position.position_y,r),
+            },
+            Orientation : {
+                hasOrientation : baseObject.Orientation.hasOrientation,
+                orientation_a8 : baseObject.Orientation.orientation_a8
+            },
+            Character : {
+                hasCharacter : baseObject.Character.hasCharacter,
+                character_type : baseObject.Character.character_type,
+            },
+            Action : {
+                hasAction : baseObject.Action.hasAction,
+                action_type : baseObject.Action.action_type
             }
         }
         ows.byPid[pid] = interpolatedObject

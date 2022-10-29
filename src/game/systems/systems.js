@@ -3,6 +3,7 @@ import {
     addEntity,
     addComponent,
     removeEntity,
+    hasComponent,
 } from 'bitecs'
 
 import { Position } from '../components/position.js'
@@ -10,6 +11,7 @@ import { Velocity } from '../components/velocity.js'
 import { PermanentId } from '../components/permanentId.js'
 import { KeyControl } from '../components/keyControl.js'
 import { DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP } from '../../common/keyController.js'
+import { Orientation } from '../components/orientation.js'
 export const timeSystem = world => {
 
     const { time } = world
@@ -33,6 +35,12 @@ export const controlSystem = world => {
                 j--
                 Velocity.y[eid] = 100 * (((incomingState & DIRECTION_UP) ? -1 : 0) + ((incomingState & DIRECTION_DOWN) ? 1 : 0))
                 Velocity.x[eid] = 100 * (((incomingState & DIRECTION_LEFT) ? -1 : 0) + ((incomingState & DIRECTION_RIGHT) ? 1 : 0))
+                if (hasComponent(world, Orientation, eid)) {
+                    if (incomingState > 0) {
+                        // if there is no orientation, keep last
+                        Orientation.a8[eid] = incomingState & (DIRECTION_UP | DIRECTION_RIGHT | DIRECTION_DOWN | DIRECTION_LEFT)
+                    }
+                }
             }
         }
     }

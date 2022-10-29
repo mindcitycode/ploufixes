@@ -7,6 +7,8 @@ import { createRegisteredWorld, worldEntitiesToObject } from '../game/world.js'
 import { defineDeserializer, DESERIALIZE_MODE, getAllEntities, hasComponent } from 'bitecs'
 import { Position } from '../game/components/position.js'
 import { KeyboardInput } from './inputs.js'
+import { selectFlipRotation } from '../common/animations.js'
+import { FLIPPED_HORIZONTALLY_FLAG } from '../common/tilemap.js'
 
 
 const go = async () => {
@@ -27,15 +29,32 @@ const go = async () => {
 
         if (gameDisplay !== undefined) {
             if (state?.ows?.byPid) {
-               // console.log(Object.keys(state.ows.byPid))
+                // console.log(Object.keys(state.ows.byPid))
                 for (const [pid, object] of Object.entries(state.ows.byPid)) {
                     const asprite = gameDisplay.getOrCreateASprite(pid)
                     asprite.x = Math.round(object.Position.position_x)
                     asprite.y = Math.round(object.Position.position_y)
                     //console.log(pid,affectedPid)
-                    if ( parseInt(pid) === parseInt(affectedPid) ){
-                        console.log('here')
+                    if (parseInt(pid) === parseInt(affectedPid)) {
                         gameDisplay.scrollablePositioner.centerOnTarget(asprite)
+                    }
+
+                    if (object.Orientation.hasOrientation) {
+                        //console.log(object.Orientation.orientation_a8)
+                    }
+                    if (object.Character.hasCharacter) {
+                        //    console.log(object.Character.character_type)
+                    }
+                    if (object.Action.hasAction) {
+                        //console.log(object.Action.action_type)
+
+                    }
+                    if (object.Character.hasCharacter && object.Action.hasAction && object.Orientation.hasOrientation) {
+                        const character_type = object.Character.character_type
+                        const action_type = object.Action.action_type
+                        const orientation_a8 = object.Orientation.orientation_a8
+                        const flipRotation = selectFlipRotation(character_type, action_type, orientation_a8)
+                        asprite.scale.x = (flipRotation & FLIPPED_HORIZONTALLY_FLAG) ? -1 : 1
                     }
                 }
             }

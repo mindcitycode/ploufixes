@@ -26,8 +26,8 @@ import { Position } from './components/position.js'
 import { Velocity } from './components/velocity.js'
 import { PermanentId } from './components/permanentId.js'
 import { KeyControl } from './components/keyControl.js'
-import { Action } from './components/action.js'
-import { Character } from './components/character.js'
+import { Action, ACTION_TYPE_WALK } from './components/action.js'
+import { Character, CHARACTER_TYPE_ANTITANK } from './components/character.js'
 import { Orientation } from './components/orientation.js'
 
 const pipeline = pipe(
@@ -120,12 +120,18 @@ export const createGame = ({ tilemapData }) => {
             addComponent(world, Velocity, eid)
             addComponent(world, PermanentId, eid)
             addComponent(world, KeyControl, eid)
+            addComponent(world, Orientation, eid)
+            addComponent(world, Character, eid)
+            addComponent(world, Action, eid)
             Position.x[eid] = 20 * Math.random()
             Position.y[eid] = 20 * Math.random()
             Velocity.x[eid] = 10 + 5 * Math.random()
             Velocity.y[eid] = 10
             PermanentId.pid[eid] = clientPermanentId
             KeyControl.state[eid] = 0
+            Orientation.a8[eid] = 0
+            Character.type[eid] = CHARACTER_TYPE_ANTITANK
+            Action.type[eid] = ACTION_TYPE_WALK
         }
         console.log('client add with permanent id', clientPermanentId)
         return clientPermanentId
@@ -162,18 +168,26 @@ export const worldEntitiesToObject = world => {
         const hasPosition = hasComponent(world, Position, eid)
         const hasVelocity = hasComponent(world, Velocity, eid)
         const hasPermanentId = hasComponent(world, PermanentId, eid)
-
+        const hasOrientation = hasComponent(world, Orientation, eid)
+        const hasCharacter = hasComponent(world, Character, eid)
+        const hasAction = hasComponent(world, Action, eid)
         const position_x = Position.x[eid]
         const position_y = Position.y[eid]
         const velocity_x = Velocity.x[eid]
         const velocity_y = Velocity.y[eid]
         const permanentId_pid = PermanentId.pid[eid]
+        const orientation_a8 = Orientation.a8[eid]
+        const character_type = Character.type[eid]
+        const action_type = Action.type[eid]
         const object = {
             eid,
             exists,
             Position: { hasPosition, position_x, position_y },
             Velocity: { hasVelocity, velocity_x, velocity_y },
-            PermanentId: { hasPermanentId, permanentId_pid }
+            PermanentId: { hasPermanentId, permanentId_pid },
+            Orientation: { hasOrientation, orientation_a8 },
+            Character: { hasCharacter, character_type },
+            Action: { hasAction, action_type }
         }
         //console.log(JSON.stringify(object))
         // console.log(object)

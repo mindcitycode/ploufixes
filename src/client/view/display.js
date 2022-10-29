@@ -64,6 +64,8 @@ export const createDisplay = async () => {
             const aSprite = new PIXI.AnimatedSprite(spritesheet.animations[animationName])
             //const aSprite = new PIXI.AnimatedSprite(spritesheet.animations["big-explosion"]);
             aSprite.animationSpeed = 0.1
+            aSprite.anchor.x = 0.5
+            aSprite.anchor.y = 1
             aSprite.gotoAndPlay(0)
             aSprites.set(pid, aSprite)
             spritesContainer.addChild(aSprite)
