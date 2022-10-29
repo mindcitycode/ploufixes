@@ -51,10 +51,10 @@ export const createDisplay = async () => {
 
         // sprites, anchored middle-bottom
         const aSprites = new Map()
-        const createASprite = pid => {
+        const createASprite = (pid, animationNum) => {
             console.log('pid', pid)
 
-            const animationNum = ANIM_GRENADIER_CLASS_CRAWL
+//            const animationNum = ANIM_GRENADIER_CLASS_CRAWL
             const animationName = getAnimationName(animationNum)
 
             const aSprite = new PIXI.AnimatedSprite(spritesheet.animations[animationName])
@@ -63,14 +63,27 @@ export const createDisplay = async () => {
             aSprite.anchor.x = 0.5
             aSprite.anchor.y = 1
             aSprite.gotoAndPlay(0)
+
+            //  custom prop
+            aSprite.animationNum = animationNum
+
             aSprites.set(pid, aSprite)
             spritesContainer.addChild(aSprite)
             return aSprite
         }
-        const getOrCreateASprite = pid => {
-            return aSprites.get(pid) || createASprite(pid)
+        const getOrCreateASprite = (pid, animationNum) => {
+            const current = aSprites.get(pid)
+            if (current === undefined) {
+                return createASprite(pid, animationNum)
+            } else if (current.animationNum !== animationNum) {
+                removeASprite(pid)
+                return createASprite(pid, animationNum)
+            } else {
+                return current
+            }
         }
         const removeASprite = pid => {
+            // when pid disappears
             const aSprite = aSprites.get(pid)
             if (aSprite) {
                 aSprite.destroy()
