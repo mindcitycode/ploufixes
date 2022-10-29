@@ -66,11 +66,6 @@ function getBoundingBox(x, y, w, h, ax, ay, bounds = Bounds()) {
     return bounds
 }
 
-const __bounds = Bounds()
-const axisMovement = (posx, posy, size, anchor) => {
-
-}
-
 export const movementQuery = defineQuery([Position, Velocity])
 export const movementSystem = world => {
     const { time: { delta } } = world
