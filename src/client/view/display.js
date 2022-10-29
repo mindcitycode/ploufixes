@@ -54,7 +54,7 @@ export const createDisplay = async () => {
         const createASprite = pid => {
             console.log('pid', pid)
             const animationName = getAnimationName(
-                parseInt(pid) +
+             //   parseInt(pid) +
                 //ANIM_BIG_EXPLOSION 
                 //   ANIM_SCARAB_WALK + (pid || 0)
                 ANIM_GRENADIER_CLASS_CRAWL

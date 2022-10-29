@@ -37,8 +37,12 @@ export const controlSystem = world => {
                 Velocity.x[eid] = 100 * (((incomingState & DIRECTION_LEFT) ? -1 : 0) + ((incomingState & DIRECTION_RIGHT) ? 1 : 0))
                 if (hasComponent(world, Orientation, eid)) {
                     if (incomingState > 0) {
-                        // if there is no orientation, keep last
-                        Orientation.a8[eid] = incomingState & (DIRECTION_UP | DIRECTION_RIGHT | DIRECTION_DOWN | DIRECTION_LEFT)
+                        // if there is no orientation for an axis, keep last
+                        Orientation.a8[eid] |= incomingState
+                        if (incomingState & DIRECTION_UP) Orientation.a8[eid] &= ~DIRECTION_DOWN
+                        if (incomingState & DIRECTION_RIGHT) Orientation.a8[eid] &= ~DIRECTION_LEFT
+                        if (incomingState & DIRECTION_DOWN) Orientation.a8[eid] &= ~DIRECTION_UP
+                        if (incomingState & DIRECTION_LEFT) Orientation.a8[eid] &= ~DIRECTION_RIGHT
                     }
                 }
             }
