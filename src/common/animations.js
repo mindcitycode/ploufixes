@@ -50,7 +50,8 @@ const NoSuchDirectionError = (characterType, action, directions) => {
 }
 export const selectRotationRotation = (characterType, action, directions) => {
     switch (characterType) {
-        case CHARACTER_TYPE_ROCKET: {
+        case CHARACTER_TYPE_ROCKET:
+        case CHARACTER_TYPE_GRENADE: {
             return rotationForDirections(directions)
         }
         default: {

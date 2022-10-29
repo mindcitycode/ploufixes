@@ -30,7 +30,7 @@ import { KeyControl } from './components/keyControl.js'
 import { Action, ACTION_TYPE_WALK } from './components/action.js'
 import { Character, CHARACTER_TYPE_ANTITANK } from './components/character.js'
 import { Orientation } from './components/orientation.js'
-import { Weapon, WEAPON_TYPE_ROCKET_LAUNCHER } from './components/weapon.js'
+import { Weapon, WEAPON_TYPE_GRENADE_LAUNCHER, WEAPON_TYPE_PLASMA_LAUNCHER, WEAPON_TYPE_ROCKET_LAUNCHER } from './components/weapon.js'
 
 const pipeline = pipe(
     controlSystem,
@@ -118,7 +118,7 @@ export const createGame = async ({ tilemapData }) => {
         let el = `${tm[1] - tm[0]}`
         tm.push(el)
         timeMeasurement[(timeMeasurementIndex++) % timeMeasurements] = tm
-       // console.log(timeMeasurement)
+        // console.log(timeMeasurement)
     }
     // run
     let intervalHandler = undefined
@@ -151,6 +151,8 @@ export const createGame = async ({ tilemapData }) => {
             Character.type[eid] = CHARACTER_TYPE_ANTITANK
             Action.type[eid] = ACTION_TYPE_WALK
             Weapon.type[eid] = WEAPON_TYPE_ROCKET_LAUNCHER
+            // Weapon.type[eid] = WEAPON_TYPE_PLASMA_LAUNCHER
+            // Weapon.type[eid] = WEAPON_TYPE_GRENADE_LAUNCHER
             Weapon.reload[eid] = 1
             Weapon.idle[eid] = 0
         }
