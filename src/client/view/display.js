@@ -53,13 +53,9 @@ export const createDisplay = async () => {
         const aSprites = new Map()
         const createASprite = pid => {
             console.log('pid', pid)
-            const animationName = getAnimationName(
-             //   parseInt(pid) +
-                //ANIM_BIG_EXPLOSION 
-                //   ANIM_SCARAB_WALK + (pid || 0)
-                ANIM_GRENADIER_CLASS_CRAWL
-                // 101
-            )
+
+            const animationNum = ANIM_GRENADIER_CLASS_CRAWL
+            const animationName = getAnimationName(animationNum)
 
             const aSprite = new PIXI.AnimatedSprite(spritesheet.animations[animationName])
             //const aSprite = new PIXI.AnimatedSprite(spritesheet.animations["big-explosion"]);

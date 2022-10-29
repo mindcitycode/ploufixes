@@ -46,8 +46,7 @@ const go = async () => {
                         //    console.log(object.Character.character_type)
                     }
                     if (object.Action.hasAction) {
-                        //console.log(object.Action.action_type)
-
+                        console.log(object.Action.action_type)
                     }
                     if (object.Character.hasCharacter && object.Action.hasAction && object.Orientation.hasOrientation) {
                         const character_type = object.Character.character_type
