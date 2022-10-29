@@ -222,5 +222,3 @@ export const selectAnimation = (characterType, action, directions) => {
     }
 
 }
-
-/*
