@@ -52,18 +52,20 @@ export const createDisplay = async () => {
         // sprites, anchored middle-bottom
         const aSprites = new Map()
         const createASprite = (pid, animationNum) => {
-            console.log('pid', pid)
 
-//            const animationNum = ANIM_GRENADIER_CLASS_CRAWL
+            //            const animationNum = ANIM_GRENADIER_CLASS_CRAWL
             const animationName = getAnimationName(animationNum)
 
             const aSprite = new PIXI.AnimatedSprite(spritesheet.animations[animationName])
             //const aSprite = new PIXI.AnimatedSprite(spritesheet.animations["big-explosion"]);
+            console.log(aSprite)
             aSprite.animationSpeed = 0.1
+            //aSprite.pivot.x = 0
+            // TODO : dehack.
+           // aSprite.pivot.y = -aSprite._textures[0].frame.height/2
             aSprite.anchor.x = 0.5
             aSprite.anchor.y = 1
             aSprite.gotoAndPlay(0)
-
             //  custom prop
             aSprite.animationNum = animationNum
 

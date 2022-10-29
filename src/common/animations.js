@@ -31,11 +31,13 @@ import {
     ACTION_TYPE_IDLE, ACTION_TYPE_MELEE, ACTION_TYPE_NEUTRAL, ACTION_TYPE_WALK
 } from '../game/components/action.js'
 import {
-    CHARACTER_TYPE_ANTITANK, CHARACTER_TYPE_ASSAULT, CHARACTER_TYPE_CENTIPEDE_BODY, CHARACTER_TYPE_CENTIPEDE_HEAD, CHARACTER_TYPE_GRENADIER,
-    CHARACTER_TYPE_HORNET, CHARACTER_TYPE_MACHINEGUNNER, CHARACTER_TYPE_RADIOOPERATOR, CHARACTER_TYPE_SCARAB, CHARACTER_TYPE_SNIPER, CHARACTER_TYPE_SPIDER,
+    CHARACTER_TYPE_ANTITANK, CHARACTER_TYPE_ASSAULT, CHARACTER_TYPE_CENTIPEDE_BODY, CHARACTER_TYPE_CENTIPEDE_HEAD, CHARACTER_TYPE_GRENADE, CHARACTER_TYPE_GRENADIER,
+    CHARACTER_TYPE_HORNET, CHARACTER_TYPE_MACHINEGUNNER, CHARACTER_TYPE_PLASMA, CHARACTER_TYPE_RADIOOPERATOR, CHARACTER_TYPE_ROCKET, CHARACTER_TYPE_SCARAB, CHARACTER_TYPE_SNIPER, CHARACTER_TYPE_SPIDER,
     CHARACTER_TYPE_SQUADLEADER, CHARACTER_TYPE_WASP
 } from '../game/components/character.js'
 import { FLIPPED_HORIZONTALLY_FLAG } from "./tilemap.js"
+import { rotationForDirections } from "../game/components/orientation.js"
+
 
 const NoSuchActionError = (characterType, action) => {
     return new Error(`no such action ${action} for characterType ${characterType}`)
@@ -43,12 +45,24 @@ const NoSuchActionError = (characterType, action) => {
 const NoSuchCharacterTypeError = (characterType) => {
     return new Error(`no such characterType ${characterType}`)
 }
-const NoSuchDirectionError = (directions) => {
-    return new Error(`no such directions ${directions} for characterType ${characterType}`)
+const NoSuchDirectionError = (characterType, action, directions) => {
+    return new Error(`no such directions ${directions} for action ${action} and characterType ${characterType}`)
 }
-
+export const selectRotationRotation = (characterType, action, directions) => {
+    switch (characterType) {
+        case CHARACTER_TYPE_ROCKET: {
+            return rotationForDirections(directions)
+        }
+        default: {
+            return 0
+        }
+    }
+}
 export const selectFlipRotation = (characterType, action, directions) => {
     switch (characterType) {
+        case CHARACTER_TYPE_PLASMA:
+        case CHARACTER_TYPE_GRENADE:
+        case CHARACTER_TYPE_ROCKET:
         case CHARACTER_TYPE_CENTIPEDE_HEAD:
         case CHARACTER_TYPE_CENTIPEDE_BODY: {
             return 0
@@ -89,7 +103,7 @@ export const selectAnimation = (characterType, action, directions) => {
                 case (DIRECTION_RIGHT): return ANIM_CENTIPEDE_HEAD_R0;
                 case (DIRECTION_DOWN): return ANIM_CENTIPEDE_HEAD_R6;
                 case (DIRECTION_LEFT): return ANIM_CENTIPEDE_HEAD_R4;
-                default: throw (NoSuchDirectionError(characterType, action));
+                default: throw (NoSuchDirectionError(characterType, action, directions));
             }
         }
         case CHARACTER_TYPE_CENTIPEDE_BODY: {
@@ -102,7 +116,7 @@ export const selectAnimation = (characterType, action, directions) => {
                 case (DIRECTION_RIGHT): return ANIM_CENTIPEDE_BODY_R0;
                 case (DIRECTION_DOWN): return ANIM_CENTIPEDE_BODY_R6;
                 case (DIRECTION_LEFT): return ANIM_CENTIPEDE_BODY_R4;
-                default: throw (NoSuchDirectionError(characterType, action));
+                default: throw (NoSuchDirectionError(characterType, action, directions));
             }
         }
         case CHARACTER_TYPE_HORNET: {
@@ -218,6 +232,15 @@ export const selectAnimation = (characterType, action, directions) => {
                 case ACTION_TYPE_DEATH: return ANIM_SQUADLEADER_DEATH;
                 default: throw (NoSuchActionError(characterType, action));
             }
+        }
+        case CHARACTER_TYPE_PLASMA: {
+            return ANIM_BULLETS_AND_PLASMA
+        }
+        case CHARACTER_TYPE_GRENADE: {
+            return ANIM_GRENADE
+        }
+        case CHARACTER_TYPE_ROCKET: {
+            return ANIM_RPG_ROUND
         }
         default: throw NoSuchCharacterTypeError(characterType);
     }

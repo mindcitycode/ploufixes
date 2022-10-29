@@ -11,11 +11,11 @@ import { Position } from '../components/position.js'
 import { Velocity } from '../components/velocity.js'
 import { PermanentId } from '../components/permanentId.js'
 import { KeyControl } from '../components/keyControl.js'
-import { ACTION_FIRE, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP } from '../../common/keyController.js'
-import { Orientation } from '../components/orientation.js'
+import { ACTION_FIRE, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP, _DIRECTION_ANY } from '../../common/keyController.js'
+import { Orientation, rotationForDirections } from '../components/orientation.js'
 import { Action, ACTION_TYPE_IDLE, ACTION_TYPE_WALK } from '../components/action.js'
-import { Weapon } from '../components/weapon.js'
-import { Character } from '../components/character.js'
+import { Weapon, WEAPON_TYPE_PLASMA_LAUNCHER, WEAPON_TYPE_ROCKET_LAUNCHER, WEAPON_TYPE_GRENADE_LAUNCHER } from '../components/weapon.js'
+import { Character, CHARACTER_TYPE_PLASMA, CHARACTER_TYPE_GRENADE, CHARACTER_TYPE_ROCKET } from '../components/character.js'
 
 export const timeSystem = world => {
 
@@ -49,7 +49,8 @@ export const controlSystem = world => {
                 if (hasComponent(world, Orientation, eid)) {
                     if (incomingState > 0) {
                         // if there is no orientation for an axis, keep last
-                        Orientation.a8[eid] |= incomingState
+                        Orientation.a8[eid] |= (incomingState & _DIRECTION_ANY)
+                        //Orientation.a8[eid] |= (incomingState & _DIRECTION_ANY_LEFT_RIGHT)
                         if (incomingState & DIRECTION_UP) Orientation.a8[eid] &= ~DIRECTION_DOWN
                         if (incomingState & DIRECTION_RIGHT) Orientation.a8[eid] &= ~DIRECTION_LEFT
                         if (incomingState & DIRECTION_DOWN) Orientation.a8[eid] &= ~DIRECTION_UP
@@ -57,9 +58,7 @@ export const controlSystem = world => {
                     }
                 }
                 if (hasComponent(world, Weapon, eid)) {
-                    if (incomingState & ACTION_FIRE) {
-                        Weapon.firing[eid] = 1
-                    }
+                    Weapon.firing[eid] += (incomingState & ACTION_FIRE) ? 1 : 0
                 }
             }
         }
@@ -78,20 +77,56 @@ export const weaponSystem = world => {
         // if firing commanded
         if (Weapon.firing[eid]) {
             // one shot
-            Weapon.firing[eid] = 0
+            //Weapon.firing[eid] = 0
             // check fully reloaded
             if (Weapon.idle[eid] >= Weapon.reload[eid]) {
+                Weapon.idle[eid] = 0
+                Weapon.firing[eid] = 0
                 const bulletEid = addEntity(world)
                 addComponent(world, Position, bulletEid)
+                addComponent(world, Orientation, bulletEid)
                 addComponent(world, Velocity, bulletEid)
                 addComponent(world, PermanentId, bulletEid)
                 addComponent(world, Character, bulletEid)
                 Position.x[bulletEid] = Position.x[eid]
                 Position.y[bulletEid] = Position.y[eid]
-                Velocity.x[bulletEid] = 10
-                Velocity.y[bulletEid] = 10
+
+                let orientation = 0
+
+                // TODO check has orientation
+                if (hasComponent(world, Velocity, eid)) {
+                    const sdx = Math.sign(Velocity.x[eid])
+                    const sdy = Math.sign(Velocity.y[eid])
+                    if ((sdx !==0 )||(sdy !==0)){
+                        // use velocity for direction
+                        orientation |= (sdx>0)?(DIRECTION_RIGHT):((sdx<0)?DIRECTION_LEFT:0)
+                        orientation |= (sdy>0)?(DIRECTION_DOWN):((sdy<0)?DIRECTION_UP:0)
+                    } else {
+                        // just left or right orientation
+                        orientation = ( Orientation.a8[eid] & (DIRECTION_RIGHT | DIRECTION_LEFT))
+                    }
+                } else {
+                    orientation = ( Orientation.a8[eid] & (DIRECTION_RIGHT | DIRECTION_LEFT))
+                }
+                Orientation.a8[bulletEid] = orientation//Orientation.a8[eid]
+                const angle  = rotationForDirections(orientation)
+
+                // console.log('fired at orientation', Orientation.a8[eid].toString(2))
+                Velocity.x[bulletEid] = 100 * Math.cos(angle)
+                Velocity.y[bulletEid] = 100 * Math.sin(angle)
+
                 PermanentId.pid[bulletEid] = 0
-                
+                switch (Weapon.type[eid]) {
+                    case WEAPON_TYPE_PLASMA_LAUNCHER:
+                        Character.type[bulletEid] = CHARACTER_TYPE_PLASMA;
+                        break;
+                    case WEAPON_TYPE_GRENADE_LAUNCHER:
+                        Character.type[bulletEid] = CHARACTER_TYPE_GRENADE;
+                        break;
+                    case WEAPON_TYPE_ROCKET_LAUNCHER:
+                        Character.type[bulletEid] = CHARACTER_TYPE_ROCKET;
+                        break;
+                }
             }
         }
     }

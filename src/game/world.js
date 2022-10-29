@@ -54,6 +54,10 @@ export const createRegisteredWorld = () => {
     return world
 }
 
+const timeMeasurement = []
+let timeMeasurementIndex = 0
+const timeMeasurements = 10
+
 export const createGame = async ({ tilemapData }) => {
 
     // properties
@@ -107,8 +111,14 @@ export const createGame = async ({ tilemapData }) => {
     world.tilemapRTree = await instanciateTilemapRTree(tilemapData)
     // world step
     const step = () => {
+        let tm = [BigInt(Date.now())]
         pipeline(world)
         worldUpdatedBus.say(WorldUpdateMessage(Date.now(), serialize(world)))
+        tm.push(BigInt(Date.now()))
+        let el = `${tm[1] - tm[0]}`
+        tm.push(el)
+        timeMeasurement[(timeMeasurementIndex++) % timeMeasurements] = tm
+       // console.log(timeMeasurement)
     }
     // run
     let intervalHandler = undefined

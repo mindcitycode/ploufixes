@@ -78,6 +78,7 @@ function interpolateObjects(baseOws, nextOws, r) {
                 hasAction : baseObject.Action.hasAction,
                 action_type : baseObject.Action.action_type
             }
+            // Weapon
         }
         ows.byPid[pid] = interpolatedObject
     })
