@@ -5,15 +5,18 @@ import {
     removeEntity,
     hasComponent,
 } from 'bitecs'
+import { Bounds } from '../../common/bounds.js'
 
 import { Position } from '../components/position.js'
 import { Velocity } from '../components/velocity.js'
 import { PermanentId } from '../components/permanentId.js'
 import { KeyControl } from '../components/keyControl.js'
-import { DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP } from '../../common/keyController.js'
+import { ACTION_FIRE, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP } from '../../common/keyController.js'
 import { Orientation } from '../components/orientation.js'
 import { Action, ACTION_TYPE_IDLE, ACTION_TYPE_WALK } from '../components/action.js'
-import { Bounds } from '../../common/bounds.js'
+import { Weapon } from '../components/weapon.js'
+import { Character } from '../components/character.js'
+
 export const timeSystem = world => {
 
     const { time } = world
@@ -24,6 +27,7 @@ export const timeSystem = world => {
     time.then = now
     return world
 }
+
 export const externalKeyControlQuery = defineQuery([PermanentId, KeyControl, Velocity])
 export const controlSystem = world => {
     const ents = externalKeyControlQuery(world)
@@ -52,6 +56,42 @@ export const controlSystem = world => {
                         if (incomingState & DIRECTION_LEFT) Orientation.a8[eid] &= ~DIRECTION_RIGHT
                     }
                 }
+                if (hasComponent(world, Weapon, eid)) {
+                    if (incomingState & ACTION_FIRE) {
+                        Weapon.firing[eid] = 1
+                    }
+                }
+            }
+        }
+    }
+    return world
+}
+
+export const weaponQuery = defineQuery([Weapon])
+export const weaponSystem = world => {
+    const { time: { delta } } = world
+    const ents = weaponQuery(world)
+    for (let i = 0; i < ents.length; i++) {
+        const eid = ents[i]
+        // increment idle time
+        Weapon.idle[eid] += delta
+        // if firing commanded
+        if (Weapon.firing[eid]) {
+            // one shot
+            Weapon.firing[eid] = 0
+            // check fully reloaded
+            if (Weapon.idle[eid] >= Weapon.reload[eid]) {
+                const bulletEid = addEntity(world)
+                addComponent(world, Position, bulletEid)
+                addComponent(world, Velocity, bulletEid)
+                addComponent(world, PermanentId, bulletEid)
+                addComponent(world, Character, bulletEid)
+                Position.x[bulletEid] = Position.x[eid]
+                Position.y[bulletEid] = Position.y[eid]
+                Velocity.x[bulletEid] = 10
+                Velocity.y[bulletEid] = 10
+                PermanentId.pid[bulletEid] = 0
+                
             }
         }
     }
@@ -139,11 +179,6 @@ export const movementSystem = world => {
         }
         Position.x[eid] = Math.floor(pos.x)
         Position.y[eid] = Math.floor(pos.y)
-
-
-
-        //   console.log('colliders', colliders)
-        // }
 
         // set action
         if (hasComponent(world, Action, eid)) {

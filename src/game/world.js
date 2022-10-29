@@ -19,8 +19,9 @@ import {
     entityExists,
 } from 'bitecs'
 
-import { timeSystem, movementSystem, destroyerSystem, permanentIdAttributionSystem, controlSystem } from './systems/systems.js'
+import { timeSystem, movementSystem, destroyerSystem, permanentIdAttributionSystem, controlSystem, weaponSystem } from './systems/systems.js'
 import { getTilemapDataBounds } from '../common/tilemap.js'
+import { instanciateTilemapRTree } from '../common/tree.js'
 
 import { Position } from './components/position.js'
 import { Velocity } from './components/velocity.js'
@@ -29,10 +30,11 @@ import { KeyControl } from './components/keyControl.js'
 import { Action, ACTION_TYPE_WALK } from './components/action.js'
 import { Character, CHARACTER_TYPE_ANTITANK } from './components/character.js'
 import { Orientation } from './components/orientation.js'
-import { instanciateTilemapRTree } from '../common/tree.js'
+import { Weapon, WEAPON_TYPE_ROCKET_LAUNCHER } from './components/weapon.js'
 
 const pipeline = pipe(
     controlSystem,
+    weaponSystem,
     movementSystem,
     timeSystem,
     destroyerSystem,
@@ -48,6 +50,7 @@ export const createRegisteredWorld = () => {
     registerComponent(world, Action)
     registerComponent(world, Character)
     registerComponent(world, Orientation)
+    registerComponent(world, Weapon)
     return world
 }
 
@@ -127,6 +130,7 @@ export const createGame = async ({ tilemapData }) => {
             addComponent(world, Orientation, eid)
             addComponent(world, Character, eid)
             addComponent(world, Action, eid)
+            addComponent(world, Weapon, eid)
             Position.x[eid] = (16 * 20) + 20 * Math.random()
             Position.y[eid] = (16 * 10) + 20 * Math.random()
             Velocity.x[eid] = 10 + 5 * Math.random()
@@ -136,6 +140,9 @@ export const createGame = async ({ tilemapData }) => {
             Orientation.a8[eid] = 0
             Character.type[eid] = CHARACTER_TYPE_ANTITANK
             Action.type[eid] = ACTION_TYPE_WALK
+            Weapon.type[eid] = WEAPON_TYPE_ROCKET_LAUNCHER
+            Weapon.reload[eid] = 1
+            Weapon.idle[eid] = 0
         }
         console.log('client add with permanent id', clientPermanentId)
         return clientPermanentId
@@ -175,6 +182,7 @@ export const worldEntitiesToObject = world => {
         const hasOrientation = hasComponent(world, Orientation, eid)
         const hasCharacter = hasComponent(world, Character, eid)
         const hasAction = hasComponent(world, Action, eid)
+        const hasWeapon = hasComponent(world, Weapon, eid)
         const position_x = Position.x[eid]
         const position_y = Position.y[eid]
         const velocity_x = Velocity.x[eid]
@@ -183,6 +191,9 @@ export const worldEntitiesToObject = world => {
         const orientation_a8 = Orientation.a8[eid]
         const character_type = Character.type[eid]
         const action_type = Action.type[eid]
+        const weapon_type = Weapon.type[eid]
+        const weapon_idle = Weapon.idle[eid]
+        const weapon_reload = Weapon.reload[eid]
         const object = {
             eid,
             exists,
@@ -191,7 +202,8 @@ export const worldEntitiesToObject = world => {
             PermanentId: { hasPermanentId, permanentId_pid },
             Orientation: { hasOrientation, orientation_a8 },
             Character: { hasCharacter, character_type },
-            Action: { hasAction, action_type }
+            Action: { hasAction, action_type },
+            Weapon: { hasWeapon, weapon_type, weapon_idle, weapon_reload }
         }
         //console.log(JSON.stringify(object))
         // console.log(object)
