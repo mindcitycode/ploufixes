@@ -72,7 +72,7 @@ export const destroyerSystem = world => {
 }
 
 export const permanentIdQuery = defineQuery([PermanentId])
-export const permnentIdAttributionSystem = world => {
+export const permanentIdAttributionSystem = world => {
     const { permanentId } = world
     const ents = permanentIdQuery(world)
     for (let i = 0; i < ents.length; i++) {

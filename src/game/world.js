@@ -19,14 +19,23 @@ import {
     entityExists,
 } from 'bitecs'
 
-import { timeSystem, movementSystem, destroyerSystem, permnentIdAttributionSystem, controlSystem } from './systems/systems.js'
+import { timeSystem, movementSystem, destroyerSystem, permanentIdAttributionSystem, controlSystem } from './systems/systems.js'
 import { getTilemapDataBounds } from '../common/tilemap.js'
+
 import { Position } from './components/position.js'
 import { Velocity } from './components/velocity.js'
 import { PermanentId } from './components/permanentId.js'
 import { KeyControl } from './components/keyControl.js'
+import { Action } from './components/action.js'
+import { Character } from './components/character.js'
 
-const pipeline = pipe(controlSystem, movementSystem, timeSystem, destroyerSystem, permnentIdAttributionSystem)
+const pipeline = pipe(
+    controlSystem,
+    movementSystem,
+    timeSystem,
+    destroyerSystem,
+    permanentIdAttributionSystem
+)
 
 export const createRegisteredWorld = () => {
     const world = createWorld()
@@ -34,6 +43,9 @@ export const createRegisteredWorld = () => {
     registerComponent(world, Velocity)
     registerComponent(world, PermanentId)
     registerComponent(world, KeyControl)
+    registerComponent(world, Action)
+    registerComponent(world, Character)
+
     return world
 }
 
