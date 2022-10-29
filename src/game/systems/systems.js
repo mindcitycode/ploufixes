@@ -91,17 +91,17 @@ export const movementSystem = world => {
         const size = { x: 16, y: 16 }
         const anchor = { x: 0.5, y: 1 }
         const pos = {
-            x: currentx,
-            y: currenty
+            x: Math.floor(currentx),
+            y: Math.floor(currenty)
         }
         const border = 1
-
         // on y axis
         if (d.y !== 0) {
-            const bounds = getBoundingBox(pos.x, pos.y + d.y, size.x, size.y, anchor.x, anchor.y, _bounds)
+            const bounds = getBoundingBox(pos.x, Math.floor(pos.y + d.y), size.x, size.y, anchor.x, anchor.y, _bounds)
             const colliders = world.tilemapRTree.tree.search(bounds)
             if (colliders.length) {
-
+                //console.log('y ===',currentx,currenty,'-',pos,bounds)
+                //console.log('y',colliders)
                 if (d.y < 0) {
                     const yLimit = Math.max(...colliders.map(c => c.maxY))
                     //Position.y[eid] = yLimit + 1 + size.y * anchor.y
@@ -113,13 +113,17 @@ export const movementSystem = world => {
                 }
             } else {
                 pos.y += d.y
+
             }
         }
+        pos.y = Math.floor(pos.y)
         // on x axis
         if (d.x !== 0) {
-            const bounds = getBoundingBox(pos.x + d.x, pos.y, size.x, size.y, anchor.x, anchor.y, _bounds)
+            const bounds = getBoundingBox(Math.floor(pos.x + d.x), pos.y, size.x, size.y, anchor.x, anchor.y, _bounds)
             const colliders = world.tilemapRTree.tree.search(bounds)
             if (colliders.length) {
+               // console.log('x ===',currentx,currenty,'-',pos,bounds)
+               // console.log('x',colliders)
                 if (d.x < 0) {
                     const xLimit = Math.max(...colliders.map(c => c.maxX))
                     pos.x = xLimit + border + size.x * anchor.x
