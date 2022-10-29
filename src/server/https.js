@@ -165,7 +165,7 @@ const gameOptions = {
 
 }
 const tilemapData = await loadTilemapFromFs(gameOptions.tilemapFilename, gameOptions.packBasePath)
-const game = createGame({ tilemapData })
+const game = await createGame({ tilemapData })
 game.start()
 
 const IDLE_CHECK_ACTIVATED = false

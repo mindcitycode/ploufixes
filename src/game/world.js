@@ -29,6 +29,7 @@ import { KeyControl } from './components/keyControl.js'
 import { Action, ACTION_TYPE_WALK } from './components/action.js'
 import { Character, CHARACTER_TYPE_ANTITANK } from './components/character.js'
 import { Orientation } from './components/orientation.js'
+import { instanciateTilemapRTree } from '../common/tree.js'
 
 const pipeline = pipe(
     controlSystem,
@@ -50,7 +51,7 @@ export const createRegisteredWorld = () => {
     return world
 }
 
-export const createGame = ({ tilemapData }) => {
+export const createGame = async ({ tilemapData }) => {
 
     // properties
     const frameRate = 10
@@ -64,31 +65,34 @@ export const createGame = ({ tilemapData }) => {
 
     // load world
     const terrainBounds = getTilemapDataBounds(tilemapData)
+    console.log('terrain bounds', terrainBounds)
 
     // create default entities
-    const eid0 = addEntity(world)
-    {
-        const eid = eid0
-        addComponent(world, Position, eid)
-        addComponent(world, Velocity, eid)
-        addComponent(world, PermanentId, eid)
-        Position.x[eid] = 0
-        Position.y[eid] = 0
-        Velocity.x[eid] = 10
-        Velocity.y[eid] = 10
-        PermanentId.pid[eid] = 0
-    }
-    const eid1 = addEntity(world)
-    {
-        const eid = eid1
-        addComponent(world, Position, eid)
-        addComponent(world, Velocity, eid)
-        addComponent(world, PermanentId, eid)
-        Position.x[eid] = 20
-        Position.y[eid] = 20
-        Velocity.x[eid] = 10
-        Velocity.y[eid] = 10
-        PermanentId.pid[eid] = 0
+    if (false) {
+        const eid0 = addEntity(world)
+        {
+            const eid = eid0
+            addComponent(world, Position, eid)
+            addComponent(world, Velocity, eid)
+            addComponent(world, PermanentId, eid)
+            Position.x[eid] = 0
+            Position.y[eid] = 0
+            Velocity.x[eid] = 10
+            Velocity.y[eid] = 10
+            PermanentId.pid[eid] = 0
+        }
+        const eid1 = addEntity(world)
+        {
+            const eid = eid1
+            addComponent(world, Position, eid)
+            addComponent(world, Velocity, eid)
+            addComponent(world, PermanentId, eid)
+            Position.x[eid] = 20
+            Position.y[eid] = 20
+            Velocity.x[eid] = 10
+            Velocity.y[eid] = 10
+            PermanentId.pid[eid] = 0
+        }
     }
     //    removeEntity(world,eid)
     //  removeEntity(world,eid2)
@@ -97,7 +101,7 @@ export const createGame = ({ tilemapData }) => {
     world.permanentId = { nextOne: 1 }
     world.removeList = [] // permanentids
     world.incomingControls = [] //  [permanentId,state]
-
+    world.tilemapRTree = await instanciateTilemapRTree(tilemapData)
     // world step
     const step = () => {
         pipeline(world)
@@ -123,8 +127,8 @@ export const createGame = ({ tilemapData }) => {
             addComponent(world, Orientation, eid)
             addComponent(world, Character, eid)
             addComponent(world, Action, eid)
-            Position.x[eid] = 20 * Math.random()
-            Position.y[eid] = 20 * Math.random()
+            Position.x[eid] = (16 * 20) + 20 * Math.random()
+            Position.y[eid] = (16 * 10) + 20 * Math.random()
             Velocity.x[eid] = 10 + 5 * Math.random()
             Velocity.y[eid] = 10
             PermanentId.pid[eid] = clientPermanentId

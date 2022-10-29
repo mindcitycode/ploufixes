@@ -13,6 +13,7 @@ import { KeyControl } from '../components/keyControl.js'
 import { DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP } from '../../common/keyController.js'
 import { Orientation } from '../components/orientation.js'
 import { Action, ACTION_TYPE_IDLE, ACTION_TYPE_WALK } from '../components/action.js'
+import { Bounds } from '../../common/bounds.js'
 export const timeSystem = world => {
 
     const { time } = world
@@ -57,22 +58,72 @@ export const controlSystem = world => {
     return world
 }
 
+function getBoundingBox(x, y, w, h, ax, ay, bounds = Bounds()) {
+    bounds.minX = x - ax * w
+    bounds.maxX = bounds.minX + w
+    bounds.minY = y - ay * h
+    bounds.maxY = bounds.minY + h
+    return bounds
+}
+
+const __bounds = Bounds()
+const axisMovement = (posx, posy, size, anchor) => {
+
+}
+
 export const movementQuery = defineQuery([Position, Velocity])
 export const movementSystem = world => {
     const { time: { delta } } = world
     const ents = movementQuery(world)
+
+    const _bounds = Bounds()
+
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
-        Position.x[eid] += Velocity.x[eid] * delta
-        Position.y[eid] += Velocity.y[eid] * delta
 
-        // set position
-        if (Position.x[eid] > 1000) {
-            Position.x[eid] = 0
+        const currentx = Position.x[eid]
+        const currenty = Position.y[eid]
+        // compute new position
+        //const posx = currentx + Math.sign(Velocity.x[eid] * delta)
+        //const posy = currenty + Math.sign(Velocity.y[eid] * delta)
+        const d = {
+            x: Velocity.x[eid] * delta,
+            y: Velocity.y[eid] * delta
         }
-        if (Position.y[eid] > 800) {
-            Position.y[eid] = 0
+        const size = { x: 16, y: 16 }
+        const anchor = { x: 0.5, y: 1 }
+     
+        const pos = {
+            x: currentx + d.x,
+            y: currenty + d.y
         }
+   
+        const bounds = getBoundingBox(pos.x, pos.y, size.x, size.y, anchor.x, anchor.y, _bounds)
+        const colliders = world.tilemapRTree.tree.search(bounds)
+        if (colliders.length) {
+            if (Velocity.y[eid] < 0) {
+                const yLimit = Math.max(...colliders.map(c => c.maxY))
+                Position.y[eid] = yLimit + 1 + size.y * anchor.y
+            } else if (Velocity.y[eid] > 0) {
+                const yLimit = Math.min(...colliders.map(c => c.minY))
+                Position.y[eid] = yLimit - 1 - size.y * (1 - anchor.y)
+            }
+
+            if (Velocity.x[eid] < 0) {
+                const xLimit = Math.max(...colliders.map(c => c.maxX))
+                Position.x[eid] = xLimit + 1 + size.x * anchor.x
+            } else if (Velocity.x[eid] > 0) {
+                const xLimit = Math.min(...colliders.map(c => c.minX))
+                Position.x[eid] = xLimit - 1 - size.x * (1 - anchor.x)
+            }
+        } else {
+            Position.x[eid] = Math.round(pos.x)
+            Position.y[eid] = Math.round(pos.y)
+        }
+
+
+        //   console.log('colliders', colliders)
+        // }
 
         // set action
         if (hasComponent(world, Action, eid)) {
@@ -87,6 +138,14 @@ export const movementSystem = world => {
                     Action.type[eid] = ACTION_TYPE_WALK
                 }
             }
+        }
+
+        // clamp position
+        if (Position.x[eid] > 1000) {
+            Position.x[eid] = 0
+        }
+        if (Position.y[eid] > 800) {
+            Position.y[eid] = 0
         }
 
     }
