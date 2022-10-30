@@ -89,6 +89,7 @@ export const createDisplay = async () => {
             const aSprite = aSprites.get(pid)
             if (aSprite) {
                 aSprite.destroy()
+                aSprites.delete(pid)
             }
         }
 

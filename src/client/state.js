@@ -50,37 +50,42 @@ function interpolateFloat(basePosition, nextPosition, r) {
 function interpolateObjects(baseOws, nextOws, r) {
     const basePids = Object.keys(baseOws.byPid)
     const ows = {
-        byPid : {}
+        byPid: {},
+        removePid: []
     }
     basePids.forEach(pid => {
         const baseObject = baseOws.byPid[pid]
         const nextObject = nextOws.byPid[pid]
-        const interpolatedObject = {
-            baseObject,nextObject,    
-            PermanentId:  { 
-                hasPermanentId: true, 
-                permanentId_pid: pid 
-            },
-            Position: {
-                hasPosition: true, 
-                position_x: interpolateFloat(baseObject.Position.position_x,nextObject.Position.position_x,r),
-                position_y: interpolateFloat(baseObject.Position.position_y,nextObject.Position.position_y,r),
-            },
-            Orientation : {
-                hasOrientation : baseObject.Orientation.hasOrientation,
-                orientation_a8 : baseObject.Orientation.orientation_a8
-            },
-            Character : {
-                hasCharacter : baseObject.Character.hasCharacter,
-                character_type : baseObject.Character.character_type,
-            },
-            Action : {
-                hasAction : baseObject.Action.hasAction,
-                action_type : baseObject.Action.action_type
+        if (nextObject === undefined) {
+            ows.removePid.push(pid)
+        } else {
+            const interpolatedObject = {
+                baseObject, nextObject,
+                PermanentId: {
+                    hasPermanentId: true,
+                    permanentId_pid: pid
+                },
+                Position: {
+                    hasPosition: true,
+                    position_x: interpolateFloat(baseObject.Position.position_x, nextObject.Position.position_x, r),
+                    position_y: interpolateFloat(baseObject.Position.position_y, nextObject.Position.position_y, r),
+                },
+                Orientation: {
+                    hasOrientation: baseObject.Orientation.hasOrientation,
+                    orientation_a8: baseObject.Orientation.orientation_a8
+                },
+                Character: {
+                    hasCharacter: baseObject.Character.hasCharacter,
+                    character_type: baseObject.Character.character_type,
+                },
+                Action: {
+                    hasAction: baseObject.Action.hasAction,
+                    action_type: baseObject.Action.action_type
+                }
+                // Weapon
             }
-            // Weapon
+            ows.byPid[pid] = interpolatedObject
         }
-        ows.byPid[pid] = interpolatedObject
     })
     return ows
 }
@@ -103,7 +108,7 @@ export function getCurrentState() {
         const next = gameUpdates[base + 1];
         const r = (serverTime - baseUpdate.t) / (next.t - baseUpdate.t);
         return {
-            t : interpolateFloat(baseUpdate.t,next.t,r),
+            t: interpolateFloat(baseUpdate.t, next.t, r),
             ows: interpolateObjects(baseUpdate.ows, next.ows, r)
             //me: interpolateObject(baseUpdate.me, next.me, r),
             //others: interpolateObjectArray(baseUpdate.others, next.others, r),

@@ -4,7 +4,7 @@ import { processGameUpdate, getCurrentState } from './state.js'
 import { makeWsUrl } from './network.js'
 import { ClientKeyControllerInputMessage, MSG_TYPE_CLIENT_BEEN_IDLE_TOO_LONG, MSG_TYPE_GAME_CREATION_OPTIONS, MSG_TYPE_HERE_IS_YOUR_PID, MSG_TYPE_WORLD_UPDATE, parseBinaryServerMessage } from '../common/messages.js'
 import { createRegisteredWorld, worldEntitiesToObject } from '../game/world.js'
-import { defineDeserializer, DESERIALIZE_MODE, getAllEntities, hasComponent } from 'bitecs'
+import { defineDeserializer, DESERIALIZE_MODE, entityExists, getAllEntities, hasComponent, removeEntity } from 'bitecs'
 import { Position } from '../game/components/position.js'
 import { KeyboardInput } from './inputs.js'
 import { selectAnimation, selectFlipRotation, selectRotationRotation } from '../common/animations.js'
@@ -29,6 +29,12 @@ const go = async () => {
 
 
         if (gameDisplay !== undefined) {
+            if (state?.ows?.removePid) {
+                state.ows.removePid.forEach(pid => {
+                    //console.log('remove',pid)
+                    gameDisplay.removeASprite(pid)
+                })
+            }
             if (state?.ows?.byPid) {
                 for (const [pid, object] of Object.entries(state.ows.byPid)) {
                     let asprite = undefined
@@ -110,13 +116,21 @@ const go = async () => {
                 const message = parseBinaryServerMessage(arrayBuffer)
                 switch (message.type) {
                     case MSG_TYPE_WORLD_UPDATE: {
-                        // console.log('world update')
+                        // TODO : deserialize MAP does not remove removed entities
+                        getAllEntities(world).forEach(eid => {
+                            if (entityExists(world, eid)) {
+                                removeEntity(world, eid)
+                            }
+                        })
                         deserialize(world, message.serializedWorld, DESERIALIZE_MODE.MAP)
                         const object = worldEntitiesToObject(world)
                         const ows = {
-                            byPid: Object.fromEntries(object.filter(o => o.PermanentId.hasPermanentId === true).map(o => {
-                                return [o.PermanentId.permanentId_pid, o]
-                            })),
+                            byPid: Object.fromEntries(
+                                object
+                                    .filter(o => o.exists)
+                                    .filter(o => o.PermanentId.hasPermanentId === true)
+                                    .map(o => ([o.PermanentId.permanentId_pid, o]))
+                            ),
                             noPid: object.filter(o => o.PermanentId.hasPermanentId === false)
                         }
                         const state = { t: message.t, ows }

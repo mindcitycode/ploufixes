@@ -4,6 +4,7 @@ import {
     addComponent,
     removeEntity,
     hasComponent,
+    entityExists,
 } from 'bitecs'
 import { Bounds } from '../../common/bounds.js'
 
@@ -181,7 +182,8 @@ export const movementSystem = world => {
                 const bounds = getBoundingBox(pos.x, Math.floor(pos.y + d.y), size.x, size.y, anchor.x, anchor.y, _bounds)
                 const collides = world.tilemapRTree.tree.collides(bounds)
                 if (collides) {
-                    removeEntity(world,eid)
+                    removeEntity(world, eid)
+                    continue;
                 }
             } else {
                 // wall sliding
@@ -226,16 +228,19 @@ export const movementSystem = world => {
                     }
                 }
             }
-            Position.x[eid] = Math.floor(pos.x)
-            Position.y[eid] = Math.floor(pos.y)
+
+            if (entityExists(world, eid)) {
+                Position.x[eid] = Math.floor(pos.x)
+                Position.y[eid] = Math.floor(pos.y)
 
 
-            // clamp position
-            if (Position.x[eid] > 1000) {
-                Position.x[eid] = 0
-            }
-            if (Position.y[eid] > 800) {
-                Position.y[eid] = 0
+                // clamp position
+                if (Position.x[eid] > 1000) {
+                    Position.x[eid] = 0
+                }
+                if (Position.y[eid] > 800) {
+                    Position.y[eid] = 0
+                }
             }
         }
 
