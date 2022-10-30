@@ -186,10 +186,9 @@ export const movementSystem = world => {
             const shape = getCharacterShape(Character.type[eid], _shape)
             const size = { x: shape.w, y: shape.h }
             const anchor = { x: shape.ax, y: shape.ay }
-            const border = 1
 
             if (!hasComponent(world, KeyControl, eid)) {
-                // do not try to collide anything
+                // do not try to slide anything
                 pos.x += d.x
                 pos.y += d.y
                 const bounds = getBoundingBox(pos.x, Math.floor(pos.y + d.y), size.x, size.y, anchor.x, anchor.y, _bounds)
@@ -202,8 +201,8 @@ export const movementSystem = world => {
                     addComponent(world, Discrete, exId)
                     const character_type = CHARACTER_TYPE_BIG_EXPLOSION
                     const explosionShape = getCharacterShape(character_type)
-                    const bulletCenter = getCenter(pos.x,pos.y,size.x,size.y,anchor.x,anchor.y)
-                    const explosionPosition = getPositionFromCenter(bulletCenter.x,bulletCenter.y,explosionShape.w,explosionShape.h,explosionShape.ax,explosionShape.ay)
+                    const bulletCenter = getCenter(pos.x, pos.y, size.x, size.y, anchor.x, anchor.y)
+                    const explosionPosition = getPositionFromCenter(bulletCenter.x, bulletCenter.y, explosionShape.w, explosionShape.h, explosionShape.ax, explosionShape.ay)
                     Position.x[exId] = explosionPosition.x
                     Position.y[exId] = explosionPosition.y
                     Character.type[exId] = character_type
@@ -211,12 +210,35 @@ export const movementSystem = world => {
                     continue;
                 }
             } else {
+
+                const border = 0
                 // wall sliding
                 // on y axis
+                /*
+                                const bbb = getBoundingBox(pos.x, pos.y, size.x, size.y, anchor.x, anchor.y)
+                                console.log(bbb.minX / 16, bbb.maxX / 16, bbb.minY / 16, bbb.maxY / 16)
+                                console.log('=',bbb)
+                */
+
+                const boundsReallyIntersect = (b1, b2) => {
+                    const minX = Math.max(b1.minX, b2.minX)
+                    const maxX = Math.min(b1.maxX, b2.maxX)
+                    const minY = Math.max(b1.minY, b2.minY)
+                    const maxY = Math.min(b1.maxY, b2.maxY)
+                    return ((minX < maxX) && (minY < maxY))
+                }
+
+
                 if (d.y !== 0) {
                     const bounds = getBoundingBox(pos.x, Math.floor(pos.y + d.y), size.x, size.y, anchor.x, anchor.y, _bounds)
-                    const colliders = world.tilemapRTree.tree.search(bounds)
+                    //                  console.log('goto',bounds.minX / 16, bounds.maxX / 16, bounds.minY / 16, bounds.maxY / 16)
+                    //               console.log('=goto',bounds)
+                    const colliders = world.tilemapRTree.tree.search(bounds).filter(b => boundsReallyIntersect(bounds, b))
+                    //console.log('collides on y axis', colliders.length)
                     if (colliders.length) {
+
+                        //               console.log(colliders)
+                        //  processs.exit(0)
                         //console.log('y ===',currentx,currenty,'-',pos,bounds)
                         //console.log('y',colliders)
                         if (d.y < 0) {
@@ -237,7 +259,7 @@ export const movementSystem = world => {
                 // on x axis
                 if (d.x !== 0) {
                     const bounds = getBoundingBox(Math.floor(pos.x + d.x), pos.y, size.x, size.y, anchor.x, anchor.y, _bounds)
-                    const colliders = world.tilemapRTree.tree.search(bounds)
+                    const colliders = world.tilemapRTree.tree.search(bounds).filter(b => boundsReallyIntersect(bounds, b))
                     if (colliders.length) {
                         // console.log('x ===',currentx,currenty,'-',pos,bounds)
                         // console.log('x',colliders)
