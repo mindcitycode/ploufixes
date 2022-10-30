@@ -51,7 +51,8 @@ function interpolateObjects(baseOws, nextOws, r) {
     const basePids = Object.keys(baseOws.byPid)
     const ows = {
         byPid: {},
-        removePid: []
+        removePid: [],
+        noPid : baseOws.noPid
     }
     basePids.forEach(pid => {
         const baseObject = baseOws.byPid[pid]

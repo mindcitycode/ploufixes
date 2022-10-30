@@ -19,6 +19,8 @@ import { Weapon, WEAPON_TYPE_PLASMA_LAUNCHER, WEAPON_TYPE_ROCKET_LAUNCHER, WEAPO
 import { Character, CHARACTER_TYPE_PLASMA, CHARACTER_TYPE_GRENADE, CHARACTER_TYPE_ROCKET, CHARACTER_TYPE_ANTITANK, CHARACTER_TYPE_SQUADLEADER, CHARACTER_TYPE_SNIPER, CHARACTER_TYPE_RADIOOPERATOR, CHARACTER_TYPE_MACHINEGUNNER, CHARACTER_TYPE_GRENADIER, CHARACTER_TYPE_ASSAULT, CHARACTER_TYPE_BIG_EXPLOSION } from '../components/character.js'
 import { Shape } from '../../common/shape.js'
 import { getCharacterShape } from '../../common/animations.js'
+import { Ttl } from '../components/ttl.js'
+import { Discrete } from '../components/discrete.js'
 //import { Shape, SHAPE_TYPE_BOX } from '../components/shape.js'
 
 export const timeSystem = world => {
@@ -185,14 +187,17 @@ export const movementSystem = world => {
                     removeEntity(world, eid)
 
                     const exId = addEntity(world)
-                    addComponent(world,Position,exId)
+                    addComponent(world, Position, exId)
+                    addComponent(world, Character, exId)
+                    //addComponent(world, PermanentId, exId)
+                    addComponent(world, Discrete, exId)
+                    //addComponent(world, Ttl, exId)
                     Position.x[exId] = pos.x
                     Position.y[exId] = pos.y
-                    addComponent(world,Character,exId)
                     Character.type[exId] = CHARACTER_TYPE_BIG_EXPLOSION
-                    addComponent(world,PermanentId,exId)
-                    PermanentId.pid[exId] = 0
-                                        
+                    //PermanentId.pid[exId] = 0
+                    //Ttl.remaining[exId] = 3
+                    Discrete.seen[eid] = 0
                     continue;
                 }
             } else {
@@ -274,6 +279,20 @@ export const movementSystem = world => {
     return world
 
 }
+const ttlQuery = defineQuery([Ttl])
+export const ttlSystem = world => {
+    const ents = ttlQuery(world)
+    const delta = world.time.delta
+    for (let i = 0; i < ents.length; i++) {
+        const eid = ents[i]
+        if (Ttl.remaining[eid] <= 0) {
+            removeEntity(world, eid)
+        } else {
+            Ttl.remaining[eid] -= delta
+        }
+    }
+    return world
+}
 export const destroyerSystem = world => {
     const ents = movementQuery(world)
     for (let i = 0; i < ents.length; i++) {
@@ -306,6 +325,20 @@ export const permanentIdAttributionSystem = world => {
                 console.log('SYSTEM::permnentIdAttributionSystem', 'removed eid', eid)
 
             }
+        }
+    }
+    return world
+}
+
+export const discreteQuery = defineQuery([Discrete])
+export const discreteSystem = world => {
+    const ents = discreteQuery(world)
+    for (let i = 0; i < ents.length; i++) {
+        const eid = ents[i]
+        if (Discrete.seen[eid] === 1) {
+            removeEntity(world, eid)
+        } else {
+            Discrete.seen[eid] = 1
         }
     }
     return world

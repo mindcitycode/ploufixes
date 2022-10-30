@@ -19,7 +19,7 @@ import {
     entityExists,
 } from 'bitecs'
 
-import { timeSystem, movementSystem, destroyerSystem, permanentIdAttributionSystem, controlSystem, weaponSystem } from './systems/systems.js'
+import { timeSystem, movementSystem, destroyerSystem, permanentIdAttributionSystem, controlSystem, weaponSystem, ttlSystem, discreteSystem } from './systems/systems.js'
 import { getTilemapDataBounds } from '../common/tilemap.js'
 import { instanciateTilemapRTree } from '../common/tree.js'
 
@@ -31,14 +31,18 @@ import { Action, ACTION_TYPE_WALK } from './components/action.js'
 import { Character, CHARACTER_TYPE_ANTITANK } from './components/character.js'
 import { Orientation } from './components/orientation.js'
 import { Weapon, WEAPON_TYPE_GRENADE_LAUNCHER, WEAPON_TYPE_PLASMA_LAUNCHER, WEAPON_TYPE_ROCKET_LAUNCHER } from './components/weapon.js'
+import { Ttl } from './components/ttl.js'
+import { Discrete } from './components/discrete.js'
 
 const pipeline = pipe(
     controlSystem,
     weaponSystem,
     movementSystem,
     timeSystem,
+    ttlSystem,
     destroyerSystem,
-    permanentIdAttributionSystem
+    permanentIdAttributionSystem,
+    discreteSystem,
 )
 
 export const createRegisteredWorld = () => {
@@ -51,7 +55,8 @@ export const createRegisteredWorld = () => {
     registerComponent(world, Character)
     registerComponent(world, Orientation)
     registerComponent(world, Weapon)
-    //registerComponent(world, Shape)
+    registerComponent(world, Ttl)
+    registerComponent(world, Discrete)
     return world
 }
 
@@ -144,8 +149,8 @@ export const createGame = async ({ tilemapData }) => {
             addComponent(world, Weapon, eid)
             //   Position.x[eid] = (16 * 15) + 8 // + 20 * Math.random()
             //  Position.y[eid] = (16 * 3) + 16 //+ 20 * Math.random()
-            Position.x[eid] = (16*5) + 20 * Math.random()
-            Position.y[eid] = (16*5) + 20 * Math.random()
+            Position.x[eid] = (16 * 5) + 20 * Math.random()
+            Position.y[eid] = (16 * 5) + 20 * Math.random()
             Velocity.x[eid] = 0
             Velocity.y[eid] = 0
             PermanentId.pid[eid] = clientPermanentId
@@ -154,8 +159,8 @@ export const createGame = async ({ tilemapData }) => {
             Character.type[eid] = CHARACTER_TYPE_ANTITANK
             Action.type[eid] = ACTION_TYPE_WALK
             Weapon.type[eid] = WEAPON_TYPE_ROCKET_LAUNCHER
-           //  Weapon.type[eid] = WEAPON_TYPE_PLASMA_LAUNCHER
-             //Weapon.type[eid] = WEAPON_TYPE_GRENADE_LAUNCHER
+            //  Weapon.type[eid] = WEAPON_TYPE_PLASMA_LAUNCHER
+            //Weapon.type[eid] = WEAPON_TYPE_GRENADE_LAUNCHER
             Weapon.reload[eid] = 1
             Weapon.idle[eid] = 0
         }
@@ -198,6 +203,8 @@ export const worldEntitiesToObject = world => {
         const hasCharacter = hasComponent(world, Character, eid)
         const hasAction = hasComponent(world, Action, eid)
         const hasWeapon = hasComponent(world, Weapon, eid)
+        const hasTtl = hasComponent(world, Ttl, eid)
+        const hasDiscrete = hasComponent(world, Discrete, eid)
         const position_x = Position.x[eid]
         const position_y = Position.y[eid]
         const velocity_x = Velocity.x[eid]
@@ -209,6 +216,8 @@ export const worldEntitiesToObject = world => {
         const weapon_type = Weapon.type[eid]
         const weapon_idle = Weapon.idle[eid]
         const weapon_reload = Weapon.reload[eid]
+        const ttl_remaining = Ttl.remaining[eid]
+        const discrete_seen = Discrete.seen[eid]
         const object = {
             eid,
             exists,
@@ -219,9 +228,9 @@ export const worldEntitiesToObject = world => {
             Character: { hasCharacter, character_type },
             Action: { hasAction, action_type },
             Weapon: { hasWeapon, weapon_type, weapon_idle, weapon_reload },
+            Ttl: { hasTtl, ttl_remaining },
+            Discrete: { hasDiscrete, discrete_seen }
         }
-        //console.log(JSON.stringify(object))
-        // console.log(object)
         objects.push(object)
     })
     return objects

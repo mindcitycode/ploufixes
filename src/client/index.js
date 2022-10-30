@@ -32,16 +32,42 @@ const go = async () => {
         if (gameDisplay !== undefined) {
             if (state?.ows?.removePid) {
                 state.ows.removePid.forEach(pid => {
-                    //console.log('remove',pid)
                     gameDisplay.removeASprite(pid)
                 })
             }
             if (state?.ows?.byPid) {
                 const _shape = Shape
+
+                for (const object of state.ows.noPid) {
+                    console.log('no pid', object, object.Character)
+                    if (object.Character.hasCharacter && object.Position.hasPosition) {
+                        console.log('no pidx', object)
+                        const character_type = object.Character.character_type
+                        const action_type = object.Action?.action_type
+                        const orientation_a8 = object.Orientation?.orientation_a8
+                        const animationNum = selectAnimation(character_type, action_type, orientation_a8)
+                        const asprite = gameDisplay.createOneshotASprite(animationNum)
+
+                        const shape = getCharacterShape(character_type, _shape)
+                        // define anchor here rather thant in sprite to circuvent strange pixi behaviour
+                        // rotation center ("pivot") is set in sprite to (0.5,0.5) of texture, in absolute dimension
+                        // (0.5*w,0.5*h)
+                        const aax = 0.5 * shape.w - shape.ax * shape.w
+                        const aay = 0.5 * shape.h - shape.ay * shape.h
+                        asprite.x = Math.round(object.Position.position_x + aax)
+                        asprite.y = Math.round(object.Position.position_y + aay)
+                        console.log(asprite)
+                    }
+                }
+                // delete in original base update
+                state.ows.noPid.length = 0
+
                 for (const [pid, object] of Object.entries(state.ows.byPid)) {
+                    //const pid = (object.PermanentId?.hasPermanentId)?object.PermanentId.permanentId_pid:undefined
+
                     let asprite = undefined
 
-                    if (object.Character.hasCharacter) {//&& object.Action.hasAction && object.Orientation.hasOrientation) {
+                    if (object.PermanentId.hasPermanentId && object.Character.hasCharacter) {//&& object.Action.hasAction && object.Orientation.hasOrientation) {
                         const character_type = object.Character.character_type
                         const action_type = object.Action?.action_type
                         const orientation_a8 = object.Orientation?.orientation_a8
@@ -51,19 +77,21 @@ const go = async () => {
                         asprite = gameDisplay.getOrCreateASprite(pid, ANIM_BIG_EXPLOSION)
                         asprite.tint = 0xff0000
                     }
-                    if ((parseInt(pid) === parseInt(affectedPid))) {
-                        gameDisplay.scrollablePositioner.centerOnTarget({
-                            x: Math.round(object.Position.position_x),
-                            y: Math.round(object.Position.position_y)
-                        })
+                    if (object.PermanentId.hasPermanentId && object.Position.hasPosition) {
+                        if ((parseInt(pid) === parseInt(affectedPid))) {
+                            gameDisplay.scrollablePositioner.centerOnTarget({
+                                x: Math.round(object.Position.position_x),
+                                y: Math.round(object.Position.position_y)
+                            })
+                        }
                     }
                     if (asprite && object.Position.hasPosition && object.Character.hasCharacter) {
                         const character_type = object.Character.character_type
-                        const shape = getCharacterShape(character_type,_shape)
+                        const shape = getCharacterShape(character_type, _shape)
                         // define anchor here rather thant in sprite to circuvent strange pixi behaviour
                         // rotation center ("pivot") is set in sprite to (0.5,0.5) of texture, in absolute dimension
                         // (0.5*w,0.5*h)
-                        const aax = 0.5 * shape.w - shape.ax * shape.w  
+                        const aax = 0.5 * shape.w - shape.ax * shape.w
                         const aay = 0.5 * shape.h - shape.ay * shape.h
                         asprite.x = Math.round(object.Position.position_x + aax)
                         asprite.y = Math.round(object.Position.position_y + aay)

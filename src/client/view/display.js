@@ -51,22 +51,27 @@ export const createDisplay = async () => {
 
         // sprites, anchored middle-bottom
         const aSprites = new Map()
+        const createOneshotASprite = animationNum => {
+            console.log('HERE')
+            const animationName = getAnimationName(animationNum)
+            const aSprite = new PIXI.AnimatedSprite(spritesheet.animations[animationName])
+            aSprite.animationSpeed = 0.1
+            aSprite.pivot.x = aSprite._textures[0].frame.width /2
+            aSprite.pivot.y = aSprite._textures[0].frame.height / 2
+            aSprite.gotoAndPlay(0)
+            aSprite.loop = false
+            spritesContainer.addChild(aSprite)
+            aSprite.onComplete = () => {
+                aSprite.destroy()
+            }
+            return aSprite
+        }
         const createASprite = (pid, animationNum) => {
 
-            //            const animationNum = ANIM_GRENADIER_CLASS_CRAWL
             const animationName = getAnimationName(animationNum)
-
             const aSprite = new PIXI.AnimatedSprite(spritesheet.animations[animationName])
-            //const aSprite = new PIXI.AnimatedSprite(spritesheet.animations["big-explosion"]);
-            console.log(aSprite)
             aSprite.animationSpeed = 0.1
             // TODO : dehack.
-            if (false) {
-                aSprite.pivot.x = 0
-                aSprite.pivot.y = -aSprite._textures[0].frame.height / 2
-                aSprite.anchor.x = 0.5
-                aSprite.anchor.y = 1
-            }
             aSprite.pivot.x = aSprite._textures[0].frame.width /2
             aSprite.pivot.y = aSprite._textures[0].frame.height / 2
             aSprite.gotoAndPlay(0)
@@ -114,6 +119,7 @@ export const createDisplay = async () => {
             destroy: () => {
                 gameContainer.destroy(true, true)
             },
+            createOneshotASprite,
             getOrCreateASprite,
             removeASprite,
             scrollablePositioner,
