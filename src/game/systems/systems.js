@@ -16,7 +16,7 @@ import { ACTION_FIRE, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION
 import { Orientation, rotationForDirections } from '../components/orientation.js'
 import { Action, ACTION_TYPE_IDLE, ACTION_TYPE_WALK } from '../components/action.js'
 import { Weapon, WEAPON_TYPE_PLASMA_LAUNCHER, WEAPON_TYPE_ROCKET_LAUNCHER, WEAPON_TYPE_GRENADE_LAUNCHER } from '../components/weapon.js'
-import { Character, CHARACTER_TYPE_PLASMA, CHARACTER_TYPE_GRENADE, CHARACTER_TYPE_ROCKET, CHARACTER_TYPE_ANTITANK, CHARACTER_TYPE_SQUADLEADER, CHARACTER_TYPE_SNIPER, CHARACTER_TYPE_RADIOOPERATOR, CHARACTER_TYPE_MACHINEGUNNER, CHARACTER_TYPE_GRENADIER, CHARACTER_TYPE_ASSAULT } from '../components/character.js'
+import { Character, CHARACTER_TYPE_PLASMA, CHARACTER_TYPE_GRENADE, CHARACTER_TYPE_ROCKET, CHARACTER_TYPE_ANTITANK, CHARACTER_TYPE_SQUADLEADER, CHARACTER_TYPE_SNIPER, CHARACTER_TYPE_RADIOOPERATOR, CHARACTER_TYPE_MACHINEGUNNER, CHARACTER_TYPE_GRENADIER, CHARACTER_TYPE_ASSAULT, CHARACTER_TYPE_BIG_EXPLOSION } from '../components/character.js'
 import { Shape } from '../../common/shape.js'
 import { getCharacterShape } from '../../common/animations.js'
 //import { Shape, SHAPE_TYPE_BOX } from '../components/shape.js'
@@ -183,6 +183,16 @@ export const movementSystem = world => {
                 const collides = world.tilemapRTree.tree.collides(bounds)
                 if (collides) {
                     removeEntity(world, eid)
+
+                    const exId = addEntity(world)
+                    addComponent(world,Position,exId)
+                    Position.x[exId] = pos.x
+                    Position.y[exId] = pos.y
+                    addComponent(world,Character,exId)
+                    Character.type[exId] = CHARACTER_TYPE_BIG_EXPLOSION
+                    addComponent(world,PermanentId,exId)
+                    PermanentId.pid[exId] = 0
+                                        
                     continue;
                 }
             } else {

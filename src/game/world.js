@@ -142,10 +142,10 @@ export const createGame = async ({ tilemapData }) => {
             addComponent(world, Character, eid)
             addComponent(world, Action, eid)
             addComponent(world, Weapon, eid)
-            Position.x[eid] = (16 * 15) + 8 // + 20 * Math.random()
-            Position.y[eid] = (16 * 3) + 16 //+ 20 * Math.random()
-            //  Position.x[eid] = 8 //+ 20 * Math.random()
-            //  Position.y[eid] = 16 //+ 20 * Math.random()
+            //   Position.x[eid] = (16 * 15) + 8 // + 20 * Math.random()
+            //  Position.y[eid] = (16 * 3) + 16 //+ 20 * Math.random()
+            Position.x[eid] = (16*5) + 20 * Math.random()
+            Position.y[eid] = (16*5) + 20 * Math.random()
             Velocity.x[eid] = 0
             Velocity.y[eid] = 0
             PermanentId.pid[eid] = clientPermanentId
@@ -154,8 +154,8 @@ export const createGame = async ({ tilemapData }) => {
             Character.type[eid] = CHARACTER_TYPE_ANTITANK
             Action.type[eid] = ACTION_TYPE_WALK
             Weapon.type[eid] = WEAPON_TYPE_ROCKET_LAUNCHER
-            // Weapon.type[eid] = WEAPON_TYPE_PLASMA_LAUNCHER
-            // Weapon.type[eid] = WEAPON_TYPE_GRENADE_LAUNCHER
+           //  Weapon.type[eid] = WEAPON_TYPE_PLASMA_LAUNCHER
+             //Weapon.type[eid] = WEAPON_TYPE_GRENADE_LAUNCHER
             Weapon.reload[eid] = 1
             Weapon.idle[eid] = 0
         }

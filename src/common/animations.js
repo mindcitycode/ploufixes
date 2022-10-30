@@ -31,7 +31,7 @@ import {
     ACTION_TYPE_IDLE, ACTION_TYPE_MELEE, ACTION_TYPE_NEUTRAL, ACTION_TYPE_WALK
 } from '../game/components/action.js'
 import {
-    CHARACTER_TYPE_ANTITANK, CHARACTER_TYPE_ASSAULT, CHARACTER_TYPE_CENTIPEDE_BODY, CHARACTER_TYPE_CENTIPEDE_HEAD, CHARACTER_TYPE_GRENADE, CHARACTER_TYPE_GRENADIER,
+    CHARACTER_TYPE_ANTITANK, CHARACTER_TYPE_ASSAULT, CHARACTER_TYPE_BIG_EXPLOSION, CHARACTER_TYPE_CENTIPEDE_BODY, CHARACTER_TYPE_CENTIPEDE_HEAD, CHARACTER_TYPE_GRENADE, CHARACTER_TYPE_GRENADIER,
     CHARACTER_TYPE_HORNET, CHARACTER_TYPE_MACHINEGUNNER, CHARACTER_TYPE_PLASMA, CHARACTER_TYPE_RADIOOPERATOR, CHARACTER_TYPE_ROCKET, CHARACTER_TYPE_SCARAB, CHARACTER_TYPE_SNIPER, CHARACTER_TYPE_SPIDER,
     CHARACTER_TYPE_SQUADLEADER, CHARACTER_TYPE_WASP
 } from '../game/components/character.js'
@@ -82,6 +82,13 @@ export const getCharacterShape = (characterType, shape = Shape()) => {
             shape.ay = 1
             break
         }
+        case CHARACTER_TYPE_BIG_EXPLOSION: {
+            shape.w = 32
+            shape.h = 32
+            shape.ax = 0.5
+            shape.ay = 1
+            break;
+        }
         default: {
             throw NoSuchCharacterTypeError(characterType)
         }
@@ -102,6 +109,7 @@ export const selectRotationRotation = (characterType, action, directions) => {
 }
 export const selectFlipRotation = (characterType, action, directions) => {
     switch (characterType) {
+        case CHARACTER_TYPE_BIG_EXPLOSION:
         case CHARACTER_TYPE_PLASMA:
         case CHARACTER_TYPE_GRENADE:
         case CHARACTER_TYPE_ROCKET:
@@ -283,6 +291,9 @@ export const selectAnimation = (characterType, action, directions) => {
         }
         case CHARACTER_TYPE_ROCKET: {
             return ANIM_RPG_ROUND
+        }
+        case CHARACTER_TYPE_BIG_EXPLOSION: {
+            return ANIM_BIG_EXPLOSION
         }
         default: throw NoSuchCharacterTypeError(characterType);
     }
