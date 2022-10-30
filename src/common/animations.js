@@ -37,6 +37,7 @@ import {
 } from '../game/components/character.js'
 import { FLIPPED_HORIZONTALLY_FLAG } from "./tilemap.js"
 import { rotationForDirections } from "../game/components/orientation.js"
+import { Shape } from "./shape.js"
 
 
 const NoSuchActionError = (characterType, action) => {
@@ -48,6 +49,46 @@ const NoSuchCharacterTypeError = (characterType) => {
 const NoSuchDirectionError = (characterType, action, directions) => {
     return new Error(`no such directions ${directions} for action ${action} and characterType ${characterType}`)
 }
+
+export const getCharacterShape = (characterType, shape = Shape()) => {
+
+    /*  CHARACTER_TYPE_CENTIPEDE_HEAD = 1
+      CHARACTER_TYPE_CENTIPEDE_BODY = 211
+      CHARACTER_TYPE_HORNET = 3
+      CHARACTER_TYPE_SCARAB = 4
+      CHARACTER_TYPE_SPIDER = 5
+      CHARACTER_TYPE_WASP = 6
+      */
+    switch (characterType) {
+        case CHARACTER_TYPE_ANTITANK:
+        case CHARACTER_TYPE_ASSAULT:
+        case CHARACTER_TYPE_GRENADIER:
+        case CHARACTER_TYPE_MACHINEGUNNER:
+        case CHARACTER_TYPE_RADIOOPERATOR:
+        case CHARACTER_TYPE_SNIPER:
+        case CHARACTER_TYPE_SQUADLEADER:
+        case CHARACTER_TYPE_ROCKET: {
+            shape.w = 16
+            shape.h = 16
+            shape.ax = 0.5
+            shape.ay = 1
+            break
+        }
+        case CHARACTER_TYPE_PLASMA:
+        case CHARACTER_TYPE_GRENADE: {
+            shape.w = 8
+            shape.h = 8
+            shape.ax = 0.5
+            shape.ay = 1
+            break
+        }
+        default: {
+            throw NoSuchCharacterTypeError(characterType)
+        }
+    }
+    return shape
+}
+
 export const selectRotationRotation = (characterType, action, directions) => {
     switch (characterType) {
         case CHARACTER_TYPE_ROCKET:

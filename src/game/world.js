@@ -51,6 +51,7 @@ export const createRegisteredWorld = () => {
     registerComponent(world, Character)
     registerComponent(world, Orientation)
     registerComponent(world, Weapon)
+    //registerComponent(world, Shape)
     return world
 }
 
@@ -206,7 +207,7 @@ export const worldEntitiesToObject = world => {
         const weapon_type = Weapon.type[eid]
         const weapon_idle = Weapon.idle[eid]
         const weapon_reload = Weapon.reload[eid]
-        const object = {
+         const object = {
             eid,
             exists,
             Position: { hasPosition, position_x, position_y },
@@ -215,7 +216,7 @@ export const worldEntitiesToObject = world => {
             Orientation: { hasOrientation, orientation_a8 },
             Character: { hasCharacter, character_type },
             Action: { hasAction, action_type },
-            Weapon: { hasWeapon, weapon_type, weapon_idle, weapon_reload }
+            Weapon: { hasWeapon, weapon_type, weapon_idle, weapon_reload },
         }
         //console.log(JSON.stringify(object))
         // console.log(object)

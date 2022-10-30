@@ -15,7 +15,10 @@ import { ACTION_FIRE, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION
 import { Orientation, rotationForDirections } from '../components/orientation.js'
 import { Action, ACTION_TYPE_IDLE, ACTION_TYPE_WALK } from '../components/action.js'
 import { Weapon, WEAPON_TYPE_PLASMA_LAUNCHER, WEAPON_TYPE_ROCKET_LAUNCHER, WEAPON_TYPE_GRENADE_LAUNCHER } from '../components/weapon.js'
-import { Character, CHARACTER_TYPE_PLASMA, CHARACTER_TYPE_GRENADE, CHARACTER_TYPE_ROCKET } from '../components/character.js'
+import { Character, CHARACTER_TYPE_PLASMA, CHARACTER_TYPE_GRENADE, CHARACTER_TYPE_ROCKET, CHARACTER_TYPE_ANTITANK, CHARACTER_TYPE_SQUADLEADER, CHARACTER_TYPE_SNIPER, CHARACTER_TYPE_RADIOOPERATOR, CHARACTER_TYPE_MACHINEGUNNER, CHARACTER_TYPE_GRENADIER, CHARACTER_TYPE_ASSAULT } from '../components/character.js'
+import { Shape } from '../../common/shape.js'
+import { getCharacterShape } from '../../common/animations.js'
+//import { Shape, SHAPE_TYPE_BOX } from '../components/shape.js'
 
 export const timeSystem = world => {
 
@@ -97,19 +100,19 @@ export const weaponSystem = world => {
                 if (hasComponent(world, Velocity, eid)) {
                     const sdx = Math.sign(Velocity.x[eid])
                     const sdy = Math.sign(Velocity.y[eid])
-                    if ((sdx !==0 )||(sdy !==0)){
+                    if ((sdx !== 0) || (sdy !== 0)) {
                         // use velocity for direction
-                        orientation |= (sdx>0)?(DIRECTION_RIGHT):((sdx<0)?DIRECTION_LEFT:0)
-                        orientation |= (sdy>0)?(DIRECTION_DOWN):((sdy<0)?DIRECTION_UP:0)
+                        orientation |= (sdx > 0) ? (DIRECTION_RIGHT) : ((sdx < 0) ? DIRECTION_LEFT : 0)
+                        orientation |= (sdy > 0) ? (DIRECTION_DOWN) : ((sdy < 0) ? DIRECTION_UP : 0)
                     } else {
                         // just left or right orientation
-                        orientation = ( Orientation.a8[eid] & (DIRECTION_RIGHT | DIRECTION_LEFT))
+                        orientation = (Orientation.a8[eid] & (DIRECTION_RIGHT | DIRECTION_LEFT))
                     }
                 } else {
-                    orientation = ( Orientation.a8[eid] & (DIRECTION_RIGHT | DIRECTION_LEFT))
+                    orientation = (Orientation.a8[eid] & (DIRECTION_RIGHT | DIRECTION_LEFT))
                 }
                 Orientation.a8[bulletEid] = orientation//Orientation.a8[eid]
-                const angle  = rotationForDirections(orientation)
+                const angle = rotationForDirections(orientation)
 
                 // console.log('fired at orientation', Orientation.a8[eid].toString(2))
                 Velocity.x[bulletEid] = 100 * Math.cos(angle)
@@ -141,12 +144,14 @@ function getBoundingBox(x, y, w, h, ax, ay, bounds = Bounds()) {
     return bounds
 }
 
+
 export const movementQuery = defineQuery([Position, Velocity])
 export const movementSystem = world => {
     const { time: { delta } } = world
     const ents = movementQuery(world)
 
     const _bounds = Bounds()
+    const _shape = Shape()
 
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
@@ -163,57 +168,76 @@ export const movementSystem = world => {
             x: Math.floor(currentx),
             y: Math.floor(currenty)
         }
-        if (!hasComponent(world, KeyControl, eid)) {
-            // do not try to collide anything
-            pos.x += d.x
-            pos.y += d.y
-        } else {
-            const size = { x: 16, y: 16 }
-            const anchor = { x: 0.5, y: 1 }
+        if (hasComponent(world, Character, eid)) {
+            const shape = getCharacterShape(Character.type[eid], _shape)
+            const size = { x: shape.w, y: shape.h }
+            const anchor = { x: shape.ax, y: shape.ay }
             const border = 1
-            // on y axis
-            if (d.y !== 0) {
-                const bounds = getBoundingBox(pos.x, Math.floor(pos.y + d.y), size.x, size.y, anchor.x, anchor.y, _bounds)
-                const colliders = world.tilemapRTree.tree.search(bounds)
-                if (colliders.length) {
-                    //console.log('y ===',currentx,currenty,'-',pos,bounds)
-                    //console.log('y',colliders)
-                    if (d.y < 0) {
-                        const yLimit = Math.max(...colliders.map(c => c.maxY))
-                        //Position.y[eid] = yLimit + 1 + size.y * anchor.y
-                        pos.y = yLimit + border + size.y * anchor.y
-                    } else if (d.y > 0) {
-                        const yLimit = Math.min(...colliders.map(c => c.minY))
-                        //Position.y[eid] = yLimit - 1 - size.y * (1 - anchor.y)
-                        pos.y = yLimit - border - size.y * (1 - anchor.y)
-                    }
-                } else {
-                    pos.y += d.y
 
+            if (!hasComponent(world, KeyControl, eid)) {
+                // do not try to collide anything
+                pos.x += d.x
+                pos.y += d.y
+                const bounds = getBoundingBox(pos.x, Math.floor(pos.y + d.y), size.x, size.y, anchor.x, anchor.y, _bounds)
+                const collides = world.tilemapRTree.tree.collides(bounds)
+                if (collides) {
+                    removeEntity(world,eid)
+                }
+            } else {
+                // wall sliding
+                // on y axis
+                if (d.y !== 0) {
+                    const bounds = getBoundingBox(pos.x, Math.floor(pos.y + d.y), size.x, size.y, anchor.x, anchor.y, _bounds)
+                    const colliders = world.tilemapRTree.tree.search(bounds)
+                    if (colliders.length) {
+                        //console.log('y ===',currentx,currenty,'-',pos,bounds)
+                        //console.log('y',colliders)
+                        if (d.y < 0) {
+                            const yLimit = Math.max(...colliders.map(c => c.maxY))
+                            //Position.y[eid] = yLimit + 1 + size.y * anchor.y
+                            pos.y = yLimit + border + size.y * anchor.y
+                        } else if (d.y > 0) {
+                            const yLimit = Math.min(...colliders.map(c => c.minY))
+                            //Position.y[eid] = yLimit - 1 - size.y * (1 - anchor.y)
+                            pos.y = yLimit - border - size.y * (1 - anchor.y)
+                        }
+                    } else {
+                        pos.y += d.y
+
+                    }
+                }
+                pos.y = Math.floor(pos.y)
+                // on x axis
+                if (d.x !== 0) {
+                    const bounds = getBoundingBox(Math.floor(pos.x + d.x), pos.y, size.x, size.y, anchor.x, anchor.y, _bounds)
+                    const colliders = world.tilemapRTree.tree.search(bounds)
+                    if (colliders.length) {
+                        // console.log('x ===',currentx,currenty,'-',pos,bounds)
+                        // console.log('x',colliders)
+                        if (d.x < 0) {
+                            const xLimit = Math.max(...colliders.map(c => c.maxX))
+                            pos.x = xLimit + border + size.x * anchor.x
+                        } else if (d.x > 0) {
+                            const xLimit = Math.min(...colliders.map(c => c.minX))
+                            pos.x = xLimit - border - size.x * (1 - anchor.x)
+                        }
+                    } else {
+                        pos.x += d.x
+                    }
                 }
             }
-            pos.y = Math.floor(pos.y)
-            // on x axis
-            if (d.x !== 0) {
-                const bounds = getBoundingBox(Math.floor(pos.x + d.x), pos.y, size.x, size.y, anchor.x, anchor.y, _bounds)
-                const colliders = world.tilemapRTree.tree.search(bounds)
-                if (colliders.length) {
-                    // console.log('x ===',currentx,currenty,'-',pos,bounds)
-                    // console.log('x',colliders)
-                    if (d.x < 0) {
-                        const xLimit = Math.max(...colliders.map(c => c.maxX))
-                        pos.x = xLimit + border + size.x * anchor.x
-                    } else if (d.x > 0) {
-                        const xLimit = Math.min(...colliders.map(c => c.minX))
-                        pos.x = xLimit - border - size.x * (1 - anchor.x)
-                    }
-                } else {
-                    pos.x += d.x
-                }
+            Position.x[eid] = Math.floor(pos.x)
+            Position.y[eid] = Math.floor(pos.y)
+
+
+            // clamp position
+            if (Position.x[eid] > 1000) {
+                Position.x[eid] = 0
+            }
+            if (Position.y[eid] > 800) {
+                Position.y[eid] = 0
             }
         }
-        Position.x[eid] = Math.floor(pos.x)
-        Position.y[eid] = Math.floor(pos.y)
 
         // set action
         if (hasComponent(world, Action, eid)) {
@@ -230,13 +254,6 @@ export const movementSystem = world => {
             }
         }
 
-        // clamp position
-        if (Position.x[eid] > 1000) {
-            Position.x[eid] = 0
-        }
-        if (Position.y[eid] > 800) {
-            Position.y[eid] = 0
-        }
 
     }
     return world
