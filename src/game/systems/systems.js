@@ -147,7 +147,18 @@ function getBoundingBox(x, y, w, h, ax, ay, bounds = Bounds()) {
     return bounds
 }
 
-
+// TODO usage pass _center
+function getCenter(x, y, w, h, ax, ay, center = { x: 0, y: 0 }) {
+    center.x = x + (0.5 - ax) * w
+    center.y = y + (0.5 - ay) * h
+    return center
+}
+// TODO usage pass _position
+function getPositionFromCenter(cx, cy, w, h, ax, ay, position = { x: 0, y: 0 }) {
+    position.x = cx + (ax - 0.5) * w
+    position.y = cy + (ay - 0.5) * h
+    return position
+}
 export const movementQuery = defineQuery([Position, Velocity])
 export const movementSystem = world => {
     const { time: { delta } } = world
@@ -185,18 +196,17 @@ export const movementSystem = world => {
                 const collides = world.tilemapRTree.tree.collides(bounds)
                 if (collides) {
                     removeEntity(world, eid)
-
                     const exId = addEntity(world)
                     addComponent(world, Position, exId)
                     addComponent(world, Character, exId)
-                    //addComponent(world, PermanentId, exId)
                     addComponent(world, Discrete, exId)
-                    //addComponent(world, Ttl, exId)
-                    Position.x[exId] = pos.x
-                    Position.y[exId] = pos.y
-                    Character.type[exId] = CHARACTER_TYPE_BIG_EXPLOSION
-                    //PermanentId.pid[exId] = 0
-                    //Ttl.remaining[exId] = 3
+                    const character_type = CHARACTER_TYPE_BIG_EXPLOSION
+                    const explosionShape = getCharacterShape(character_type)
+                    const bulletCenter = getCenter(pos.x,pos.y,size.x,size.y,anchor.x,anchor.y)
+                    const explosionPosition = getPositionFromCenter(bulletCenter.x,bulletCenter.y,explosionShape.w,explosionShape.h,explosionShape.ax,explosionShape.ay)
+                    Position.x[exId] = explosionPosition.x
+                    Position.y[exId] = explosionPosition.y
+                    Character.type[exId] = character_type
                     Discrete.seen[eid] = 0
                     continue;
                 }

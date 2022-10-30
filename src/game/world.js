@@ -67,7 +67,7 @@ const timeMeasurements = 10
 export const createGame = async ({ tilemapData }) => {
 
     // properties
-    const frameRate = 10
+    const frameRate = 20
 
     // create world and serializer 
     const world = createRegisteredWorld()
