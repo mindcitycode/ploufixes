@@ -142,10 +142,12 @@ export const createGame = async ({ tilemapData }) => {
             addComponent(world, Character, eid)
             addComponent(world, Action, eid)
             addComponent(world, Weapon, eid)
-            Position.x[eid] = (16 * 20) + 20 * Math.random()
-            Position.y[eid] = (16 * 10) + 20 * Math.random()
-            Velocity.x[eid] = 10 + 5 * Math.random()
-            Velocity.y[eid] = 10
+            Position.x[eid] = (16 * 15) + 8 // + 20 * Math.random()
+            Position.y[eid] = (16 * 3) + 16 //+ 20 * Math.random()
+            //  Position.x[eid] = 8 //+ 20 * Math.random()
+            //  Position.y[eid] = 16 //+ 20 * Math.random()
+            Velocity.x[eid] = 0
+            Velocity.y[eid] = 0
             PermanentId.pid[eid] = clientPermanentId
             KeyControl.state[eid] = 0
             Orientation.a8[eid] = 0
@@ -207,7 +209,7 @@ export const worldEntitiesToObject = world => {
         const weapon_type = Weapon.type[eid]
         const weapon_idle = Weapon.idle[eid]
         const weapon_reload = Weapon.reload[eid]
-         const object = {
+        const object = {
             eid,
             exists,
             Position: { hasPosition, position_x, position_y },

@@ -60,11 +60,15 @@ export const createDisplay = async () => {
             //const aSprite = new PIXI.AnimatedSprite(spritesheet.animations["big-explosion"]);
             console.log(aSprite)
             aSprite.animationSpeed = 0.1
-            //aSprite.pivot.x = 0
             // TODO : dehack.
-           // aSprite.pivot.y = -aSprite._textures[0].frame.height/2
-            aSprite.anchor.x = 0.5
-            aSprite.anchor.y = 1
+            if (false) {
+                aSprite.pivot.x = 0
+                aSprite.pivot.y = -aSprite._textures[0].frame.height / 2
+                aSprite.anchor.x = 0.5
+                aSprite.anchor.y = 1
+            }
+            aSprite.pivot.x = aSprite._textures[0].frame.width /2
+            aSprite.pivot.y = aSprite._textures[0].frame.height / 2
             aSprite.gotoAndPlay(0)
             //  custom prop
             aSprite.animationNum = animationNum

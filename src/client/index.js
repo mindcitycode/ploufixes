@@ -7,9 +7,10 @@ import { createRegisteredWorld, worldEntitiesToObject } from '../game/world.js'
 import { defineDeserializer, DESERIALIZE_MODE, entityExists, getAllEntities, hasComponent, removeEntity } from 'bitecs'
 import { Position } from '../game/components/position.js'
 import { KeyboardInput } from './inputs.js'
-import { selectAnimation, selectFlipRotation, selectRotationRotation } from '../common/animations.js'
+import { getCharacterShape, selectAnimation, selectFlipRotation, selectRotationRotation } from '../common/animations.js'
 import { FLIPPED_HORIZONTALLY_FLAG } from '../common/tilemap.js'
 import { ANIM_BIG_EXPLOSION } from '../common/generated-game-animations-definitions.js'
+import { Shape } from '../common/shape.js'
 
 
 const go = async () => {
@@ -36,6 +37,7 @@ const go = async () => {
                 })
             }
             if (state?.ows?.byPid) {
+                const _shape = Shape
                 for (const [pid, object] of Object.entries(state.ows.byPid)) {
                     let asprite = undefined
 
@@ -55,9 +57,16 @@ const go = async () => {
                             y: Math.round(object.Position.position_y)
                         })
                     }
-                    if (asprite && object.Position.hasPosition) {
-                        asprite.x = Math.round(object.Position.position_x)
-                        asprite.y = Math.round(object.Position.position_y)
+                    if (asprite && object.Position.hasPosition && object.Character.hasCharacter) {
+                        const character_type = object.Character.character_type
+                        const shape = getCharacterShape(character_type,_shape)
+                        // define anchor here rather thant in sprite to circuvent strange pixi behaviour
+                        // rotation center ("pivot") is set in sprite to (0.5,0.5) of texture, in absolute dimension
+                        // (0.5*w,0.5*h)
+                        const aax = 0.5 * shape.w - shape.ax * shape.w  
+                        const aay = 0.5 * shape.h - shape.ay * shape.h
+                        asprite.x = Math.round(object.Position.position_x + aax)
+                        asprite.y = Math.round(object.Position.position_y + aay)
                     }
                     if (asprite && object.Character.hasCharacter) {//&& object.Action.hasAction && object.Orientation.hasOrientation) {
                         const character_type = object.Character.character_type
@@ -69,7 +78,6 @@ const go = async () => {
                         if (rotationRotation !== undefined) {
                             asprite.rotation = rotationRotation
                         }
-
                     }
                 }
             }
