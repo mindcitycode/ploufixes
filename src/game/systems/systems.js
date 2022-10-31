@@ -6,12 +6,16 @@ import {
     hasComponent,
     entityExists,
 } from 'bitecs'
-import { Bounds, boundsReallyIntersect } from '../../common/bounds.js'
+import { Bounds, boundsReallyIntersect, getCenter } from '../../common/bounds.js'
 
 import { Position } from '../components/position.js'
 import { Velocity } from '../components/velocity.js'
 import { PermanentId } from '../components/permanentId.js'
 import { KeyControl } from '../components/keyControl.js'
+import { Shape } from '../../common/shape.js'
+import { Ttl } from '../components/ttl.js'
+import { Discrete } from '../components/discrete.js'
+
 import { ACTION_FIRE, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_UP, _DIRECTION_ANY } from '../../common/keyController.js'
 import { Orientation, rotationForDirections } from '../components/orientation.js'
 import { Action, ACTION_TYPE_IDLE, ACTION_TYPE_WALK } from '../components/action.js'
@@ -21,10 +25,9 @@ import {
     CHARACTER_TYPE_SNIPER, CHARACTER_TYPE_RADIOOPERATOR, CHARACTER_TYPE_MACHINEGUNNER, CHARACTER_TYPE_GRENADIER,
     CHARACTER_TYPE_ASSAULT, CHARACTER_TYPE_BIG_EXPLOSION
 } from '../components/character.js'
-import { Shape } from '../../common/shape.js'
 import { getCharacterShape } from '../../common/animations.js'
-import { Ttl } from '../components/ttl.js'
-import { Discrete } from '../components/discrete.js'
+import { spawnBullet, spawnExplosion } from '../spawns.js'
+import { getBoundingBox } from '../../common/bounds.js'
 //import { Shape, SHAPE_TYPE_BOX } from '../components/shape.js'
 
 export const timeSystem = world => {
@@ -63,6 +66,7 @@ export const controlSystem = world => {
                     Velocity.x[eid] = 0
                     Velocity.y[eid] = 0
                 }
+
                 // set orientation
                 if (hasComponent(world, Orientation, eid)) {
                     if (incomingState > 0) {
@@ -84,26 +88,6 @@ export const controlSystem = world => {
     return world
 }
 
-const spawnBullet = (world, character_type, cx, cy, orientation, speed = 100) => {
-    const bulletEid = addEntity(world)
-    addComponent(world, Position, bulletEid)
-    addComponent(world, Orientation, bulletEid)
-    addComponent(world, Velocity, bulletEid)
-    addComponent(world, PermanentId, bulletEid)
-    addComponent(world, Character, bulletEid)
-    Position.x[bulletEid] = cx
-    Position.y[bulletEid] = cy
-    Orientation.a8[bulletEid] = orientation//Orientation.a8[eid]
-    const angle = rotationForDirections(orientation)
-
-    Character.type[bulletEid] = character_type
-    // console.log('fired at orientation', Orientation.a8[eid].toString(2))
-    Velocity.x[bulletEid] = speed * Math.cos(angle)
-    Velocity.y[bulletEid] = speed * Math.sin(angle)
-    Character.type[bulletEid] = character_type
-    PermanentId.pid[bulletEid] = 0
-    return bulletEid
-}
 export const weaponQuery = defineQuery([Weapon])
 export const weaponSystem = world => {
     const { time: { delta } } = world
@@ -165,40 +149,7 @@ export const weaponSystem = world => {
     return world
 }
 
-function getBoundingBox(x, y, w, h, ax, ay, bounds = Bounds()) {
-    bounds.minX = x - ax * w
-    bounds.maxX = bounds.minX + w
-    bounds.minY = y - ay * h
-    bounds.maxY = bounds.minY + h
-    return bounds
-}
 
-// TODO usage pass _center
-function getCenter(x, y, w, h, ax, ay, center = { x: 0, y: 0 }) {
-    center.x = x + (0.5 - ax) * w
-    center.y = y + (0.5 - ay) * h
-    return center
-}
-// TODO usage pass _position
-function getPositionFromCenter(cx, cy, w, h, ax, ay, position = { x: 0, y: 0 }) {
-    position.x = cx + (ax - 0.5) * w
-    position.y = cy + (ay - 0.5) * h
-    return position
-}
-
-const spawnExplosion = (world, character_type, cx, cy) => {
-    const exId = addEntity(world)
-    addComponent(world, Position, exId)
-    addComponent(world, Character, exId)
-    addComponent(world, Discrete, exId)
-    const explosionShape = getCharacterShape(character_type)
-    const explosionPosition = getPositionFromCenter(cx, cy, explosionShape.w, explosionShape.h, explosionShape.ax, explosionShape.ay)
-    Position.x[exId] = explosionPosition.x
-    Position.y[exId] = explosionPosition.y
-    Character.type[exId] = character_type
-    Discrete.seen[exId] = 0
-    return exId
-}
 
 
 export const movementQuery = defineQuery([Position, Velocity])
