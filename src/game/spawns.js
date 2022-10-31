@@ -7,6 +7,33 @@ import { Velocity } from './components/velocity.js'
 import { PermanentId } from './components/permanentId.js'
 import { Discrete } from './components/discrete.js'
 import { Character } from './components/character.js'
+import { Action, ACTION_TYPE_WALK } from './components/action.js'
+import { Weapon } from './components/weapon.js'
+
+export const spawnSoldier = (world, character_type, weapon_type, cx, cy) => {
+    const eid = addEntity(world)
+
+    addComponent(world, Position, eid)
+    addComponent(world, Velocity, eid)
+    addComponent(world, PermanentId, eid)
+    addComponent(world, Orientation, eid)
+    addComponent(world, Character, eid)
+    addComponent(world, Action, eid)
+    addComponent(world, Weapon, eid)
+
+    Position.x[eid] = cx
+    Position.y[eid] = cy
+    Velocity.x[eid] = 0
+    Velocity.y[eid] = 0
+    Orientation.a8[eid] = 0
+    Character.type[eid] = character_type
+    Action.type[eid] = ACTION_TYPE_WALK
+    Weapon.type[eid] = weapon_type
+    Weapon.reload[eid] = 1
+    Weapon.idle[eid] = 0
+    PermanentId.pid[eid] = 0
+    return eid
+}
 
 export const spawnBullet = (world, character_type, cx, cy, orientation, speed = 100) => {
     const bulletEid = addEntity(world)

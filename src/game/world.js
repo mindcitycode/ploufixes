@@ -33,6 +33,7 @@ import { Orientation } from './components/orientation.js'
 import { Weapon, WEAPON_TYPE_GRENADE_LAUNCHER, WEAPON_TYPE_PLASMA_LAUNCHER, WEAPON_TYPE_ROCKET_LAUNCHER } from './components/weapon.js'
 import { Ttl } from './components/ttl.js'
 import { Discrete } from './components/discrete.js'
+import { spawnSoldier } from './spawns.js'
 
 const pipeline = pipe(
     controlSystem,
@@ -135,35 +136,19 @@ export const createGame = async ({ tilemapData }) => {
 
         const clientPermanentId = world.permanentId.nextOne
         world.permanentId.nextOne += 1
-
-        const eid = addEntity(world)
-        {
-            addComponent(world, Position, eid)
-            addComponent(world, Velocity, eid)
-            addComponent(world, PermanentId, eid)
-            addComponent(world, KeyControl, eid)
-            addComponent(world, Orientation, eid)
-            addComponent(world, Character, eid)
-            addComponent(world, Action, eid)
-            addComponent(world, Weapon, eid)
-            //   Position.x[eid] = (16 * 15) + 8 // + 20 * Math.random()
-            //  Position.y[eid] = (16 * 3) + 16 //+ 20 * Math.random()
-            Position.x[eid] = (16 * 5) + 20 * Math.random()
-            Position.y[eid] = (16 * 5) + 20 * Math.random()
-            Velocity.x[eid] = 0
-            Velocity.y[eid] = 0
-            PermanentId.pid[eid] = clientPermanentId
-            KeyControl.state[eid] = 0
-            Orientation.a8[eid] = 0
-            Character.type[eid] = CHARACTER_TYPE_ANTITANK
-            Action.type[eid] = ACTION_TYPE_WALK
-            Weapon.type[eid] = WEAPON_TYPE_ROCKET_LAUNCHER
-            //  Weapon.type[eid] = WEAPON_TYPE_PLASMA_LAUNCHER
-            //Weapon.type[eid] = WEAPON_TYPE_GRENADE_LAUNCHER
-            Weapon.reload[eid] = 1
-            Weapon.idle[eid] = 0
-        }
+        
+        const cx = (16 * 5) + 20 * Math.random()
+        const cy = (16 * 5) + 20 * Math.random()
+        const eid = spawnSoldier(world, CHARACTER_TYPE_ANTITANK, WEAPON_TYPE_ROCKET_LAUNCHER, cx, cy)
+        
+        // add controls
+        addComponent(world, KeyControl, eid)
+        KeyControl.state[eid] = 0
+        
+        // set pid
+        PermanentId.pid[eid] = clientPermanentId
         console.log('client add with permanent id', clientPermanentId)
+        
         return clientPermanentId
     }
     const removeClient = (clientPermanentId) => {
