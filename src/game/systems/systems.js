@@ -6,7 +6,7 @@ import {
     hasComponent,
     entityExists,
 } from 'bitecs'
-import { Bounds } from '../../common/bounds.js'
+import { Bounds, boundsReallyIntersect } from '../../common/bounds.js'
 
 import { Position } from '../components/position.js'
 import { Velocity } from '../components/velocity.js'
@@ -16,7 +16,11 @@ import { ACTION_FIRE, DIRECTION_DOWN, DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION
 import { Orientation, rotationForDirections } from '../components/orientation.js'
 import { Action, ACTION_TYPE_IDLE, ACTION_TYPE_WALK } from '../components/action.js'
 import { Weapon, WEAPON_TYPE_PLASMA_LAUNCHER, WEAPON_TYPE_ROCKET_LAUNCHER, WEAPON_TYPE_GRENADE_LAUNCHER } from '../components/weapon.js'
-import { Character, CHARACTER_TYPE_PLASMA, CHARACTER_TYPE_GRENADE, CHARACTER_TYPE_ROCKET, CHARACTER_TYPE_ANTITANK, CHARACTER_TYPE_SQUADLEADER, CHARACTER_TYPE_SNIPER, CHARACTER_TYPE_RADIOOPERATOR, CHARACTER_TYPE_MACHINEGUNNER, CHARACTER_TYPE_GRENADIER, CHARACTER_TYPE_ASSAULT, CHARACTER_TYPE_BIG_EXPLOSION } from '../components/character.js'
+import {
+    Character, CHARACTER_TYPE_PLASMA, CHARACTER_TYPE_GRENADE, CHARACTER_TYPE_ROCKET, CHARACTER_TYPE_ANTITANK, CHARACTER_TYPE_SQUADLEADER,
+    CHARACTER_TYPE_SNIPER, CHARACTER_TYPE_RADIOOPERATOR, CHARACTER_TYPE_MACHINEGUNNER, CHARACTER_TYPE_GRENADIER,
+    CHARACTER_TYPE_ASSAULT, CHARACTER_TYPE_BIG_EXPLOSION
+} from '../components/character.js'
 import { Shape } from '../../common/shape.js'
 import { getCharacterShape } from '../../common/animations.js'
 import { Ttl } from '../components/ttl.js'
@@ -159,6 +163,22 @@ function getPositionFromCenter(cx, cy, w, h, ax, ay, position = { x: 0, y: 0 }) 
     position.y = cy + (ay - 0.5) * h
     return position
 }
+
+const spawnExplosion = (world, character_type, cx, cy) => {
+    const exId = addEntity(world)
+    addComponent(world, Position, exId)
+    addComponent(world, Character, exId)
+    addComponent(world, Discrete, exId)
+    const explosionShape = getCharacterShape(character_type)
+    const explosionPosition = getPositionFromCenter(cx, cy, explosionShape.w, explosionShape.h, explosionShape.ax, explosionShape.ay)
+    Position.x[exId] = explosionPosition.x
+    Position.y[exId] = explosionPosition.y
+    Character.type[exId] = character_type
+    Discrete.seen[exId] = 0
+    return exId
+}
+
+
 export const movementQuery = defineQuery([Position, Velocity])
 export const movementSystem = world => {
     const { time: { delta } } = world
@@ -195,18 +215,8 @@ export const movementSystem = world => {
                 const collides = world.tilemapRTree.tree.collides(bounds)
                 if (collides) {
                     removeEntity(world, eid)
-                    const exId = addEntity(world)
-                    addComponent(world, Position, exId)
-                    addComponent(world, Character, exId)
-                    addComponent(world, Discrete, exId)
-                    const character_type = CHARACTER_TYPE_BIG_EXPLOSION
-                    const explosionShape = getCharacterShape(character_type)
                     const bulletCenter = getCenter(pos.x, pos.y, size.x, size.y, anchor.x, anchor.y)
-                    const explosionPosition = getPositionFromCenter(bulletCenter.x, bulletCenter.y, explosionShape.w, explosionShape.h, explosionShape.ax, explosionShape.ay)
-                    Position.x[exId] = explosionPosition.x
-                    Position.y[exId] = explosionPosition.y
-                    Character.type[exId] = character_type
-                    Discrete.seen[eid] = 0
+                    const exId = spawnExplosion(world, CHARACTER_TYPE_BIG_EXPLOSION, bulletCenter.x, bulletCenter.y)
                     continue;
                 }
             } else {
@@ -214,33 +224,10 @@ export const movementSystem = world => {
                 const border = 0
                 // wall sliding
                 // on y axis
-                /*
-                                const bbb = getBoundingBox(pos.x, pos.y, size.x, size.y, anchor.x, anchor.y)
-                                console.log(bbb.minX / 16, bbb.maxX / 16, bbb.minY / 16, bbb.maxY / 16)
-                                console.log('=',bbb)
-                */
-
-                const boundsReallyIntersect = (b1, b2) => {
-                    const minX = Math.max(b1.minX, b2.minX)
-                    const maxX = Math.min(b1.maxX, b2.maxX)
-                    const minY = Math.max(b1.minY, b2.minY)
-                    const maxY = Math.min(b1.maxY, b2.maxY)
-                    return ((minX < maxX) && (minY < maxY))
-                }
-
-
                 if (d.y !== 0) {
                     const bounds = getBoundingBox(pos.x, Math.floor(pos.y + d.y), size.x, size.y, anchor.x, anchor.y, _bounds)
-                    //                  console.log('goto',bounds.minX / 16, bounds.maxX / 16, bounds.minY / 16, bounds.maxY / 16)
-                    //               console.log('=goto',bounds)
                     const colliders = world.tilemapRTree.tree.search(bounds).filter(b => boundsReallyIntersect(bounds, b))
-                    //console.log('collides on y axis', colliders.length)
                     if (colliders.length) {
-
-                        //               console.log(colliders)
-                        //  processs.exit(0)
-                        //console.log('y ===',currentx,currenty,'-',pos,bounds)
-                        //console.log('y',colliders)
                         if (d.y < 0) {
                             const yLimit = Math.max(...colliders.map(c => c.maxY))
                             //Position.y[eid] = yLimit + 1 + size.y * anchor.y
@@ -256,6 +243,7 @@ export const movementSystem = world => {
                     }
                 }
                 pos.y = Math.floor(pos.y)
+
                 // on x axis
                 if (d.x !== 0) {
                     const bounds = getBoundingBox(Math.floor(pos.x + d.x), pos.y, size.x, size.y, anchor.x, anchor.y, _bounds)
