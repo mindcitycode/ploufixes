@@ -52,9 +52,17 @@ export const controlSystem = world => {
                 j--
 
                 // set velocity
-                Velocity.y[eid] = 100 * (((incomingState & DIRECTION_UP) ? -1 : 0) + ((incomingState & DIRECTION_DOWN) ? 1 : 0))
-                Velocity.x[eid] = 100 * (((incomingState & DIRECTION_LEFT) ? -1 : 0) + ((incomingState & DIRECTION_RIGHT) ? 1 : 0))
-
+                const speed = 100
+                const moveX = (((incomingState & DIRECTION_LEFT) ? -1 : 0) + ((incomingState & DIRECTION_RIGHT) ? 1 : 0))
+                const moveY = (((incomingState & DIRECTION_UP) ? -1 : 0) + ((incomingState & DIRECTION_DOWN) ? 1 : 0))
+                const n = Math.sqrt(moveX * moveX + moveY * moveY)
+                if (n !== 0) {
+                    Velocity.x[eid] = speed / n * moveX
+                    Velocity.y[eid] = speed / n * moveY
+                } else {
+                    Velocity.x[eid] = 0
+                    Velocity.y[eid] = 0
+                }
                 // set orientation
                 if (hasComponent(world, Orientation, eid)) {
                     if (incomingState > 0) {
@@ -76,6 +84,26 @@ export const controlSystem = world => {
     return world
 }
 
+const spawnBullet = (world, character_type, cx, cy, orientation, speed = 100) => {
+    const bulletEid = addEntity(world)
+    addComponent(world, Position, bulletEid)
+    addComponent(world, Orientation, bulletEid)
+    addComponent(world, Velocity, bulletEid)
+    addComponent(world, PermanentId, bulletEid)
+    addComponent(world, Character, bulletEid)
+    Position.x[bulletEid] = cx
+    Position.y[bulletEid] = cy
+    Orientation.a8[bulletEid] = orientation//Orientation.a8[eid]
+    const angle = rotationForDirections(orientation)
+
+    Character.type[bulletEid] = character_type
+    // console.log('fired at orientation', Orientation.a8[eid].toString(2))
+    Velocity.x[bulletEid] = speed * Math.cos(angle)
+    Velocity.y[bulletEid] = speed * Math.sin(angle)
+    Character.type[bulletEid] = character_type
+    PermanentId.pid[bulletEid] = 0
+    return bulletEid
+}
 export const weaponQuery = defineQuery([Weapon])
 export const weaponSystem = world => {
     const { time: { delta } } = world
@@ -92,14 +120,6 @@ export const weaponSystem = world => {
             if (Weapon.idle[eid] >= Weapon.reload[eid]) {
                 Weapon.idle[eid] = 0
                 Weapon.firing[eid] = 0
-                const bulletEid = addEntity(world)
-                addComponent(world, Position, bulletEid)
-                addComponent(world, Orientation, bulletEid)
-                addComponent(world, Velocity, bulletEid)
-                addComponent(world, PermanentId, bulletEid)
-                addComponent(world, Character, bulletEid)
-                Position.x[bulletEid] = Position.x[eid]
-                Position.y[bulletEid] = Position.y[eid]
 
                 let orientation = 0
 
@@ -118,25 +138,27 @@ export const weaponSystem = world => {
                 } else {
                     orientation = (Orientation.a8[eid] & (DIRECTION_RIGHT | DIRECTION_LEFT))
                 }
-                Orientation.a8[bulletEid] = orientation//Orientation.a8[eid]
-                const angle = rotationForDirections(orientation)
 
-                // console.log('fired at orientation', Orientation.a8[eid].toString(2))
-                Velocity.x[bulletEid] = 100 * Math.cos(angle)
-                Velocity.y[bulletEid] = 100 * Math.sin(angle)
-
-                PermanentId.pid[bulletEid] = 0
+                let character_type = undefined
                 switch (Weapon.type[eid]) {
                     case WEAPON_TYPE_PLASMA_LAUNCHER:
-                        Character.type[bulletEid] = CHARACTER_TYPE_PLASMA;
+                        //Character.type[bulletEid] = CHARACTER_TYPE_PLASMA;
+                        character_type = CHARACTER_TYPE_PLASMA;
                         break;
                     case WEAPON_TYPE_GRENADE_LAUNCHER:
-                        Character.type[bulletEid] = CHARACTER_TYPE_GRENADE;
+                        character_type = CHARACTER_TYPE_GRENADE;
                         break;
                     case WEAPON_TYPE_ROCKET_LAUNCHER:
-                        Character.type[bulletEid] = CHARACTER_TYPE_ROCKET;
+                        character_type = CHARACTER_TYPE_ROCKET;
                         break;
+                    default:
+                        throw new Error('no such weapon type ${Weapon.type[eid]}')
                 }
+                const cx = Position.x[eid]
+                const cy = Position.y[eid]
+                const speed = 150
+                const bulletEid = spawnBullet(world, character_type, cx, cy, orientation, speed)
+
             }
         }
     }
