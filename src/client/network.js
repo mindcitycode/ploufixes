@@ -6,6 +6,7 @@ export const makeWsUrl = (point, port ) => {
     if ( port ) url.port = port
 //    url.port = '3000'
     url.pathname = point
+    url.hash = ''
     return url.toString()
 }
 

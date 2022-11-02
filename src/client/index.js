@@ -12,11 +12,12 @@ import { FLIPPED_HORIZONTALLY_FLAG } from '../common/tilemap.js'
 import { ANIM_BIG_EXPLOSION } from '../common/generated-game-animations-definitions.js'
 import { Shape } from '../common/shape.js'
 import * as PIXI from 'pixi.js'
-import { getCurrentUser, loginForm } from './user/user.js'
+import { getCurrentUser, loginForm, SignUpForm } from './user/user.js'
 import { HealthBars } from './view/display.js'
 
-import './router/Router.js'
+import { Router } from './router/Router.js'
 
+/*
 const go = async () => {
     const user = await getCurrentUser()
     if (user.username) {
@@ -37,6 +38,7 @@ const go = async () => {
     }
 }
 go()
+*/
 const startGame = async () => {
 
 
@@ -252,3 +254,8 @@ const startGame = async () => {
 
 }
 
+window.router = new Router({
+    '#login': loginForm,
+    '#signup': SignUpForm,
+    '#play': startGame,
+})

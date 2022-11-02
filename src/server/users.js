@@ -9,6 +9,7 @@ export const addOne = async (username, password) => {
         const id = uuidv4()
         const user = { id, username, password, creationDate : Date.now() }
         Users.set(id, user)
+        console.log('add users after creation',Users)
         return user
     }
 }
