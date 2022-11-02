@@ -47,7 +47,7 @@ export const createDisplay = async () => {
         // title/menu container
         const menuContainer = await createTitleMenu()
         menuContainer.zIndex = 888
-        app.stage.addChild(menuContainer)
+        //app.stage.addChild(menuContainer)
 
         // sprites, anchored middle-bottom
         const aSprites = new Map()
