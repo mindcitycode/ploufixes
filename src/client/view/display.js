@@ -56,7 +56,7 @@ export const createDisplay = async () => {
             const animationName = getAnimationName(animationNum)
             const aSprite = new PIXI.AnimatedSprite(spritesheet.animations[animationName])
             aSprite.animationSpeed = 0.1
-            aSprite.pivot.x = aSprite._textures[0].frame.width /2
+            aSprite.pivot.x = aSprite._textures[0].frame.width / 2
             aSprite.pivot.y = aSprite._textures[0].frame.height / 2
             aSprite.gotoAndPlay(0)
             aSprite.loop = false
@@ -72,7 +72,7 @@ export const createDisplay = async () => {
             const aSprite = new PIXI.AnimatedSprite(spritesheet.animations[animationName])
             aSprite.animationSpeed = 0.1
             // TODO : dehack.
-            aSprite.pivot.x = aSprite._textures[0].frame.width /2
+            aSprite.pivot.x = aSprite._textures[0].frame.width / 2
             aSprite.pivot.y = aSprite._textures[0].frame.height / 2
             aSprite.gotoAndPlay(0)
             //  custom prop
@@ -114,8 +114,8 @@ export const createDisplay = async () => {
 
         // view positioning 
         const scrollablePositioner = ScrollablePositioner(scrollableContainer, terrainBounds, viewSize)
-        const stopShowAroundTerrain = showAroundTerrain(terrainBounds, scrollablePositioner, app)
-  
+        const doShowAroundTerrain = showAroundTerrain(terrainBounds, scrollablePositioner, app)
+
         return {
             destroy: () => {
                 gameContainer.destroy(true, true)
@@ -124,7 +124,7 @@ export const createDisplay = async () => {
             getOrCreateASprite,
             removeASprite,
             scrollablePositioner,
-          //  stopShowAroundTerrain,
+            doShowAroundTerrain,
         }
     }
     return {
@@ -153,8 +153,19 @@ const showAroundTerrain = (terrainBounds, scrollablePositioner, app) => {
         scrollablePositioner.centerOnTarget(centerTarget)
 
     }
-    app.ticker.add(tick)
-    return () => app.ticker.remove(tick)
+    let running = false
+    const onoff = run => {
+        if (running !== run) {
+            running = run
+            if (run) {
+                app.ticker.add(tick)
+            } else {
+                app.ticker.remove(tick)
+            }
+        }
+    }
+    onoff(true)
+    return onoff
 }
 
 const ScrollablePositioner = (scrollableContainer, terrainBounds, viewSize) => {

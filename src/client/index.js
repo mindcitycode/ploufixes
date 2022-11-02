@@ -23,10 +23,10 @@ const go = async () => {
         let message = ''
         while (!logged) {
             try {
-                await loginForm({message})
+                await loginForm({ message })
                 logged = true
             } catch (e) {
-                console.log('wrong login',e)
+                console.log('wrong login', e)
                 message = e.message
             }
         }
@@ -50,7 +50,10 @@ const startGame = async () => {
         // if (Math.random() > 0.99) console.log('>>>>>>', state)
 
 
+
         if (gameDisplay !== undefined) {
+            gameDisplay.doShowAroundTerrain(affectedPid === undefined)
+
             if (state?.ows?.removePid) {
                 state.ows.removePid.forEach(pid => {
                     gameDisplay.removeASprite(pid)
