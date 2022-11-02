@@ -138,7 +138,7 @@ const startGame = async () => {
                     if (asprite && object.Health.hasHealth) {
 
                         const HealthBar = HealthBars()
-                        const value = object.Health.health_value * ((Math.random() > 0.99) ? 0.5 : 0.9)
+                        const value = object.Health.health_value
                         const max = object.Health.health_max
                         const valueHash = HealthBar.computeHealthBarValueHash(value, max)
                         const existing = HealthBar.getHealthBar(asprite)
