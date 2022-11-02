@@ -101,6 +101,7 @@ form * {
 
 form p#bad-signup-message,
 form p#bad-login-message {
+    text-shadow : 1px 1px 2px black;
     color: red;
     width: 100%;
     text-align: center;
