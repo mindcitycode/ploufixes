@@ -162,7 +162,6 @@ const startGame = async () => {
                         const max = object.Health.health_max
                         const valueHash = computeEnergyBarValueHash(value, max)
                         const existing = getEnergyBar(asprite)
-
                         if (existing) {
                             if (getEnergyBarValueHash(existing) !== valueHash) {
                                 existing.destroy()
