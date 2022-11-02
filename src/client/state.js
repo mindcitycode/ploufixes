@@ -82,6 +82,11 @@ function interpolateObjects(baseOws, nextOws, r) {
                 Action: {
                     hasAction: baseObject.Action.hasAction,
                     action_type: baseObject.Action.action_type
+                },
+                Health : {
+                    hasHealth : baseObject.Health.hasHealth,
+                    health_value :interpolateFloat(baseObject.Health.health_value, nextObject.Health.health_value, r),
+                    health_max : interpolateFloat(baseObject.Health.health_max, nextObject.Health.health_max, r),
                 }
                 // Weapon
             }

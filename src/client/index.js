@@ -11,7 +11,7 @@ import { getCharacterShape, selectAnimation, selectFlipRotation, selectRotationR
 import { FLIPPED_HORIZONTALLY_FLAG } from '../common/tilemap.js'
 import { ANIM_BIG_EXPLOSION } from '../common/generated-game-animations-definitions.js'
 import { Shape } from '../common/shape.js'
-
+import * as PIXI from 'pixi.js'
 import { getCurrentUser, loginForm } from './user/user.js'
 
 const go = async () => {
@@ -130,6 +130,48 @@ const startGame = async () => {
                         if (rotationRotation !== undefined) {
                             asprite.rotation = rotationRotation
                         }
+                    }
+                    if (asprite && object.Health.hasHealth) {
+
+                        const computeEnergyBarValueHash = (value, max) => {
+                            // math round because interpolation makes values vary slighly depsite beeing the same
+                            return `${Math.round(100 * value)}/${Math.round(100 * max)}`
+                        }
+                        const getEnergyBarValueHash = energyBar => energyBar.valueHash
+                        const getEnergyBar = (parent) => {
+                            return parent.getChildByName('health')
+                        }
+                        const addEnergyBar = (parent, value, max, valueHash) => {
+                            const scale = 1 / 8;
+                            const height = 3;
+                            const margin = 1;
+                            const top = -8
+                            var graphics = new PIXI.Graphics();
+                            graphics.beginFill(0xff00000);
+                            graphics.drawRect(0, top, max * scale + 2 * margin, height + margin * 2);
+                            graphics.endFill()
+                            graphics.beginFill(0xFFFF00);
+                            graphics.drawRect(margin, top + margin, value * scale, height)
+                            graphics.endFill()
+                            graphics.name = 'health'
+                            graphics.valueHash = valueHash || computeEnergyBarValueHash(value, max)
+                            parent.addChild(graphics);
+                        }
+
+                        const value = object.Health.health_value * ((Math.random() > 0.99) ? 0.5 : 0.9)
+                        const max = object.Health.health_max
+                        const valueHash = computeEnergyBarValueHash(value, max)
+                        const existing = getEnergyBar(asprite)
+
+                        if (existing) {
+                            if (getEnergyBarValueHash(existing) !== valueHash) {
+                                existing.destroy()
+                                addEnergyBar(asprite, value, max, valueHash)
+                            }
+                        } else {
+                            addEnergyBar(asprite, value, max, valueHash)
+                        }
+
                     }
                 }
             }

@@ -52,7 +52,6 @@ export const createDisplay = async () => {
         // sprites, anchored middle-bottom
         const aSprites = new Map()
         const createOneshotASprite = animationNum => {
-            console.log('HERE')
             const animationName = getAnimationName(animationNum)
             const aSprite = new PIXI.AnimatedSprite(spritesheet.animations[animationName])
             aSprite.animationSpeed = 0.1
