@@ -136,15 +136,15 @@ const startGame = async () => {
                         const HealthBar = HealthBars()
                         const value = object.Health.health_value * ((Math.random() > 0.99) ? 0.5 : 0.9)
                         const max = object.Health.health_max
-                        const valueHash = HealthBar.computeEnergyBarValueHash(value, max)
-                        const existing = HealthBar.getEnergyBar(asprite)
+                        const valueHash = HealthBar.computeHealthBarValueHash(value, max)
+                        const existing = HealthBar.getHealthBar(asprite)
                         if (existing) {
-                            if (HealthBar.getEnergyBarValueHash(existing) !== valueHash) {
+                            if (HealthBar.getHealthBarValueHash(existing) !== valueHash) {
                                 existing.destroy()
-                                HealthBar.addEnergyBar(asprite, value, max, valueHash)
+                                HealthBar.addHealthBar(asprite, value, max, valueHash)
                             }
                         } else {
-                            HealthBar.addEnergyBar(asprite, value, max, valueHash)
+                            HealthBar.addHealthBar(asprite, value, max, valueHash)
                         }
 
                     }

@@ -59,7 +59,7 @@ form * {
     outline: none;
     border: none;
 }
-form p {
+form p.bad-login-message {
     color : red;
     width : 100%;
     text-align : center;

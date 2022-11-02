@@ -130,12 +130,31 @@ server.post(
     { preValidation: fastifyPassport.authenticate('test', { successRedirect: '/', authInfo: false }) },
     () => { }
 )
+
 server.post(
     '/logout',
     async function (req, res) {
         console.log('LOG OUT', req.user?.username)
         await req.logout()
         res.redirect('/login');
+    }
+)
+server.post(
+    '/signup',
+    async function (req, res) {
+        const username = req.body?.username
+        const password = req.body?.password
+        const existing = await Users.findByUsername(username)
+        if (existing) {
+            return { error: 'username already exists' }
+        } else {
+            const user = await Users.addOne(username, password)
+            if (user === undefined) {
+                return { error: 'could not create user' }
+            } else {
+                return { username: user.username }
+            }
+        }
     }
 )
 

@@ -196,15 +196,15 @@ const clampPositionToBounds = (position, bounds) => {
 
 //createDisplay()
 export const HealthBars = () => {
-    const computeEnergyBarValueHash = (value, max) => {
+    const computeHealthBarValueHash = (value, max) => {
         // math round because interpolation makes values vary slighly depsite beeing the same
         return `${Math.round(100 * value)}/${Math.round(100 * max)}`
     }
-    const getEnergyBarValueHash = energyBar => energyBar.valueHash
-    const getEnergyBar = (parent) => {
+    const getHealthBarValueHash = HealthBar => HealthBar.valueHash
+    const getHealthBar = (parent) => {
         return parent.getChildByName('health')
     }
-    const addEnergyBar = (parent, value, max, valueHash) => {
+    const addHealthBar = (parent, value, max, valueHash) => {
         const scale = 1 / 8;
         const height = 3;
         const margin = 1;
@@ -217,13 +217,13 @@ export const HealthBars = () => {
         graphics.drawRect(margin, top + margin, value * scale, height)
         graphics.endFill()
         graphics.name = 'health'
-        graphics.valueHash = valueHash || computeEnergyBarValueHash(value, max)
+        graphics.valueHash = valueHash || computeHealthBarValueHash(value, max)
         parent.addChild(graphics);
     }
     return {
-        addEnergyBar,
-        getEnergyBar,
-        getEnergyBarValueHash,
-        computeEnergyBarValueHash
+        addHealthBar,
+        getHealthBar,
+        getHealthBarValueHash,
+        computeHealthBarValueHash
     }
 }
