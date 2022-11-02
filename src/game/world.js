@@ -33,6 +33,7 @@ import { Orientation } from './components/orientation.js'
 import { Weapon, WEAPON_TYPE_GRENADE_LAUNCHER, WEAPON_TYPE_PLASMA_LAUNCHER, WEAPON_TYPE_ROCKET_LAUNCHER } from './components/weapon.js'
 import { Ttl } from './components/ttl.js'
 import { Discrete } from './components/discrete.js'
+import { Health } from './components/health.js'
 import { spawnSoldier } from './spawns.js'
 
 const pipeline = pipe(
@@ -57,6 +58,7 @@ export const createRegisteredWorld = () => {
     registerComponent(world, Weapon)
     registerComponent(world, Ttl)
     registerComponent(world, Discrete)
+    registerComponent(world, Health)
     return world
 }
 
@@ -189,6 +191,7 @@ export const worldEntitiesToObject = world => {
         const hasWeapon = hasComponent(world, Weapon, eid)
         const hasTtl = hasComponent(world, Ttl, eid)
         const hasDiscrete = hasComponent(world, Discrete, eid)
+        const hasHealth = hasComponent(world,Health,eid)
         const position_x = Position.x[eid]
         const position_y = Position.y[eid]
         const velocity_x = Velocity.x[eid]
@@ -202,6 +205,8 @@ export const worldEntitiesToObject = world => {
         const weapon_reload = Weapon.reload[eid]
         const ttl_remaining = Ttl.remaining[eid]
         const discrete_seen = Discrete.seen[eid]
+        const health_value = Health.value[eid]
+        const health_max = Health.max[eid]
         const object = {
             eid,
             exists,
@@ -213,7 +218,8 @@ export const worldEntitiesToObject = world => {
             Action: { hasAction, action_type },
             Weapon: { hasWeapon, weapon_type, weapon_idle, weapon_reload },
             Ttl: { hasTtl, ttl_remaining },
-            Discrete: { hasDiscrete, discrete_seen }
+            Discrete: { hasDiscrete, discrete_seen },
+            Health : { hasHealth, health_value, health_max }
         }
         objects.push(object)
     })

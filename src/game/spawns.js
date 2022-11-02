@@ -9,6 +9,7 @@ import { Discrete } from './components/discrete.js'
 import { Character } from './components/character.js'
 import { Action, ACTION_TYPE_WALK } from './components/action.js'
 import { Weapon } from './components/weapon.js'
+import { Health } from './components/health.js'
 
 export const spawnSoldier = (world, character_type, weapon_type, cx, cy) => {
     const eid = addEntity(world)
@@ -20,7 +21,7 @@ export const spawnSoldier = (world, character_type, weapon_type, cx, cy) => {
     addComponent(world, Character, eid)
     addComponent(world, Action, eid)
     addComponent(world, Weapon, eid)
-
+    addComponent(world, Health, eid)
     Position.x[eid] = cx
     Position.y[eid] = cy
     Velocity.x[eid] = 0
@@ -32,6 +33,8 @@ export const spawnSoldier = (world, character_type, weapon_type, cx, cy) => {
     Weapon.reload[eid] = 1
     Weapon.idle[eid] = 0
     PermanentId.pid[eid] = 0
+    Health.value[eid] = 100
+    Health.max[eid] = 100
     return eid
 }
 
