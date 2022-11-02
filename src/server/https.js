@@ -95,13 +95,18 @@ server.get(
         return HTML()
     }
 )
+
+
 server.get(
     '/login',
     (req, reply) => {
-/*        if (req.isAuthenticated()) {
-            return res.redirect('/logout')
-        }
- */       reply.type('text/html').code(200)
+        /*        if (req.isAuthenticated()) {
+                    return res.redirect('/logout')
+                }
+         */
+
+        reply.header("Content-Type", "application/json; charset=utf-8")
+        reply.type('text/html').code(200)
         return LOGIN_FORM(req.user?.username)
     }
 )
@@ -131,6 +136,17 @@ server.post(
         console.log('LOG OUT', req.user?.username)
         await req.logout()
         res.redirect('/login');
+    }
+)
+
+server.get(
+    '/current-user',
+    (req, reply) => {
+        if (req.isUnauthenticated()) {
+            return { username: undefined }
+        } else {
+            return { username: req.user.username }
+        }
     }
 )
 

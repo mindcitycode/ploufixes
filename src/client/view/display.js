@@ -47,7 +47,7 @@ export const createDisplay = async () => {
         // title/menu container
         const menuContainer = await createTitleMenu()
         menuContainer.zIndex = 888
-        //  scrollableContainer.addChild(menuContainer)
+        app.stage.addChild(menuContainer)
 
         // sprites, anchored middle-bottom
         const aSprites = new Map()
@@ -114,7 +114,8 @@ export const createDisplay = async () => {
 
         // view positioning 
         const scrollablePositioner = ScrollablePositioner(scrollableContainer, terrainBounds, viewSize)
-
+        const stopShowAroundTerrain = showAroundTerrain(terrainBounds, scrollablePositioner, app)
+  
         return {
             destroy: () => {
                 gameContainer.destroy(true, true)
@@ -123,9 +124,9 @@ export const createDisplay = async () => {
             getOrCreateASprite,
             removeASprite,
             scrollablePositioner,
+          //  stopShowAroundTerrain,
         }
     }
-    // const stopShowAroundTerrain = showAroundTerrain(terrainBounds, scrollablePositioner, app)
     return {
         destroy: () => {
             app.destroy(true, true)

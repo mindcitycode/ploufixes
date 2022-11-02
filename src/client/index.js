@@ -12,8 +12,29 @@ import { FLIPPED_HORIZONTALLY_FLAG } from '../common/tilemap.js'
 import { ANIM_BIG_EXPLOSION } from '../common/generated-game-animations-definitions.js'
 import { Shape } from '../common/shape.js'
 
+import { getCurrentUser, loginForm } from './user/user.js'
 
 const go = async () => {
+    const user = await getCurrentUser()
+    if (user.username) {
+        startGame()
+    } else {
+        let logged = false
+        let message = ''
+        while (!logged) {
+            try {
+                await loginForm({message})
+                logged = true
+            } catch (e) {
+                console.log('wrong login',e)
+                message = e.message
+            }
+        }
+        go()
+    }
+}
+go()
+const startGame = async () => {
 
 
     const keyboardInput = KeyboardInput()
@@ -209,4 +230,3 @@ const go = async () => {
 
 }
 
-go()
