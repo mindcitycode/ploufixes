@@ -15,6 +15,8 @@ import * as PIXI from 'pixi.js'
 import { getCurrentUser, loginForm } from './user/user.js'
 import { HealthBars } from './view/display.js'
 
+import './router/Router.js'
+
 const go = async () => {
     const user = await getCurrentUser()
     if (user.username) {
