@@ -13,6 +13,7 @@ import { ANIM_BIG_EXPLOSION } from '../common/generated-game-animations-definiti
 import { Shape } from '../common/shape.js'
 import * as PIXI from 'pixi.js'
 import { getCurrentUser, loginForm } from './user/user.js'
+import { HealthBars } from './view/display.js'
 
 const go = async () => {
     const user = await getCurrentUser()
@@ -44,6 +45,8 @@ const startGame = async () => {
     let gameDisplay = undefined
     let affectedPid = undefined
 
+    const HealthBar = HealthBars()
+
     const animationFrame = () => {
         const state = getCurrentState()
 
@@ -63,9 +66,7 @@ const startGame = async () => {
                 const _shape = Shape
 
                 for (const object of state.ows.noPid) {
-                    console.log('no pid', object, object.Character)
                     if (object.Character.hasCharacter && object.Position.hasPosition) {
-                        console.log('no pidx', object)
                         const character_type = object.Character.character_type
                         const action_type = object.Action?.action_type
                         const orientation_a8 = object.Orientation?.orientation_a8
@@ -80,7 +81,6 @@ const startGame = async () => {
                         const aay = 0.5 * shape.h - shape.ay * shape.h
                         asprite.x = Math.round(object.Position.position_x + aax)
                         asprite.y = Math.round(object.Position.position_y + aay)
-                        console.log(asprite)
                     }
                 }
                 // delete in original base update
@@ -133,42 +133,18 @@ const startGame = async () => {
                     }
                     if (asprite && object.Health.hasHealth) {
 
-                        const computeEnergyBarValueHash = (value, max) => {
-                            // math round because interpolation makes values vary slighly depsite beeing the same
-                            return `${Math.round(100 * value)}/${Math.round(100 * max)}`
-                        }
-                        const getEnergyBarValueHash = energyBar => energyBar.valueHash
-                        const getEnergyBar = (parent) => {
-                            return parent.getChildByName('health')
-                        }
-                        const addEnergyBar = (parent, value, max, valueHash) => {
-                            const scale = 1 / 8;
-                            const height = 3;
-                            const margin = 1;
-                            const top = -8
-                            var graphics = new PIXI.Graphics();
-                            graphics.beginFill(0xff00000);
-                            graphics.drawRect(0, top, max * scale + 2 * margin, height + margin * 2);
-                            graphics.endFill()
-                            graphics.beginFill(0xFFFF00);
-                            graphics.drawRect(margin, top + margin, value * scale, height)
-                            graphics.endFill()
-                            graphics.name = 'health'
-                            graphics.valueHash = valueHash || computeEnergyBarValueHash(value, max)
-                            parent.addChild(graphics);
-                        }
-
+                        const HealthBar = HealthBars()
                         const value = object.Health.health_value * ((Math.random() > 0.99) ? 0.5 : 0.9)
                         const max = object.Health.health_max
-                        const valueHash = computeEnergyBarValueHash(value, max)
-                        const existing = getEnergyBar(asprite)
+                        const valueHash = HealthBar.computeEnergyBarValueHash(value, max)
+                        const existing = HealthBar.getEnergyBar(asprite)
                         if (existing) {
-                            if (getEnergyBarValueHash(existing) !== valueHash) {
+                            if (HealthBar.getEnergyBarValueHash(existing) !== valueHash) {
                                 existing.destroy()
-                                addEnergyBar(asprite, value, max, valueHash)
+                                HealthBar.addEnergyBar(asprite, value, max, valueHash)
                             }
                         } else {
-                            addEnergyBar(asprite, value, max, valueHash)
+                            HealthBar.addEnergyBar(asprite, value, max, valueHash)
                         }
 
                     }

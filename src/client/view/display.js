@@ -195,3 +195,35 @@ const clampPositionToBounds = (position, bounds) => {
 }
 
 //createDisplay()
+export const HealthBars = () => {
+    const computeEnergyBarValueHash = (value, max) => {
+        // math round because interpolation makes values vary slighly depsite beeing the same
+        return `${Math.round(100 * value)}/${Math.round(100 * max)}`
+    }
+    const getEnergyBarValueHash = energyBar => energyBar.valueHash
+    const getEnergyBar = (parent) => {
+        return parent.getChildByName('health')
+    }
+    const addEnergyBar = (parent, value, max, valueHash) => {
+        const scale = 1 / 8;
+        const height = 3;
+        const margin = 1;
+        const top = -8
+        var graphics = new PIXI.Graphics();
+        graphics.beginFill(0xff00000);
+        graphics.drawRect(0, top, max * scale + 2 * margin, height + margin * 2);
+        graphics.endFill()
+        graphics.beginFill(0xFFFF00);
+        graphics.drawRect(margin, top + margin, value * scale, height)
+        graphics.endFill()
+        graphics.name = 'health'
+        graphics.valueHash = valueHash || computeEnergyBarValueHash(value, max)
+        parent.addChild(graphics);
+    }
+    return {
+        addEnergyBar,
+        getEnergyBar,
+        getEnergyBarValueHash,
+        computeEnergyBarValueHash
+    }
+}
