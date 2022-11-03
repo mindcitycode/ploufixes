@@ -279,7 +279,6 @@ server.get(
             return reply.redirect('/login')
         } else {
             const filename = path.join(__dirname, 'dist', req.params['*'])
-            // console.log('read needed filenme', filename)
             const text = await fsp.readFile(filename)
             reply.type('text/html').code(200) // even images can be served with wrong type
             return text

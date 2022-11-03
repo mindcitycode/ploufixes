@@ -13,7 +13,6 @@ export const addOne = async (username, password) => {
         const passwordHash = await bcrypt.hash(password, salt)
         const user = { id, username, passwordHash, creationDate: Date.now() }
         Users.set(id, user)
-        console.log('add users after creation', Users)
         return user
     }
 }
