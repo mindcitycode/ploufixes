@@ -19,9 +19,10 @@ import {
     entityExists,
 } from 'bitecs'
 
-import { timeSystem, movementSystem, permanentIdAttributionSystem, controlSystem, weaponSystem, ttlSystem, discreteSystem } from './systems/systems.js'
+import { timeSystem, movementSystem, permanentIdAttributionSystem, controlSystem, weaponSystem, ttlSystem, discreteSystem, characterIntersections } from './systems/systems.js'
 import { getTilemapDataBounds } from '../common/tilemap.js'
 import { instanciateTilemapRTree } from '../common/tree.js'
+import { spawnSoldier } from './spawns.js'
 
 import { Position } from './components/position.js'
 import { Velocity } from './components/velocity.js'
@@ -34,12 +35,13 @@ import { Weapon, WEAPON_TYPE_GRENADE_LAUNCHER, WEAPON_TYPE_PLASMA_LAUNCHER, WEAP
 import { Ttl } from './components/ttl.js'
 import { Discrete } from './components/discrete.js'
 import { Health } from './components/health.js'
-import { spawnSoldier } from './spawns.js'
+import { Owner } from './components/owner.js'
 
 const pipeline = pipe(
     controlSystem,
     weaponSystem,
     movementSystem,
+    characterIntersections,
     timeSystem,
     ttlSystem,
     permanentIdAttributionSystem,
@@ -59,6 +61,7 @@ export const createRegisteredWorld = () => {
     registerComponent(world, Ttl)
     registerComponent(world, Discrete)
     registerComponent(world, Health)
+    registerComponent(world, Owner)
     return world
 }
 
@@ -192,6 +195,7 @@ export const worldEntitiesToObject = world => {
         const hasTtl = hasComponent(world, Ttl, eid)
         const hasDiscrete = hasComponent(world, Discrete, eid)
         const hasHealth = hasComponent(world,Health,eid)
+        const hasOwner = hasComponent(world,Owner,eid)
         const position_x = Position.x[eid]
         const position_y = Position.y[eid]
         const velocity_x = Velocity.x[eid]
@@ -207,6 +211,7 @@ export const worldEntitiesToObject = world => {
         const discrete_seen = Discrete.seen[eid]
         const health_value = Health.value[eid]
         const health_max = Health.max[eid]
+        const owner_eid = Owner.eid[eid]
         const object = {
             eid,
             exists,
@@ -219,7 +224,8 @@ export const worldEntitiesToObject = world => {
             Weapon: { hasWeapon, weapon_type, weapon_idle, weapon_reload },
             Ttl: { hasTtl, ttl_remaining },
             Discrete: { hasDiscrete, discrete_seen },
-            Health : { hasHealth, health_value, health_max }
+            Health : { hasHealth, health_value, health_max },
+            Owner : { hasOwner, owner_eid }
         }
         objects.push(object)
     })

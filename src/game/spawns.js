@@ -10,6 +10,7 @@ import { Character } from './components/character.js'
 import { Action, ACTION_TYPE_WALK } from './components/action.js'
 import { Weapon } from './components/weapon.js'
 import { Health } from './components/health.js'
+import { Owner } from './components/owner.js'
 
 export const spawnSoldier = (world, character_type, weapon_type, cx, cy) => {
     const eid = addEntity(world)
@@ -38,13 +39,16 @@ export const spawnSoldier = (world, character_type, weapon_type, cx, cy) => {
     return eid
 }
 
-export const spawnBullet = (world, character_type, cx, cy, orientation, speed = 100) => {
+export const spawnBullet = (world, character_type, cx, cy, orientation, speed = 100, ownerEid) => {
     const bulletEid = addEntity(world)
     addComponent(world, Position, bulletEid)
     addComponent(world, Orientation, bulletEid)
     addComponent(world, Velocity, bulletEid)
     addComponent(world, PermanentId, bulletEid)
     addComponent(world, Character, bulletEid)
+    if (ownerEid !== undefined)
+        addComponent(world, Owner, bulletEid)
+
     Position.x[bulletEid] = cx
     Position.y[bulletEid] = cy
     Orientation.a8[bulletEid] = orientation//Orientation.a8[eid]
@@ -56,6 +60,10 @@ export const spawnBullet = (world, character_type, cx, cy, orientation, speed = 
     Velocity.y[bulletEid] = speed * Math.sin(angle)
     Character.type[bulletEid] = character_type
     PermanentId.pid[bulletEid] = 0
+
+    if (ownerEid !== undefined)
+        Owner.eid[bulletEid] = ownerEid
+
     return bulletEid
 }
 export const spawnExplosion = (world, character_type, cx, cy) => {

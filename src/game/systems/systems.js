@@ -141,7 +141,7 @@ export const weaponSystem = world => {
                 const cx = Position.x[eid]
                 const cy = Position.y[eid]
                 const speed = 150
-                const bulletEid = spawnBullet(world, character_type, cx, cy, orientation, speed)
+                const bulletEid = spawnBullet(world, character_type, cx, cy, orientation, speed, eid)
 
             }
         }
@@ -272,6 +272,59 @@ export const movementSystem = world => {
     return world
 
 }
+import boxIntersect from 'box-intersect'
+import { Owner } from '../components/owner.js'
+import { Health } from '../components/health.js'
+const characterIntersectionQuery = defineQuery([Character, Position])
+export const characterIntersections = world => {
+    const ents = characterIntersectionQuery(world)
+
+    const _bounds = Bounds()
+    const _shape = Shape()
+    const boxes = []
+    for (let i = 0; i < ents.length; i++) {
+        const eid = ents[i]
+        const shape = getCharacterShape(Character.type[eid], _shape)
+        const bounds = getBoundingBox(Position.x[eid], Position.y[eid], shape.w, shape.h, shape.ax, shape.ay, _bounds)
+        boxes.push([bounds.minX, bounds.minY, bounds.maxX, bounds.maxY])
+    }
+    const result = boxIntersect(boxes, (i, j) => {
+
+        const eidi = ents[i]
+        const eidj = ents[j]
+        const owni = hasComponent(world, Owner, ents[i]) ? (Owner.eid[ents[i]]) : undefined
+        const ownj = hasComponent(world, Owner, ents[j]) ? (Owner.eid[ents[j]]) : undefined
+        if ((eidi === ownj) || (eidj === owni)) {
+
+        } else {
+            const hasHealthi = hasComponent(world, Health, eidi)
+            const hasHealthj = hasComponent(world, Health, eidj)
+
+            const boxi = boxes[i]
+            const boxj = boxes[j]
+            const x = (boxi[0] + boxj[0] + boxi[2] + boxj[2]) / 4
+            const y = (boxi[1] + boxj[1] + boxi[3] + boxj[3]) / 4
+            const exId = spawnExplosion(world, CHARACTER_TYPE_BIG_EXPLOSION, x, y)
+
+            if (hasHealthi) {
+                Health.value[eidi] -= Health.max[eidi] / 5
+            } else {
+                removeEntity(world, eidi)
+            }
+            if (hasHealthj) {
+                Health.value[eidj] -= Health.max[eidj] / 5
+            } else {
+                removeEntity(world, eidj)
+            }
+
+
+        }
+        //console.log('collides eid', ents[i], ents[j])
+    })
+
+    return world
+}
+
 const ttlQuery = defineQuery([Ttl])
 export const ttlSystem = world => {
     const ents = ttlQuery(world)
