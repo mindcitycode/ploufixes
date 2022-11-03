@@ -309,7 +309,7 @@ export const characterIntersections = world => {
                 const boxj = boxes[j]
                 const x = (boxi[0] + boxj[0] + boxi[2] + boxj[2]) / 4
                 const y = (boxi[1] + boxj[1] + boxi[3] + boxj[3]) / 4
-                
+
                 const exId = spawnExplosion(world, CHARACTER_TYPE_BIG_EXPLOSION, x, y)
 
                 if (hasHealthi) {
@@ -327,6 +327,18 @@ export const characterIntersections = world => {
         }
     })
 
+    return world
+}
+
+const healthQuery = defineQuery([Health])
+export const healthSystem = world => {
+    const ents = healthQuery(world)
+    for (let i = 0; i < ents.length; i++) {
+        const eid = ents[i]
+        if (Health.value[eid] <= 0) {
+            removeEntity(world, eid)
+        }
+    }
     return world
 }
 

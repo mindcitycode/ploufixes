@@ -19,7 +19,7 @@ import {
     entityExists,
 } from 'bitecs'
 
-import { timeSystem, movementSystem, permanentIdAttributionSystem, controlSystem, weaponSystem, ttlSystem, discreteSystem, characterIntersections } from './systems/systems.js'
+import { timeSystem, movementSystem, permanentIdAttributionSystem, controlSystem, weaponSystem, ttlSystem, discreteSystem, characterIntersections, healthSystem } from './systems/systems.js'
 import { getTilemapDataBounds } from '../common/tilemap.js'
 import { instanciateTilemapRTree } from '../common/tree.js'
 import { spawnSoldier } from './spawns.js'
@@ -46,6 +46,7 @@ const pipeline = pipe(
     timeSystem,
     ttlSystem,
     permanentIdAttributionSystem,
+    healthSystem,
     discreteSystem,
 )
 
