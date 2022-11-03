@@ -275,7 +275,8 @@ export const movementSystem = world => {
 import boxIntersect from 'box-intersect'
 import { Owner } from '../components/owner.js'
 import { Health } from '../components/health.js'
-const characterIntersectionQuery = defineQuery([Character, Position])
+import { Collider } from '../components/collider.js'
+const characterIntersectionQuery = defineQuery([Character, Position, Collider])
 export const characterIntersections = world => {
     const ents = characterIntersectionQuery(world)
 
@@ -297,29 +298,33 @@ export const characterIntersections = world => {
         if ((eidi === ownj) || (eidj === owni)) {
 
         } else {
-            const hasHealthi = hasComponent(world, Health, eidi)
-            const hasHealthj = hasComponent(world, Health, eidj)
+            const collij = Collider.group[eidi] & Collider.mask[eidj]
+            const collji = Collider.group[eidj] & Collider.mask[eidi]
+            if (collij || collji) {
 
-            const boxi = boxes[i]
-            const boxj = boxes[j]
-            const x = (boxi[0] + boxj[0] + boxi[2] + boxj[2]) / 4
-            const y = (boxi[1] + boxj[1] + boxi[3] + boxj[3]) / 4
-            const exId = spawnExplosion(world, CHARACTER_TYPE_BIG_EXPLOSION, x, y)
+                const hasHealthi = hasComponent(world, Health, eidi)
+                const hasHealthj = hasComponent(world, Health, eidj)
 
-            if (hasHealthi) {
-                Health.value[eidi] -= Health.max[eidi] / 5
-            } else {
-                removeEntity(world, eidi)
+                const boxi = boxes[i]
+                const boxj = boxes[j]
+                const x = (boxi[0] + boxj[0] + boxi[2] + boxj[2]) / 4
+                const y = (boxi[1] + boxj[1] + boxi[3] + boxj[3]) / 4
+                
+                const exId = spawnExplosion(world, CHARACTER_TYPE_BIG_EXPLOSION, x, y)
+
+                if (hasHealthi) {
+                    Health.value[eidi] -= Health.max[eidi] / 5
+                } else {
+                    removeEntity(world, eidi)
+                }
+                if (hasHealthj) {
+                    Health.value[eidj] -= Health.max[eidj] / 5
+                } else {
+                    removeEntity(world, eidj)
+                }
+
             }
-            if (hasHealthj) {
-                Health.value[eidj] -= Health.max[eidj] / 5
-            } else {
-                removeEntity(world, eidj)
-            }
-
-
         }
-        //console.log('collides eid', ents[i], ents[j])
     })
 
     return world

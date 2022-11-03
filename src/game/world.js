@@ -36,6 +36,7 @@ import { Ttl } from './components/ttl.js'
 import { Discrete } from './components/discrete.js'
 import { Health } from './components/health.js'
 import { Owner } from './components/owner.js'
+import { Collider } from './components/collider.js'
 
 const pipeline = pipe(
     controlSystem,
@@ -62,6 +63,7 @@ export const createRegisteredWorld = () => {
     registerComponent(world, Discrete)
     registerComponent(world, Health)
     registerComponent(world, Owner)
+    registerComponent(world, Collider)
     return world
 }
 
@@ -141,19 +143,19 @@ export const createGame = async ({ tilemapData }) => {
 
         const clientPermanentId = world.permanentId.nextOne
         world.permanentId.nextOne += 1
-        
+
         const cx = (16 * 5) + 20 * Math.random()
         const cy = (16 * 5) + 20 * Math.random()
         const eid = spawnSoldier(world, CHARACTER_TYPE_ANTITANK, WEAPON_TYPE_ROCKET_LAUNCHER, cx, cy)
-        
+
         // add controls
         addComponent(world, KeyControl, eid)
         KeyControl.state[eid] = 0
-        
+
         // set pid
         PermanentId.pid[eid] = clientPermanentId
         console.log('client add with permanent id', clientPermanentId)
-        
+
         return clientPermanentId
     }
     const removeClient = (clientPermanentId) => {
@@ -194,8 +196,9 @@ export const worldEntitiesToObject = world => {
         const hasWeapon = hasComponent(world, Weapon, eid)
         const hasTtl = hasComponent(world, Ttl, eid)
         const hasDiscrete = hasComponent(world, Discrete, eid)
-        const hasHealth = hasComponent(world,Health,eid)
-        const hasOwner = hasComponent(world,Owner,eid)
+        const hasHealth = hasComponent(world, Health, eid)
+        const hasOwner = hasComponent(world, Owner, eid)
+        const hasCollider = hasComponent(world, Collider, eid)
         const position_x = Position.x[eid]
         const position_y = Position.y[eid]
         const velocity_x = Velocity.x[eid]
@@ -212,6 +215,8 @@ export const worldEntitiesToObject = world => {
         const health_value = Health.value[eid]
         const health_max = Health.max[eid]
         const owner_eid = Owner.eid[eid]
+        const collider_group = Collider.group[eid]
+        const collider_mask = Collider.mask[eid]
         const object = {
             eid,
             exists,
@@ -224,8 +229,9 @@ export const worldEntitiesToObject = world => {
             Weapon: { hasWeapon, weapon_type, weapon_idle, weapon_reload },
             Ttl: { hasTtl, ttl_remaining },
             Discrete: { hasDiscrete, discrete_seen },
-            Health : { hasHealth, health_value, health_max },
-            Owner : { hasOwner, owner_eid }
+            Health: { hasHealth, health_value, health_max },
+            Owner: { hasOwner, owner_eid },
+            Collider: { hasCollider, collider_group, collider_mask }
         }
         objects.push(object)
     })

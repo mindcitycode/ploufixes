@@ -11,6 +11,7 @@ import { Action, ACTION_TYPE_WALK } from './components/action.js'
 import { Weapon } from './components/weapon.js'
 import { Health } from './components/health.js'
 import { Owner } from './components/owner.js'
+import { Collider, COLLIDE_GROUP_SOLDIER, COLLIDE_GROUP_BULLET, COLLIDE_GROUP_EXPLOSION } from './components/collider.js'
 
 export const spawnSoldier = (world, character_type, weapon_type, cx, cy) => {
     const eid = addEntity(world)
@@ -23,6 +24,7 @@ export const spawnSoldier = (world, character_type, weapon_type, cx, cy) => {
     addComponent(world, Action, eid)
     addComponent(world, Weapon, eid)
     addComponent(world, Health, eid)
+    addComponent(world, Collider, eid)
     Position.x[eid] = cx
     Position.y[eid] = cy
     Velocity.x[eid] = 0
@@ -36,6 +38,9 @@ export const spawnSoldier = (world, character_type, weapon_type, cx, cy) => {
     PermanentId.pid[eid] = 0
     Health.value[eid] = 100
     Health.max[eid] = 100
+    Collider.group[eid] = COLLIDE_GROUP_SOLDIER
+    Collider.mask[eid] = COLLIDE_GROUP_BULLET
+
     return eid
 }
 
@@ -46,6 +51,8 @@ export const spawnBullet = (world, character_type, cx, cy, orientation, speed = 
     addComponent(world, Velocity, bulletEid)
     addComponent(world, PermanentId, bulletEid)
     addComponent(world, Character, bulletEid)
+    addComponent(world, Collider, bulletEid)
+
     if (ownerEid !== undefined)
         addComponent(world, Owner, bulletEid)
 
@@ -64,6 +71,9 @@ export const spawnBullet = (world, character_type, cx, cy, orientation, speed = 
     if (ownerEid !== undefined)
         Owner.eid[bulletEid] = ownerEid
 
+    Collider.group[bulletEid] = COLLIDE_GROUP_BULLET
+    Collider.mask[bulletEid] = COLLIDE_GROUP_BULLET | COLLIDE_GROUP_SOLDIER
+
     return bulletEid
 }
 export const spawnExplosion = (world, character_type, cx, cy) => {
@@ -71,11 +81,14 @@ export const spawnExplosion = (world, character_type, cx, cy) => {
     addComponent(world, Position, exId)
     addComponent(world, Character, exId)
     addComponent(world, Discrete, exId)
+    addComponent(world, Collider, exId)
     const explosionShape = getCharacterShape(character_type)
     const explosionPosition = getPositionFromCenter(cx, cy, explosionShape.w, explosionShape.h, explosionShape.ax, explosionShape.ay)
     Position.x[exId] = explosionPosition.x
     Position.y[exId] = explosionPosition.y
     Character.type[exId] = character_type
     Discrete.seen[exId] = 0
+    Collider.group[exId] = COLLIDE_GROUP_EXPLOSION
+    Collider.mask[exId] = 0
     return exId
 }
